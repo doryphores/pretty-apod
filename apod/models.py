@@ -5,6 +5,7 @@ from django.core.files.base import ContentFile
 
 import urllib2
 
+from BeautifulSoup import BeautifulSoup as BSoup
 from HTMLParser import HTMLParser
 from dateutil import parser as dateparser
 
@@ -27,8 +28,9 @@ class ItemManager(models.Manager):
 		with default_storage.open(cache_fn) as f:
 			html = f.read()
 		
-		parser = ArchiveParser()
-		
+		html_soup = BSoup(html)
+		archive_links = html_soup.b.findAll("a")
+
 		# Wrap the whole thing in a transaction to speed things up
 
 		transaction.commit_unless_managed()
@@ -36,8 +38,11 @@ class ItemManager(models.Manager):
 		transaction.managed(True)
 
 		try:
-			# Feed the HTML to the parser
-			parser.feed(html)
+			for link in archive_links:
+				item = Item()
+				item.publish_date = dateparser.parse(link.previous.strip().strip(":"))
+				item.title = unicode(link.next)
+				item.save()
 		except:
 			transaction.rollback()
 			transaction.leave_transaction_management()
@@ -47,7 +52,6 @@ class ItemManager(models.Manager):
 		transaction.leave_transaction_management()
 
 
-
 # Models
 
 class Item(models.Model):
@@ -55,13 +59,15 @@ class Item(models.Model):
 
 	title = models.CharField(max_length=255)
 
-	apod_id = models.CharField(max_length=255, unique=True)
-
 	objects = ItemManager()
 
+	@property
+	def apod_id(self):
+		return self.publish_date.strftime("%y%m%d")
+	
 	def __unicode__(self):
 		return u'%s' % self.title
-
+	
 	class Meta:
 		ordering = ['publish_date']
 
