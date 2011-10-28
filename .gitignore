@@ -1,2 +1,5 @@
-.env
+*.pyc
 *.sublime*
+.env
+logs
+public/media
