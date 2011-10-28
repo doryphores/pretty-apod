@@ -149,4 +149,6 @@ LOGGING = {
 }
 
 
-APOD_ARCHIVE_URL = "http://apod.nasa.gov/apod/archivepix.html"
+APOD_URL = "http://apod.nasa.gov/apod"
+
+APOD_ARCHIVE_URL = APOD_URL + "/archivepix.html"

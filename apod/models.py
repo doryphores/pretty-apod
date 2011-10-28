@@ -2,12 +2,14 @@ from django.db import models
 from django.db import transaction
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
+from django.core.files import File
 from django.conf import settings
 
+import os
 import urllib2
+import re
 
 from BeautifulSoup import BeautifulSoup as BSoup
-from HTMLParser import HTMLParser
 from dateutil import parser as dateparser
 
 
@@ -59,6 +61,9 @@ class Item(models.Model):
 	publish_date = models.DateField(unique=True)
 
 	title = models.CharField(max_length=255)
+	description = models.CharField(max_length=4000, blank=True)
+	credit = models.CharField(max_length=255, blank=True)
+	image = models.ImageField(upload_to='images', blank=True, null=True)
 
 	objects = ItemManager()
 
@@ -66,54 +71,50 @@ class Item(models.Model):
 	def apod_id(self):
 		return self.publish_date.strftime("%y%m%d")
 	
+	@models.permalink
+	def get_absolute_url(self):
+		return ('image_view', (), { 'image_id': str(self.pk) })
+
 	def __unicode__(self):
 		return u'%s' % self.title
 	
+	def get_apod_url(self):
+		return u'%s/ap%s.html' % (settings.APOD_URL, self.publish_date.strftime('%y%m%d'))
+
+	def load_from_apod(self, force=False):
+		# Get APOD HTML page
+		f = urllib2.urlopen(self.get_apod_url())
+
+		# Parse it with Beautiful Soup
+		soup = BSoup(f.read())
+
+		headings = soup.findAll('b')
+
+		for h in headings:
+			if 'Explanation' in h.next.string:
+				explanation = h.parent
+				explanation.find('b').extract()
+
+				self.description = explanation.renderContents()
+			if 'Credit' in h.next.string:
+				credits = ''
+				c = h
+				while c.nextSibling:
+					c = c.nextSibling
+					credits = credits + str(c)
+				self.credits = credits
+		
+
+		if force or not self.image:
+			# Get the original image URL
+			if soup.img:
+				img_url = settings.APOD_URL + "/" + soup.img.parent["href"]
+
+				# Download the image
+				f = urllib2.urlopen(img_url)
+				self.image.save(os.path.basename(img_url), ContentFile(f.read()))
+
+			self.save()
+
 	class Meta:
-		ordering = ['publish_date']
-
-
-# APOD Parsers
-
-class ArchiveParser(HTMLParser):
-	harvest = False
-	new_item = False
-	open_item = False
-	all_done = False
-
-	def handle_starttag(self, tag, attrs):
-		# Start harvesting when B tag starts
-		if not self.all_done and tag == 'b':
-			self.harvest = True
-			self.new_item = True
-		
-		# Start of A tag
-		if self.harvest and tag == 'a':
-			for name, value in attrs:
-				if name == 'href':
-					self.item.apod_id = value.strip()
-			self.open_item = True
-		
-		# BR tag announces end of item
-		if self.harvest and tag == 'br':
-			self.item.save()
-			
-			self.new_item = True
-	
-	def handle_data(self, data):
-		# We have a new item, use data as the date
-		if self.new_item:
-			self.item = Item()
-			self.item.publish_date = dateparser.parse(data.replace(":", "").strip())
-			self.new_item = False
-		
-		# We are in the A tag so set the item title
-		if self.open_item:
-			self.item.title = data.strip()
-			self.open_item = False
-
-	def handle_endtag(self, tag):
-		# Stop harvesting when B tag stops
-		if self.harvest and tag == 'b':
-			self.harvest = False
-			self.all_done = True
+		ordering = ['-publish_date']

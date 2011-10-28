@@ -1,0 +1,13 @@
+<h1>{{ item.title }}</h1>
+
+<p>Published: <strong>{{ item.publish_date }}</strong></p>
+
+<h2>Explanation</h2>
+<div>{{ item.description|safe }}</div>
+
+<h2>Credits</h2>
+<p>{{ item.credits|safe }}</p>
+
+{% if item.image %}
+<img src="{{ item.image.url }}" width="600">
+{% endif %}
