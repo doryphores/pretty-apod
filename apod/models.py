@@ -2,6 +2,7 @@ from django.db import models
 from django.db import transaction
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
+from django.conf import settings
 
 import urllib2
 

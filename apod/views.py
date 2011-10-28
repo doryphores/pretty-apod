@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from django.conf import settings
 
 from apod.models import Item
 
@@ -11,5 +10,5 @@ def refresh(request):
 	return HttpResponse("All done")
 
 def list(request):
-	items  = Item.objects.all()
+	items  = Item.objects.all()[0:50]
 	return render(request, 'apod/index.html', { 'items': items })
