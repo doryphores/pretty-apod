@@ -1,5 +1,15 @@
 <h1>{{ item.title }}</h1>
 
+<p>
+<a href="{% url list_view %}">Back to list</a>
+{% with item.previous as previous %}
+	{% if previous %}| <a href="{{ previous.get_absolute_url }}">&laquo; {{ previous.title }}</a>{% endif %}
+{% endwith %}
+{% with item.next as next %}
+	{% if next %}| <a href="{{ next.get_absolute_url }}">{{ next.title }} &raquo;</a>{% endif %}
+{% endwith %}
+</p>
+
 <p>Published: <strong>{{ item.publish_date }}</strong></p>
 
 <h2>Explanation</h2>

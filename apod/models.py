@@ -67,10 +67,6 @@ class Item(models.Model):
 
 	objects = ItemManager()
 
-	@property
-	def apod_id(self):
-		return self.publish_date.strftime("%y%m%d")
-	
 	@models.permalink
 	def get_absolute_url(self):
 		return ('image_view', (), { 'image_id': str(self.pk) })
@@ -116,5 +112,19 @@ class Item(models.Model):
 
 			self.save()
 
+	@property
+	def next(self):
+		try:
+			return self.get_next_by_publish_date()
+		except Item.DoesNotExist:
+			return None
+	
+	@property
+	def previous(self):
+		try:
+			return self.get_previous_by_publish_date()
+		except Item.DoesNotExist:
+			return None
+	
 	class Meta:
 		ordering = ['-publish_date']
