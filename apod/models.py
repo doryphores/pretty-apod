@@ -5,6 +5,8 @@ from django.core.files.base import ContentFile
 from django.core.files import File
 from django.conf import settings
 
+from sorl.thumbnail import ImageField
+
 from apod import apodapi
 
 import os
@@ -46,7 +48,7 @@ class Photo(models.Model):
 	description = models.CharField(max_length=4000, blank=True)
 	credit = models.CharField(max_length=255, blank=True)
 	original_image_url = models.URLField(blank=True)
-	image = models.ImageField(upload_to='images', blank=True, null=True)
+	image = ImageField(upload_to='images', blank=True, null=True)
 
 	objects = PhotoManager()
 
