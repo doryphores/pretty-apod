@@ -2,20 +2,26 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 
 from apod.models import Photo
-
+from apod import apodapi
 
 def refresh(request):
-	Photo.objects.import_archive()
-
-	return HttpResponse("All done")
+	try:
+		from_date = Photo.objects.latest().publish_date
+	except:
+		from_date = None
+	for apod_details in apodapi.get_archive_list(from_date=from_date):
+		photo = Photo(publish_date=apod_details["publish_date"], title=apod_details["title"])
+		photo.save()
+	
+	return redirect('list_view')
 
 def list(request):
-	photos  = Photo.objects.all()[0:50]
+	photos  = Photo.objects.filter(loaded=True)[0:50]
 	return render(request, 'apod/index.html', { 'photos': photos })
 
 def image(request, image_id):
 	photo = Photo.objects.get(pk=image_id)
 
-	photo.load_from_apod()
+	photo.load_from_apod(False)
 	
 	return render(request, 'apod/image.html', { 'photo': photo })

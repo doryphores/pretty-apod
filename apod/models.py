@@ -2,8 +2,6 @@ from django.db import models
 from django.db import transaction
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
-from django.core.files import File
-from django.conf import settings
 
 from sorl.thumbnail import ImageField
 
@@ -13,31 +11,18 @@ import os
 import urllib2
 import re
 
-from BeautifulSoup import BeautifulSoup as BSoup
-from dateutil import parser as dateparser
-
 
 # Managers
 
 class PhotoManager(models.Manager):
 	def import_archive(self, force_download=False):
-		# Wrap the whole thing in a transaction
-
-		transaction.commit_unless_managed()
-		transaction.enter_transaction_management()
-		transaction.managed(True)
-
 		try:
-			for apod in apodapi.get_archive_list():
-				photo = Photo(publish_date=apod["publish_date"], title=apod["title"])
-				photo.save()
+			from_date = self.latest().publish_date
 		except:
-			transaction.rollback()
-			transaction.leave_transaction_management()
-			raise
-		
-		transaction.commit()
-		transaction.leave_transaction_management()
+			from_date = None
+		for apod in apodapi.get_archive_list(from_date=from_date):
+			photo = Photo(publish_date=apod["publish_date"], title=apod["title"])
+			photo.save()
 
 
 # Models
@@ -45,10 +30,11 @@ class PhotoManager(models.Manager):
 class Photo(models.Model):
 	publish_date = models.DateField(unique=True)
 	title = models.CharField(max_length=255)
-	description = models.CharField(max_length=4000, blank=True)
-	credit = models.CharField(max_length=255, blank=True)
+	description = models.TextField(max_length=4000, blank=True)
+	credit = models.TextField(max_length=4000, blank=True)
 	original_image_url = models.URLField(blank=True)
 	image = ImageField(upload_to='images', blank=True, null=True)
+	loaded = models.BooleanField(default=False)
 
 	objects = PhotoManager()
 
@@ -60,17 +46,18 @@ class Photo(models.Model):
 		return u'%s' % self.title
 	
 	def get_apod_url(self):
-		return u'%s/ap%s.html' % (settings.APOD_URL, self.publish_date.strftime('%y%m%d'))
+		return apodapi.get_apod_url(self.publish_date)
 
-	def load_from_apod(self, force=False):
+	def load_from_apod(self, download_image=False):
 		details = apodapi.get_apod_details(self.publish_date)
 		
 		self.title = details['title']
 		self.description = details['explanation']
 		self.credits = details['credits']
 		self.original_image_url = details['image_url']
-
-		if force or not self.image:
+		self.loaded = True
+		
+		if download_image and not self.image and self.original_image_url:
 			# Download the image
 			f = urllib2.urlopen(self.original_image_url)
 			self.image.save(os.path.basename(self.original_image_url), ContentFile(f.read()))
@@ -93,3 +80,4 @@ class Photo(models.Model):
 	
 	class Meta:
 		ordering = ['-publish_date']
+		get_latest_by = 'publish_date'

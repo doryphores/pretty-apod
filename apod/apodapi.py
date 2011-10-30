@@ -10,7 +10,7 @@ from django.core.files.base import ContentFile
 from django.core.files import File
 from django.conf import settings
 
-def get_archive_list(force=False):
+def get_archive_list(force=False, from_date=None):
 	"""
 	Gets a list of APOD items from the APOD archive page
 	Only downloads the file if out of date
@@ -36,8 +36,12 @@ def get_archive_list(force=False):
 	archive_links = html_soup.b.findAll("a")
 
 	for link in archive_links:
+		publish_date = dateparser.parse(link.previous.strip().strip(':')).date()
+		if from_date and publish_date <= from_date:
+			return
+		
 		yield {
-			'publish_date': dateparser.parse(link.previous.strip().strip(':')),
+			'publish_date': publish_date,
 			'title': unicode(link.next),
 		}
 
@@ -64,7 +68,7 @@ def get_apod_details(apod_date):
 	soup = BSoup(f.read())
 
 	apod = {
-		'title': soup.find('b').next.string,
+		'title': soup.find('b').string,
 		'explanation': '',
 		'credits': '',
 		'image_url': ''
@@ -80,9 +84,10 @@ def get_apod_details(apod_date):
 			apod['credits'] = get_nextsiblings_content(h)
 	
 	# Get the original image URL
-	if soup.img:
+	if soup.img and soup.img.parent.name == 'a':
 		apod['image_url'] = settings.APOD_URL + "/" + soup.img.parent['href']
 	
+
 	# @TODO: look for videos or other media
 
 	return apod
@@ -96,4 +101,4 @@ def get_nextsiblings_content(node):
 	while n.nextSibling:
 		n = n.nextSibling
 		container.append(unicode(n))
-	return ''.join(container)
+	return ''.join(container).strip()

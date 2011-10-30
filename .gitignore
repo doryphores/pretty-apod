@@ -4,3 +4,4 @@
 .env
 logs
 public/media
+public/static/admin
