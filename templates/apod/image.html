@@ -1,23 +1,23 @@
-<h1>{{ item.title }}</h1>
+<h1>{{ photo.title }}</h1>
 
 <p>
 <a href="{% url list_view %}">Back to list</a>
-{% with item.previous as previous %}
+{% with photo.previous as previous %}
 	{% if previous %}| <a href="{{ previous.get_absolute_url }}">&laquo; {{ previous.title }}</a>{% endif %}
 {% endwith %}
-{% with item.next as next %}
+{% with photo.next as next %}
 	{% if next %}| <a href="{{ next.get_absolute_url }}">{{ next.title }} &raquo;</a>{% endif %}
 {% endwith %}
 </p>
 
-<p>Published: <strong>{{ item.publish_date }}</strong></p>
+<p>Published: <strong>{{ photo.publish_date }}</strong></p>
 
 <h2>Explanation</h2>
-<div>{{ item.description|safe }}</div>
+<div>{{ photo.description|safe }}</div>
 
 <h2>Credits</h2>
-<p>{{ item.credits|safe }}</p>
+<p>{{ photo.credits|safe }}</p>
 
-{% if item.image %}
-<img src="{{ item.image.url }}" width="600">
+{% if photo.image %}
+<img src="{{ photo.image.url }}" width="600">
 {% endif %}
