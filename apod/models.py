@@ -5,7 +5,7 @@ from django.core.files.base import ContentFile
 from django.core.files import File
 from django.conf import settings
 
-from apod import api
+from apod import apodapi
 
 import os
 import urllib2
@@ -26,7 +26,7 @@ class PhotoManager(models.Manager):
 		transaction.managed(True)
 
 		try:
-			for apod in api.get_archive_list():
+			for apod in apodapi.get_archive_list():
 				photo = Photo(publish_date=apod["publish_date"], title=apod["title"])
 				photo.save()
 		except:
@@ -61,7 +61,7 @@ class Photo(models.Model):
 		return u'%s/ap%s.html' % (settings.APOD_URL, self.publish_date.strftime('%y%m%d'))
 
 	def load_from_apod(self, force=False):
-		details = api.get_apod_details(self.publish_date)
+		details = apodapi.get_apod_details(self.publish_date)
 		
 		self.title = details['title']
 		self.description = details['explanation']
