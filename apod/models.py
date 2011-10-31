@@ -44,7 +44,7 @@ class Photo(models.Model):
 	credits = models.TextField(max_length=4000, blank=True)
 	original_image_url = models.URLField(blank=True)
 	image = ImageField(upload_to='images', blank=True, null=True)
-	loaded = models.BooleanField(default=False)
+	loaded = models.BooleanField(default=False, verbose_name='Loaded from APOD')
 
 	keywords = models.ManyToManyField(Keyword, related_name='photos')
 

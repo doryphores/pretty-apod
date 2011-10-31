@@ -115,7 +115,7 @@ def get_apod_details(apod_date, force=False):
 	# Get info from HTML if we can read B tags at all
 	# If we can't, the page is too screwed even for Beautiful Soup
 	if soup.find('b'):
-		details['title'] = soup.find('b').string.strip()
+		details['title'] = re.sub('<.*?>', '', soup.find('b').renderContents()).strip()
 		details['explanation'] = get_section(soup, 'explanation')
 		details['credits'] = get_section(soup, 'credit')
 
