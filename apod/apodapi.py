@@ -106,11 +106,11 @@ def get_apod_details(apod_date, force=False):
 
 	# Parse keywords
 	if old_keywords:
-		details['keywords'] = old_keywords.split(',')
+		details['keywords'] = filter(len, old_keywords.split(','))
 	else:
 		meta_keywords = soup.find('meta', attrs={'name':'keywords'})
 		if meta_keywords:
-			details['keywords'] = meta_keywords['content'].split(',')
+			details['keywords'] = filter(len, meta_keywords['content'].split(','))
 	
 	# Get info from HTML if we can read B tags at all
 	# If we can't, the page is too screwed even for Beautiful Soup
