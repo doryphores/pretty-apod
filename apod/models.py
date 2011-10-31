@@ -30,8 +30,8 @@ class PhotoManager(models.Manager):
 class Photo(models.Model):
 	publish_date = models.DateField(unique=True)
 	title = models.CharField(max_length=255)
-	description = models.TextField(max_length=4000, blank=True)
-	credit = models.TextField(max_length=4000, blank=True)
+	explanation = models.TextField(max_length=4000, blank=True)
+	credits = models.TextField(max_length=4000, blank=True)
 	original_image_url = models.URLField(blank=True)
 	image = ImageField(upload_to='images', blank=True, null=True)
 	loaded = models.BooleanField(default=False)
@@ -52,7 +52,7 @@ class Photo(models.Model):
 		details = apodapi.get_apod_details(self.publish_date)
 		
 		self.title = details['title']
-		self.description = details['explanation']
+		self.explanation = details['explanation']
 		self.credits = details['credits']
 		self.original_image_url = details['image_url']
 		self.loaded = True

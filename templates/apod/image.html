@@ -10,10 +10,12 @@
 {% endwith %}
 </p>
 
+<p><a href="{{ photo.get_apod_url }}" target="_blank">View on APOD</a></p>
+
 <p>Published: <strong>{{ photo.publish_date }}</strong></p>
 
 <h2>Explanation</h2>
-<div>{{ photo.description|safe }}</div>
+<div>{{ photo.explanation|safe }}</div>
 
 <h2>Credits</h2>
 <p>{{ photo.credits|safe }}</p>
