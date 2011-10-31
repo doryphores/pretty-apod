@@ -51,7 +51,8 @@ class Photo(models.Model):
 	def load_from_apod(self, download_image=False):
 		details = apodapi.get_apod_details(self.publish_date)
 		
-		self.title = details['title']
+		if details['title']:
+			self.title = details['title']
 		self.explanation = details['explanation']
 		self.credits = details['credits']
 		self.original_image_url = details['image_url']

@@ -80,45 +80,49 @@ def get_apod_details(apod_date, force=False):
 	
 	html = html.strip()
 
-	# Add missing HTML tag if needed
-	if '<html>' not in html:
-		html = ''.join(['<html>', html, '</html>'])
+	# Remove weird keywords comment
+	# @TODO: extract the keywords
+	if '<!- ' in html:
+		html = re.sub(re.compile('<!- KEYWORDS: .+?>', re.I), '', html)
 
 	# Parse it with Beautiful Soup
 	soup = BSoup(html)
 
-	apod = {
-		'title': soup.find('b').string.strip(),
+	details = {
+		'title': '',
 		'explanation': '',
 		'credits': '',
 		'image_url': ''
 	}
-
-	# Get bold headings
-	headings = soup.findAll('b')
-
-	for h in headings:
-		if 'Explanation' in h.next.string:
-			apod['explanation'] = get_nextsiblings_content(h)
-		if 'Credit' in h.next.string:
-			apod['credits'] = get_nextsiblings_content(h)
 	
-	# Get the original image URL
+	# Get info from HTML if we can read B tags at all (if we can't, the page is too screwed even for Beautiful Soup)
+	if soup.find('b'):
+		details['title'] = soup.find('b').string.strip()
+		details['explanation'] = get_section(soup, 'explanation')
+		details['credits'] = get_section(soup, 'credit')
+
+	# Get the original hi-res image URL
 	if soup.img and soup.img.parent.name == 'a':
-		apod['image_url'] = settings.APOD_URL + "/" + soup.img.parent['href'].strip()
+		details['image_url'] = settings.APOD_URL + "/" + soup.img.parent['href'].strip()
 	
-
 	# @TODO: look for videos or other media
 
-	return apod
+	return details
 
-def get_nextsiblings_content(node):
-	"""
-	Gets the rendered HTML of the next siblings of a BeautifulSoup node
-	"""
-	container = []
-	n = node
-	while n.nextSibling:
-		n = n.nextSibling
-		container.append(unicode(n))
-	return ''.join(container).strip()
+def get_section(soup, heading):
+	b_tags = soup.findAll('b')
+
+	for b in b_tags:
+		if heading in b.renderContents().lower():
+			container = []
+			n = b.nextSibling
+			while n:
+				if isinstance(n, Tag):
+					# Stop when we hit a paragraph tag
+					if n.name == 'p':
+						break
+				container.append(unicode(n))
+				n = n.nextSibling
+			return ''.join(container).strip()
+	
+	return ''

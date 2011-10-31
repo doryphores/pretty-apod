@@ -14,17 +14,17 @@ class Command(BaseCommand):
 		except:
 			from_date = None
 		
-		transaction.commit_unless_managed()
-		transaction.enter_transaction_management()
-		transaction.managed(True)
-
 		for apod_details in apodapi.get_archive_list(from_date=from_date):
 			photo = Photo(publish_date=apod_details["publish_date"], title=apod_details["title"])
 			photo.save()
-
+		
 		self.stdout.write('Archive imported successfully\n')
 
-		photos_to_load = Photo.objects.filter(loaded=False)
+		photos_to_load = Photo.objects.filter(publish_date__year=2010, publish_date__month=9)
+
+		transaction.commit_unless_managed()
+		transaction.enter_transaction_management()
+		transaction.managed(True)
 
 		self.stdout.write('%s photos to load\n' % photos_to_load.count())
 
@@ -37,6 +37,7 @@ class Command(BaseCommand):
 				success_count = success_count + 1
 				self.stdout.write('%s imported\n' % photo.publish_date)
 			except:
+				raise
 				error_count = error_count + 1
 		
 		transaction.commit()
