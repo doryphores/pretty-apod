@@ -37,13 +37,16 @@ class Keyword(models.Model):
 		ordering = ['label']
 
 
+def get_image_path(instance, filename):
+	return os.path.join('images', str(instance.publish_date.year), str(instance.publish_date.month), filename)
+
 class Photo(models.Model):
 	publish_date = models.DateField(unique=True)
 	title = models.CharField(max_length=255)
 	explanation = models.TextField(max_length=4000, blank=True)
 	credits = models.TextField(max_length=4000, blank=True)
 	original_image_url = models.URLField(blank=True)
-	image = ImageField(upload_to='images', blank=True, null=True)
+	image = ImageField(upload_to=get_image_path, blank=True, null=True)
 	loaded = models.BooleanField(default=False, verbose_name='Loaded from APOD')
 
 	keywords = models.ManyToManyField(Keyword, related_name='photos')
