@@ -1,8 +1,9 @@
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
 
-from apod.models import Photo
+from django.db.models import Count
+
+from apod.models import Photo, Keyword
 from apod import apodapi
 
 def list(request, page=1):
@@ -16,6 +17,11 @@ def list(request, page=1):
 		photos = paginator.page(1)
 
 	return render(request, 'apod/index.html', { 'photos': photos })
+
+def tags(request):
+	tags = Keyword.objects.annotate(num_photos=Count('photos')).order_by('-num_photos')[:20]
+
+	return render(request, 'apod/tags.html', { 'tags': tags })
 
 def image(request, image_id):
 	photo = Photo.objects.get(pk=image_id)
