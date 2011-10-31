@@ -76,7 +76,10 @@ class Photo(models.Model):
 		self.keywords.clear()
 		
 		for word in details['keywords']:
-			keyword, created = Keyword.objects.get_or_create(label=word.strip())
+			try:
+				keyword = Keyword.objects.get(label__iexact=word.strip())
+			except Keyword.DoesNotExist:
+				keyword = Keyword.objects.create(label=word.strip())
 			self.keywords.add(keyword)
 
 		if download_image and not self.image and self.original_image_url:

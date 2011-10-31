@@ -27,7 +27,7 @@ class Command(BaseCommand):
 		elif len(args) == 2:
 			photos_to_load = Photo.objects.filter(publish_date__year=int(args[0]), publish_date__month=int(args[1]))
 		else:
-			photos_to_load = Photo.objects.all()
+			photos_to_load = Photo.objects.all(loaded=False)
 			
 		transaction.commit_unless_managed()
 		transaction.enter_transaction_management()
