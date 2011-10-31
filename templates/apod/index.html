@@ -1,9 +1,20 @@
+{% extends "base.html" %}
+
 {% load thumbnail %}
 
-<h1>Pretty APOD - Archive</h1>
+{% block page_title %}Pretty APOD - Archive{% endblock page_title %}
 
+{% block main %}
+<p>
+	{% if photos.has_previous %}
+	<a href="{% url page photos.previous_page_number %}">Previous</a>
+	{% endif %}
+	{% if photos.has_next %}
+	<a href="{% url page photos.next_page_number %}">Next</a>
+	{% endif %}
+</p>
 <table>
-{% for photo in photos %}
+{% for photo in photos.object_list %}
 <tr>
 	<td>
 		{% if photo.image %}
@@ -22,3 +33,4 @@
 </tr>
 {% endfor %}
 </table>
+{% endblock %}
