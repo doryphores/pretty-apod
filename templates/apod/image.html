@@ -20,6 +20,15 @@
 <h2>Credits</h2>
 <p>{{ photo.credits|safe }}</p>
 
+<h2>Keywords</h2>
+<p>
+	{% for keyword in  photo.keywords.all %}
+	<a href="#">{{ keyword }}</a>
+	{% empty %}
+	<p>None set</p>
+	{% endfor %}
+</p>
+
 {% if photo.image %}
 <img src="{{ photo.image.url }}" width="600">
 {% endif %}

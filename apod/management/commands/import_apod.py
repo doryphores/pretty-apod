@@ -6,12 +6,14 @@ from apod import apodapi
 
 
 class Command(BaseCommand):
+	args = '[year] [month]'
 	help = 'Imports APOD data'
 
 	def handle(self, *args, **options):
+		# Add missing APODs
 		try:
 			from_date = Photo.objects.latest().publish_date
-		except:
+		except Photo.DoesNotExist:
 			from_date = None
 		
 		for apod_details in apodapi.get_archive_list(from_date=from_date):
@@ -20,8 +22,13 @@ class Command(BaseCommand):
 		
 		self.stdout.write('Archive imported successfully\n')
 
-		photos_to_load = Photo.objects.filter(publish_date__year=2010, publish_date__month=9)
-
+		if len(args) == 1:
+			photos_to_load = Photo.objects.filter(publish_date__year=int(args[0]))
+		elif len(args) == 2:
+			photos_to_load = Photo.objects.filter(publish_date__year=int(args[0]), publish_date__month=int(args[1]))
+		else:
+			photos_to_load = Photo.objects.all()
+			
 		transaction.commit_unless_managed()
 		transaction.enter_transaction_management()
 		transaction.managed(True)

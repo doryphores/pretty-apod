@@ -80,10 +80,18 @@ def get_apod_details(apod_date, force=False):
 	
 	html = html.strip()
 
-	# Remove weird keywords comment
-	# @TODO: extract the keywords
+	old_keywords = None
+
+	# Handle weird keywords comment
 	if '<!- ' in html:
-		html = re.sub(re.compile('<!- KEYWORDS: .+?>', re.I), '', html)
+		# Extract the keywords
+		pat = re.compile('<!- KEYWORDS: (.+?)>', re.I)
+		keyword_search = re.search(pat, html)
+		if keyword_search:
+			old_keywords = keyword_search.group(1)
+
+		# Remove the 'tag' because it breaks parsing
+		html = re.sub(pat, '', html)
 
 	# Parse it with Beautiful Soup
 	soup = BSoup(html)
@@ -92,10 +100,20 @@ def get_apod_details(apod_date, force=False):
 		'title': '',
 		'explanation': '',
 		'credits': '',
-		'image_url': ''
+		'image_url': '',
+		'keywords': [],
 	}
+
+	# Parse keywords
+	if old_keywords:
+		details['keywords'] = old_keywords.split(',')
+	else:
+		meta_keywords = soup.find('meta', attrs={'name':'keywords'})
+		if meta_keywords:
+			details['keywords'] = meta_keywords['content'].split(',')
 	
-	# Get info from HTML if we can read B tags at all (if we can't, the page is too screwed even for Beautiful Soup)
+	# Get info from HTML if we can read B tags at all
+	# If we can't, the page is too screwed even for Beautiful Soup
 	if soup.find('b'):
 		details['title'] = soup.find('b').string.strip()
 		details['explanation'] = get_section(soup, 'explanation')

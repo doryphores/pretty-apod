@@ -16,12 +16,12 @@ def refresh(request):
 	return redirect('list_view')
 
 def list(request):
-	photos  = Photo.objects.filter(publish_date__year=2010, publish_date__month=9)
+	photos  = Photo.objects.filter(publish_date__year=1997, publish_date__month=9)
 	return render(request, 'apod/index.html', { 'photos': photos })
 
 def image(request, image_id):
 	photo = Photo.objects.get(pk=image_id)
 
-	#photo.load_from_apod(False)
+	photo.load_from_apod(False)
 	
 	return render(request, 'apod/image.html', { 'photo': photo })

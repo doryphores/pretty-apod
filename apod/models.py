@@ -27,6 +27,16 @@ class PhotoManager(models.Manager):
 
 # Models
 
+class Keyword(models.Model):
+	label = models.CharField(max_length=400, unique=True)
+
+	def __unicode__(self):
+		return u'%s' % self.label
+
+	class Meta:
+		ordering = ['label']
+
+
 class Photo(models.Model):
 	publish_date = models.DateField(unique=True)
 	title = models.CharField(max_length=255)
@@ -35,6 +45,8 @@ class Photo(models.Model):
 	original_image_url = models.URLField(blank=True)
 	image = ImageField(upload_to='images', blank=True, null=True)
 	loaded = models.BooleanField(default=False)
+
+	keywords = models.ManyToManyField(Keyword, related_name='photos')
 
 	objects = PhotoManager()
 
@@ -58,6 +70,12 @@ class Photo(models.Model):
 		self.original_image_url = details['image_url']
 		self.loaded = True
 		
+		self.keywords.clear()
+		
+		for word in details['keywords']:
+			keyword, created = Keyword.objects.get_or_create(label=word.strip())
+			self.keywords.add(keyword)
+
 		if download_image and not self.image and self.original_image_url:
 			# Download the image
 			f = urllib2.urlopen(self.original_image_url)
