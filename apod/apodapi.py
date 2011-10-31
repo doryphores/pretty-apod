@@ -10,6 +10,8 @@ from django.core.files.base import ContentFile
 from django.core.files import File
 from django.conf import settings
 
+CACHE_FOLDER = 'apod_cache'
+
 def get_archive_list(force=False, from_date=None):
 	"""
 	Gets a list of APOD items from the APOD archive page
@@ -17,7 +19,7 @@ def get_archive_list(force=False, from_date=None):
 
 	Returns a list of dicts with publish_date and title keys
 	"""
-	archive_file = 'apodcache/archive.html'
+	archive_file = '%s/archive.html' % CACHE_FOLDER
 	
 	# Download archive HTML if needed
 	if force or not storage.exists(archive_file) or storage.modified_time(archive_file).date() < datetime.date.today():
@@ -51,7 +53,7 @@ def get_apod_url(apod_date):
 	"""
 	return u'%s/ap%s.html' % (settings.APOD_URL, apod_date.strftime('%y%m%d'))
 
-def get_apod_details(apod_date):
+def get_apod_details(apod_date, force=False):
 	"""
 	Gets details of an individual APOD for the given date
 
@@ -61,14 +63,32 @@ def get_apod_details(apod_date):
 		credits			the APOD credits in HTML
 		image_url		the URL of the original APOD image
 	"""
-	# Get APOD HTML page
-	f = urllib2.urlopen(get_apod_url(apod_date))
+	apod_url = get_apod_url(apod_date)
+	cache_file = os.path.join(CACHE_FOLDER, os.path.basename(apod_url))
+
+	# Download archive HTML if needed
+	if force or not storage.exists(cache_file):
+		f = urllib2.urlopen(apod_url)
+		html = f.read()
+		
+		# Write it to disk
+		storage.save(cache_file, ContentFile(html))
+	
+	# Read HTML
+	with storage.open(cache_file) as f:
+		html = f.read()
+	
+	html = html.strip()
+
+	# Add missing HTML tag if needed
+	if '<html>' not in html:
+		html = ''.join(['<html>', html, '</html>'])
 
 	# Parse it with Beautiful Soup
-	soup = BSoup(f.read())
+	soup = BSoup(html)
 
 	apod = {
-		'title': soup.find('b').string,
+		'title': soup.find('b').string.strip(),
 		'explanation': '',
 		'credits': '',
 		'image_url': ''
@@ -85,7 +105,7 @@ def get_apod_details(apod_date):
 	
 	# Get the original image URL
 	if soup.img and soup.img.parent.name == 'a':
-		apod['image_url'] = settings.APOD_URL + "/" + soup.img.parent['href']
+		apod['image_url'] = settings.APOD_URL + "/" + soup.img.parent['href'].strip()
 	
 
 	# @TODO: look for videos or other media
