@@ -26,6 +26,6 @@ def tags(request):
 def image(request, image_id):
 	photo = Photo.objects.get(pk=image_id)
 
-	photo.load_from_apod(True)
+	photo.get_image()
 	
 	return render(request, 'apod/image.html', { 'photo': photo })

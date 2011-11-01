@@ -154,6 +154,8 @@ LOGGING = {
 	}
 }
 
+THUMBNAIL_UPSCALE = False
+THUMBNAIL_PROGRESSIVE = False
 
 APOD_URL = "http://apod.nasa.gov/apod"
 

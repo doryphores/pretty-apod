@@ -9,4 +9,7 @@ class PhotoAdmin(AdminImageMixin, admin.ModelAdmin):
 
 admin.site.register(Photo, PhotoAdmin)
 
-admin.site.register(Keyword)
+class KeywordAdmin(admin.ModelAdmin):
+	search_fields = ['label']
+
+admin.site.register(Keyword, KeywordAdmin)

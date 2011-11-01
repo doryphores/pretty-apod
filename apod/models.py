@@ -3,7 +3,7 @@ from django.db import transaction
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 
-from sorl.thumbnail import ImageField
+from sorl.thumbnail import ImageField, get_thumbnail
 
 from apod import apodapi
 
@@ -46,6 +46,7 @@ class Photo(models.Model):
 	explanation = models.TextField(max_length=4000, blank=True)
 	credits = models.TextField(max_length=4000, blank=True)
 	original_image_url = models.URLField(blank=True)
+	original_image = ImageField(upload_to=get_image_path, blank=True, null=True)
 	image = ImageField(upload_to=get_image_path, blank=True, null=True)
 	loaded = models.BooleanField(default=False, verbose_name='Loaded from APOD')
 
@@ -63,7 +64,7 @@ class Photo(models.Model):
 	def get_apod_url(self):
 		return apodapi.get_apod_url(self.publish_date)
 
-	def load_from_apod(self, download_image=False):
+	def load_from_apod(self):
 		details = apodapi.get_apod_details(self.publish_date)
 		
 		if details['title']:
@@ -82,12 +83,18 @@ class Photo(models.Model):
 				keyword = Keyword.objects.create(label=word.strip())
 			self.keywords.add(keyword)
 
-		if download_image and not self.image and self.original_image_url:
+		self.save()
+	
+	def get_image(self, force=False):
+		if force or (not self.original_image and self.original_image_url):
 			# Download the image
 			f = urllib2.urlopen(self.original_image_url)
-			self.image.save(os.path.basename(self.original_image_url), ContentFile(f.read()))
-		
-		self.save()
+			img_file = f.read()
+			ts = self.publish_date.strftime('%y%m%d')
+			self.original_image.save('%s_original.jpg' % ts, ContentFile(img_file))
+			resized_im = get_thumbnail(self.original_image, '2000')
+			self.image.save('%s.jpg' % ts, ContentFile(resized_im.read()))
+			self.save()
 
 	@property
 	def next(self):
