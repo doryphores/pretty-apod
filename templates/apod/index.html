@@ -19,14 +19,14 @@
 	<td>
 		{% if photo.image %}
 		{% thumbnail photo.image "200x100" crop="center" as im %}
-		<img src="{{ im.url }}">
+		<a href="{{ photo.get_absolute_url }}"><img src="{{ im.url }}"></a>
 		{% endthumbnail %}
 		{% else %}
 		No image
 		{% endif %}
 	</td>
 	<td>
-		<h3><a href="{{ photo.get_absolute_url }}">{{ photo.title }}</a><br /></h3>
+		<h3><a href="{{ photo.get_absolute_url }}">{{ photo.title }}</a></h3>
 		Published on: {{ photo.publish_date }}<br />
 		<a href="{{ photo.get_apod_url }}" target="_blank">View on APOD</a>
 	</td>

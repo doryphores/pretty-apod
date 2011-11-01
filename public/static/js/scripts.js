@@ -10,29 +10,31 @@
 		var positionImage = function () {
 			var win_w = $win.width();
 			var win_h = $win.height();
-			var new_w, new_h, anim;
+			var new_w, new_h, left, top, anim;
 			
-			if (!is_portrait) {
+			if (is_portrait) {
 				new_w = win_w;
 				new_h = Math.round(win_w / img_w * img_h);
-				anim = { top: win_h - new_h  };
+				left = 0;
+				top = Math.round((win_h - new_h) / 2);
 			} else {
 				new_w = Math.round(win_h / img_h * img_w);
 				new_h = win_h;
-				anim = { left: win_w - new_w };
+				left = Math.round((win_w - new_w) / 2);
+				top = 0;
 			}
 
 			$img.css({
 				width: new_w,
-				height: new_h
+				height: new_h,
+				top: top,
+				left: left
 			});
-
-			$img.fadeIn().animate(anim, 20000, "linear");
 		};
 
 		$win.load(function () {
 			positionImage();
-			$img.fadeIn("slow");
+			$img.fadeIn(1000);
 		});
 
 		$win.resize(function () {

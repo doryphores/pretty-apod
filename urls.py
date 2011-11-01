@@ -4,7 +4,7 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-	url(r'^api/', include('apod.urls')),
+	url(r'^', include('apod.urls')),
 	
 	url(r'^admin/', include(admin.site.urls)),
 )

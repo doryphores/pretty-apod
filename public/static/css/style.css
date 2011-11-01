@@ -26,12 +26,14 @@ h1 {
 	font-size: 4em;
 	line-height: 1;
 	font-weight: normal;
+	text-shadow: 0 1px 2px #000;
 }
 
 h2 {
 	font-size: 2.4em;
 	line-height: 1;
 	font-weight: normal;
+	text-shadow: 0 1px 2px #000;
 }
 
 
@@ -40,6 +42,7 @@ h2 {
 p {
 	font-size: 1.4em;
 	line-height: 1.5;
+	text-shadow: 0 1px 1px #000;
 }
 
 
@@ -97,4 +100,5 @@ td img {
 	z-index: 1;
 	top: 0;
 	left: 0;
+	box-shadow: 0 0 20px rgba(0,0,0,0.8);
 }
