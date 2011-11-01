@@ -1,5 +1,8 @@
-<h1>{{ photo.title }}</h1>
+{% extends "base.html" %}
 
+{% block page_title %}{{ photo.title }}{% endblock %}
+
+{% block main %}
 <p>
 <a href="{% url first_page %}">Back to list</a>
 {% with photo.previous as previous %}
@@ -15,20 +18,23 @@
 <p>Published: <strong>{{ photo.publish_date }}</strong></p>
 
 <h2>Explanation</h2>
-<div>{{ photo.explanation|safe }}</div>
+<p>{{ photo.explanation|safe }}</p>
 
 <h2>Credits</h2>
 <p>{{ photo.credits|safe }}</p>
 
 <h2>Keywords</h2>
-<p>
+<p class="tags">
 	{% for keyword in  photo.keywords.all %}
 	<a href="#">{{ keyword }}</a>
 	{% empty %}
 	<p>None set</p>
 	{% endfor %}
 </p>
+{% endblock %}
 
 {% if photo.image %}
-<img src="{{ photo.image.url }}" width="600">
+{% block image %}
+<img src="{{ photo.image.url }}" id="large-image" width="{{ photo.image.width }}" height="{{ photo.image_height }}">
+{% endblock %}
 {% endif %}

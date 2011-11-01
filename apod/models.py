@@ -47,7 +47,9 @@ class Photo(models.Model):
 	credits = models.TextField(max_length=4000, blank=True)
 	original_image_url = models.URLField(blank=True)
 	original_image = ImageField(upload_to=get_image_path, blank=True, null=True)
-	image = ImageField(upload_to=get_image_path, blank=True, null=True)
+	image = models.ImageField(upload_to=get_image_path, width_field="image_width", height_field="image_height", blank=True, null=True)
+	image_width = models.PositiveSmallIntegerField(editable=False, null=True)
+	image_height = models.PositiveSmallIntegerField(editable=False, null=True)
 	loaded = models.BooleanField(default=False, verbose_name='Loaded from APOD')
 
 	keywords = models.ManyToManyField(Keyword, related_name='photos')
@@ -86,7 +88,7 @@ class Photo(models.Model):
 		self.save()
 	
 	def get_image(self, force=False):
-		if force or (not self.original_image and self.original_image_url):
+		if self.original_image_url and (force or not self.original_image):
 			# Download the image
 			f = urllib2.urlopen(self.original_image_url)
 			img_file = f.read()

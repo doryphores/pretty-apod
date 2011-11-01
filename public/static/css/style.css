@@ -1,0 +1,100 @@
+/*@import url(http://fonts.googleapis.com/css?family=Ubuntu:400,500,400italic,500italic);*/
+
+body {
+	font-family: sans-serif;
+	font-size: 62.5%;
+	background: #171717;
+	color: #ffffff;
+}
+
+/* Links */
+
+a {
+	color: #6699FF;
+	text-decoration: none;
+}
+
+a:hover,
+a:active {
+	text-decoration: underline;
+}
+
+
+/* Headings */
+
+h1 {
+	font-size: 4em;
+	line-height: 1;
+	font-weight: normal;
+}
+
+h2 {
+	font-size: 2.4em;
+	line-height: 1;
+	font-weight: normal;
+}
+
+
+/* Copy */
+
+p {
+	font-size: 1.4em;
+	line-height: 1.5;
+}
+
+
+/* Tables */
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+tr:nth-child(even) td {
+	background: #333333;
+}
+
+td {
+	vertical-align: top;
+	font-size: 1.4em;
+	border: 1px solid #dddddd;
+	padding: 10px;
+}
+
+td h3 {
+	font-size: 1.429em;
+	margin: 0;
+}
+
+td img {
+	margin: -10px;
+	display: block;
+}
+
+
+/* Tags */
+
+.tags a {
+	border-radius: 4px;
+	background: #333;
+	padding: 2px 5px;
+}
+
+
+/* Layout */
+
+.wrapper {
+	position: relative;
+	z-index: 2;
+}
+
+
+/* Images */
+
+#large-image {
+	display: none;
+	position: fixed;
+	z-index: 1;
+	top: 0;
+	left: 0;
+}
