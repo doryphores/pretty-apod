@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load thumbnail %}
+
 {% block page_title %}{{ photo.title }}{% endblock %}
 
 {% block main %}
@@ -35,6 +37,8 @@
 
 {% if photo.image %}
 {% block image %}
-<img src="{{ photo.image.url }}" id="large-image" width="{{ photo.image.width }}" height="{{ photo.image_height }}">
+{% thumbnail photo.image "2000x2000" as img %}
+<img src="{{ img.url }}" id="large-image" width="{{ img.width }}" height="{{ img.height }}">
+{% endthumbnail %}
 {% endblock %}
 {% endif %}

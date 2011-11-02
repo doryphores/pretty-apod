@@ -66,8 +66,11 @@ def get_apod_details(apod_date, force=False):
 	apod_url = get_apod_url(apod_date)
 	cache_file = os.path.join(CACHE_FOLDER, os.path.basename(apod_url))
 
+	if force and storage.exists(cache_file):
+		storage.delete(cache_file)
+	
 	# Download archive HTML if needed
-	if force or not storage.exists(cache_file):
+	if not storage.exists(cache_file):
 		f = urllib2.urlopen(apod_url)
 		html = f.read()
 		
@@ -121,7 +124,10 @@ def get_apod_details(apod_date, force=False):
 
 	# Get the original hi-res image URL
 	if soup.img and soup.img.parent.name == 'a':
-		details['image_url'] = settings.APOD_URL + "/" + soup.img.parent['href'].strip()
+		href = soup.img.parent['href'].strip()
+		# Make sure URL is to a valid image type
+		if href and href.split('/')[-1].split('.')[-1].lower() in ['jpg', 'jpeg', 'gif', 'png']:
+			details['image_url'] = settings.APOD_URL + "/" + href
 	
 	# @TODO: look for videos or other media
 

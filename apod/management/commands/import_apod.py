@@ -27,11 +27,11 @@ class Command(BaseCommand):
 		elif len(args) == 2:
 			photos_to_load = Photo.objects.filter(publish_date__year=int(args[0]), publish_date__month=int(args[1]))
 		else:
-			photos_to_load = Photo.objects.all(loaded=False)
+			photos_to_load = Photo.objects.filter()
 			
-		transaction.commit_unless_managed()
-		transaction.enter_transaction_management()
-		transaction.managed(True)
+		#transaction.commit_unless_managed()
+		#transaction.enter_transaction_management()
+		#transaction.managed(True)
 
 		self.stdout.write('%s photos to load\n' % photos_to_load.count())
 
@@ -40,14 +40,14 @@ class Command(BaseCommand):
 
 		for photo in photos_to_load:
 			try:
-				photo.load_from_apod(False)
+				photo.load_from_apod()
 				success_count = success_count + 1
 				self.stdout.write('%s imported\n' % photo.publish_date)
 			except:
 				raise
 				error_count = error_count + 1
 		
-		transaction.commit()
-		transaction.leave_transaction_management()
+		#transaction.commit()
+		#transaction.leave_transaction_management()
 
 		self.stdout.write('Successfully imported %d (%d failures)\n' % (success_count, error_count))
