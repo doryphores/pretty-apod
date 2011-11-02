@@ -6,7 +6,7 @@
 
 {% block main %}
 <p>
-<a href="{% url first_page %}">Back to list</a>
+<a href="{% url archive %}">Back to list</a>
 {% with photo.previous as previous %}
 	{% if previous %}| <a href="{{ previous.get_absolute_url }}">&laquo; {{ previous.title }}</a>{% endif %}
 {% endwith %}

@@ -7,10 +7,10 @@
 {% block main %}
 <p>
 	{% if photos.has_previous %}
-	<a href="{% url page photos.previous_page_number %}">Previous</a>
+	<a href="{% url archive_page photos.previous_page_number %}">Previous</a>
 	{% endif %}
 	{% if photos.has_next %}
-	<a href="{% url page photos.next_page_number %}">Next</a>
+	<a href="{% url archive_page photos.next_page_number %}">Next</a>
 	{% endif %}
 </p>
 <table>
