@@ -19,18 +19,21 @@ def get_archive_list(force=False, from_date=None):
 
 	Returns a list of dicts with publish_date and title keys
 	"""
-	archive_file = '%s/archive.html' % CACHE_FOLDER
+	cache_file = '%s/archive.html' % CACHE_FOLDER
+	
+	if storage.exists(cache_file) and (force or storage.modified_time(cache_file).date() < datetime.date.today()):
+		storage.delete(cache_file)
 	
 	# Download archive HTML if needed
-	if force or not storage.exists(archive_file) or storage.modified_time(archive_file).date() < datetime.date.today():
+	if not storage.exists(cache_file):
 		f = urllib2.urlopen(settings.APOD_ARCHIVE_URL)
 		html = f.read()
 		
 		# Write it to disk
-		storage.save(archive_file, ContentFile(html))
+		storage.save(cache_file, ContentFile(html))
 	
 	# Read HTML
-	with storage.open(archive_file) as f:
+	with storage.open(cache_file) as f:
 		html = f.read()
 	
 	# Parse HTML
