@@ -4,41 +4,44 @@
 
 {% block page_title %}{{ photo.title }}{% endblock %}
 
-{% block main %}
-<p>
-<a href="{% url archive %}">Back to list</a>
-{% with photo.previous as previous %}
-	{% if previous %}| <a href="{{ previous.get_absolute_url }}">&laquo; {{ previous.title }}</a>{% endif %}
-{% endwith %}
-{% with photo.next as next %}
-	{% if next %}| <a href="{{ next.get_absolute_url }}">{{ next.title }} &raquo;</a>{% endif %}
-{% endwith %}
-</p>
-
-<p><a href="{{ photo.get_apod_url }}" target="_blank">View on APOD</a></p>
-
-<p>Published: <strong>{{ photo.publish_date }}</strong></p>
-
-<h2>Explanation</h2>
-<p>{{ photo.explanation|safe }}</p>
-
-<h2>Credits</h2>
-<p>{{ photo.credits|safe }}</p>
-
-<h2>Keywords</h2>
-<p class="tags">
-	{% for keyword in  photo.keywords.all %}
-	<a href="#">{{ keyword }}</a>
-	{% empty %}
-	<p>None set</p>
-	{% endfor %}
-</p>
+{% block extra_nav %}
+{% with photo.previous as previous %}{% if previous %}
+<li><a href="{{ previous.get_absolute_url }}" title="{{ previous.title }}">Previous</a></li>
+{% endif %}{% endwith %}
+{% with photo.next as next %}{% if next %}
+<li><a href="{{ next.get_absolute_url }}" title="{{ next.title }}">Next</a></li>
+{% endif %}{% endwith %}
+<li><a href="{{ photo.get_apod_url }}" target="_blank">View on APOD</a></li>
 {% endblock %}
 
+{% block main %}
 {% if photo.image %}
-{% block image %}
 {% thumbnail photo.image "2000x2000" as img %}
 <img src="{{ img.url }}" id="large-image" width="{{ img.width }}" height="{{ img.height }}">
 {% endthumbnail %}
-{% endblock %}
 {% endif %}
+
+<article class="info">
+	<section>
+		<h2>Explanation</h2>
+		<p>{{ photo.explanation|safe }}</p>
+	</section>
+
+	<footer>
+		<h2>Published</h2>
+		<p>{{ photo.publish_date }}</p>
+
+		<h2>Credits</h2>
+		<p>{{ photo.credits|safe }}</p>
+
+		<h2>Keywords</h2>
+		<p class="tags">
+			{% for keyword in  photo.keywords.all %}
+			<a href="#">{{ keyword }}</a>
+			{% empty %}
+			<p>None set</p>
+			{% endfor %}
+		</p>
+	</footer>
+</article>
+{% endblock %}

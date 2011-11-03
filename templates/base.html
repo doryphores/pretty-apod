@@ -6,13 +6,21 @@
 	<link href="{{ STATIC_URL }}/css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<div class="wrapper">
-	<h1>{% block page_title %}Pretty APOD{% endblock %}</h1>
+	<header role="banner" class="toolbar">
+		<h1>Pretty APOD &ndash; {% block page_title %}{% endblock %}</h1>
+		<nav>
+			<ul>
+				<li><a href="{% url archive %}">Archive</a></li>
+				<li><a href="#">About</a></li>
+				{% block extra_nav %}
+				{% endblock %}
+			</ul>
+		</nav>
+	</header>
 	{% block main %}
 	{% endblock %}
-</div>
-{% block image %}{% endblock %}
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
-<script src="{{ STATIC_URL }}/js/scripts.js"></script>
+	{% block image %}{% endblock %}
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+	<script src="{{ STATIC_URL }}/js/scripts.js"></script>
 </body>
 </html>
