@@ -15,11 +15,13 @@
 {% endblock %}
 
 {% block main %}
-{% if photo.image %}
-{% thumbnail photo.image "2000x2000" as img %}
-<img src="{{ img.url }}" id="large-image" width="{{ img.width }}" height="{{ img.height }}">
-{% endthumbnail %}
-{% endif %}
+{% with photo.get_image as image %}
+	{% if image %}
+		{% thumbnail image "2000x2000" as img %}
+		<img src="{{ img.url }}" id="large-image" width="{{ img.width }}" height="{{ img.height }}">
+		{% endthumbnail %}
+	{% endif %}
+{% endwith %}
 
 <article class="info">
 	<header>

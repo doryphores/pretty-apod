@@ -20,8 +20,6 @@ def image(request, year=None, month=None, day=None):
 	else:
 		photo = Photo.objects.latest()
 	
-	photo.get_image()
-	
 	return render(request, 'apod/image.html', { 'photo': photo })
 
 def archive(request, page=1):

@@ -7,8 +7,9 @@ import os
 import urllib2
 import re
 
-from apod import apodapi
+from celery.task import task
 
+from apod import apodapi
 
 # Models
 
@@ -73,8 +74,17 @@ class Photo(models.Model):
 
 		self.save()
 	
-	def get_image(self, force=False):
-		if self.original_image_url and (force or not self.image):
+	def get_image(self, background=True):
+		# Return image if already downloaded
+		if self.image:
+			return self.image
+		
+		if self.original_image_url:
+			# Download in the background if asked for
+			if background:
+				get_apod_photo.delay(self.pk)
+				return None
+			
 			# Download the image
 			# @TODO: handle errors
 			try:
@@ -85,6 +95,10 @@ class Photo(models.Model):
 					# Reset image URL if not found
 					self.original_image_url = ''
 			self.save()
+
+			return self.image
+
+		return None
 
 	@property
 	def next(self):
@@ -103,3 +117,14 @@ class Photo(models.Model):
 	class Meta:
 		ordering = ['-publish_date']
 		get_latest_by = 'publish_date'
+
+
+@task
+def get_apod_photo(image_id):
+	try:
+		photo = Photo.objects.get(pk=image_id)
+	except Photo.DoesNotExist:
+		# TODO: log error maybe
+		pass
+	
+	photo.get_image(background=False)
