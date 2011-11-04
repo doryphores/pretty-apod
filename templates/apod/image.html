@@ -6,10 +6,10 @@
 
 {% block extra_nav %}
 {% with photo.previous as previous %}{% if previous %}
-<li><a href="{{ previous.get_absolute_url }}" title="{{ previous.title }}">Previous</a></li>
+<li><a href="{{ previous.get_absolute_url }}" title="{{ previous.title }}">&laquo; Previous</a></li>
 {% endif %}{% endwith %}
 {% with photo.next as next %}{% if next %}
-<li><a href="{{ next.get_absolute_url }}" title="{{ next.title }}">Next</a></li>
+<li><a href="{{ next.get_absolute_url }}" title="{{ next.title }}">Next &raquo;</a></li>
 {% endif %}{% endwith %}
 <li><a href="{{ photo.get_apod_url }}" target="_blank">View on APOD</a></li>
 {% endblock %}
@@ -22,26 +22,32 @@
 {% endif %}
 
 <article class="info">
-	<section>
-		<h2>Explanation</h2>
-		<p>{{ photo.explanation|safe }}</p>
-	</section>
+	<header>
+		<h2>Details</h2>
+	</header>
 
-	<footer>
-		<h2>Published</h2>
-		<p>{{ photo.publish_date }}</p>
+	<div class="slider">
+		<section>
+			<h3>Explanation</h3>
+			<p>{{ photo.explanation|safe }}</p>
+		</section>
 
-		<h2>Credits</h2>
-		<p>{{ photo.credits|safe }}</p>
+		<footer>
+			<h3>Published</h3>
+			<p><a href="#">{{ photo.publish_date|date:'F' }}</a> {{ photo.publish_date.day }} <a href="#">{{ photo.publish_date.year }}</a></p>
 
-		<h2>Keywords</h2>
-		<p class="tags">
-			{% for keyword in  photo.keywords.all %}
-			<a href="#">{{ keyword }}</a>
-			{% empty %}
-			<p>None set</p>
-			{% endfor %}
-		</p>
-	</footer>
+			<h3>Credits</h3>
+			<p>{{ photo.credits|safe }}</p>
+
+			<h3>Keywords</h3>
+			<p class="tags">
+				{% for keyword in  photo.keywords.all %}
+				<a href="#">{{ keyword }}</a>
+				{% empty %}
+				<p>None set</p>
+				{% endfor %}
+			</p>
+		</footer>
+	</div>
 </article>
 {% endblock %}
