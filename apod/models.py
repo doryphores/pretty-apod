@@ -40,7 +40,11 @@ class Photo(models.Model):
 
 	@models.permalink
 	def get_absolute_url(self):
-		return ('image', (), { 'image_id': str(self.pk) })
+		return ('image', (), {
+			'year': str(self.publish_date.year),
+			'month': str(self.publish_date.month),
+			'day': str(self.publish_date.day),
+		})
 
 	def __unicode__(self):
 		return u'%s' % self.title

@@ -6,6 +6,7 @@ class PhotoAdmin(AdminImageMixin, admin.ModelAdmin):
 	list_display = ['publish_date', 'title']
 	date_hierarchy = 'publish_date'
 	list_filter = ['publish_date', 'loaded']
+	search_fields = ['title']
 
 	actions = ['reload_from_apod']
 

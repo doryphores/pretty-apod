@@ -1,18 +1,25 @@
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 from django.db.models import Count
+
+from django.http import Http404
 
 from apod.models import Photo, Keyword
 from apod import apodapi
 
+import datetime
 
-def image(request, image_id=None):
-	if image_id:
-		photo = Photo.objects.get(pk=image_id)
+def image(request, year=None, month=None, day=None):
+	if year and month and day:
+		try:
+			date = datetime.date(int(year), int(month), int(day))
+		except ValueError:
+			raise Http404
+		photo = get_object_or_404(Photo, publish_date=date)
 	else:
 		photo = Photo.objects.latest()
-
+	
 	photo.get_image()
 	
 	return render(request, 'apod/image.html', { 'photo': photo })
