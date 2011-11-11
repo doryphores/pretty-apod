@@ -1,7 +1,5 @@
 {% extends "base.html" %}
 
-{% load thumbnail %}
-
 {% block page_title %}{{ photo.title }}{% endblock %}
 
 {% block extra_nav %}
@@ -15,13 +13,9 @@
 {% endblock %}
 
 {% block main %}
-{% with photo.get_image as image %}
-	{% if image %}
-		{% thumbnail image "2000x2000" as img %}
-		<img src="{{ img.url }}" id="large-image" width="{{ img.width }}" height="{{ img.height }}">
-		{% endthumbnail %}
-	{% endif %}
-{% endwith %}
+{% if photo.type == "image" %}
+{% include "apod/image_only.html" %}
+{% endif %}
 
 <article class="info">
 	<header>

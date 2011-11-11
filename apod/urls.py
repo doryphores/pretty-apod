@@ -6,4 +6,6 @@ urlpatterns = patterns('apod.views',
 	url(r'^archive/$', 'archive', name="archive"),
 	url(r'^archive/(?P<page>\d+)/$', 'archive', name="archive_page"),
 	url(r'^tags/$', 'tags', name="tag_view"),
+
+	url(r'^ajax/photo/(?P<photo_id>\d+)/$', 'image_only', name='image_only'),
 )

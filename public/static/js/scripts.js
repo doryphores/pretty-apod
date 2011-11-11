@@ -1,16 +1,20 @@
 (function ($) {
-	var $img = $("#large-image");
-	var $win = $(window);
-	var $doc = $(document);
-	var topOffset = 31;
+	var win = $(window);
+	var doc = $(document);
 
-	if ($img) {
-		var img_w = $img.attr("width");
-		var img_h = $img.attr("height");
+	var setupImage = function () {
+		img = $("#large-image");
+		if (img.length == 0) return;
+
+		var topOffset = 31;
+
+		var img_w = img.attr("width");
+		var img_h = img.attr("height");
 		var is_portrait = img_w < img_h;
+
 		var positionImage = function () {
-			var win_w = $win.width();
-			var win_h = $win.height() - topOffset;
+			var win_w = win.width();
+			var win_h = win.height() - topOffset;
 			var new_w, new_h, left, top, anim;
 			
 			if (is_portrait) {
@@ -25,7 +29,7 @@
 				top = topOffset;
 			}
 
-			$img.css({
+			img.css({
 				width: new_w,
 				height: new_h,
 				top: top,
@@ -33,18 +37,38 @@
 			});
 		};
 
-		$win.load(function () {
-			positionImage();
-			$img.fadeIn(1000);
-		});
+		positionImage();
 
-		$win.resize(function () {
+		if (img.loaded) {
+			img.fadeIn(1000);
+		} else  {
+			img.load(function () {
+				img.fadeIn(1000);
+			});
+		}
+
+		win.resize(function () {
 			positionImage();
 		});
-	}
+	};
+
+	setupImage();
 
 	$("article.info header").click(function () {
 		$(this).toggleClass("open");
 		$(".info .slider").slideToggle("fast");
+	});
+
+	$("[data-replace]").each(function () {
+		var el = $(this);
+		var url = el.attr("data-replace");
+		$.get(url, function(r) {
+			el.replaceWith(r.trim());
+			setupImage();
+		});
+	});
+
+	win.load(function () {
+		$("html").addClass("loaded");
 	});
 })(jQuery);

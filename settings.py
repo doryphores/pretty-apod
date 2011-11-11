@@ -129,7 +129,7 @@ INSTALLED_APPS = (
 	'south',
 	'apod',
 	'sorl.thumbnail',
-	'djcelery',
+	#'djcelery',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -155,17 +155,18 @@ LOGGING = {
 	}
 }
 
-import djcelery
-djcelery.setup_loader()
+# import djcelery
+# djcelery.setup_loader()
 
-BROKER_HOST = "127.0.0.1"
-BROKER_PORT = 5672
-BROKER_VHOST = "/"
-BROKER_USER = "guest"
-BROKER_PASSWORD = "guest"
+# BROKER_HOST = "127.0.0.1"
+# BROKER_PORT = 5672
+# BROKER_VHOST = "/"
+# BROKER_USER = "guest"
+# BROKER_PASSWORD = "guest"
 
 THUMBNAIL_UPSCALE = False
 THUMBNAIL_PROGRESSIVE = False
+THUMBNAIL_QUALITY = 80
 
 APOD_URL = "http://apod.nasa.gov/apod"
 

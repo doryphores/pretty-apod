@@ -243,3 +243,29 @@ article p:last-child {
 	left: 0;
 	box-shadow: 0 0 20px rgba(0,0,0,0.8);
 }
+
+
+/* Messages */
+
+div.message {
+	opacity: 0;
+	width: 220px;
+	margin: 150px auto 0 auto;
+	padding: 15px 0 15px 60px;
+	box-shadow: 0 0 10px rgba(0,0,0,0.8);
+	border-radius: 4px;
+	background: #333 url(../images/loading.gif) no-repeat 15px center;
+	-webkit-transition: all 0.5s ease-in;
+	transition: all 0.5s ease-in;
+}
+
+.loaded div.message {
+	opacity: 1;
+	margin-top: 200px;
+}
+
+div.message p {
+	font-weight: bold;
+	margin: 0;
+	line-height: 31px;
+}

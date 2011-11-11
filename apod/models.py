@@ -7,8 +7,6 @@ import os
 import urllib2
 import re
 
-from celery.task import task
-
 from apod import apodapi
 
 # Models
@@ -31,10 +29,15 @@ class Photo(models.Model):
 	title = models.CharField(max_length=255)
 	explanation = models.TextField(max_length=4000, blank=True)
 	credits = models.TextField(max_length=4000, blank=True)
+	
 	original_image_url = models.URLField(blank=True)
-	image = models.ImageField(upload_to=get_image_path, width_field="image_width", height_field="image_height", blank=True, null=True)
+	original_file_size = models.PositiveIntegerField(default=0)
+	image = models.ImageField(upload_to=get_image_path, width_field='image_width', height_field='image_height', blank=True, null=True)
 	image_width = models.PositiveSmallIntegerField(editable=False, null=True)
 	image_height = models.PositiveSmallIntegerField(editable=False, null=True)
+
+	youtube_url = models.URLField(blank=True)
+
 	loaded = models.BooleanField(default=False, verbose_name='Loaded from APOD')
 
 	keywords = models.ManyToManyField(Keyword, related_name='photos')
@@ -61,6 +64,7 @@ class Photo(models.Model):
 		self.explanation = details['explanation']
 		self.credits = details['credits']
 		self.original_image_url = details['image_url']
+		self.youtube_url = details['youtube_url']
 		self.loaded = True
 		
 		self.keywords.clear()
@@ -74,30 +78,50 @@ class Photo(models.Model):
 
 		self.save()
 	
-	def get_image(self, background=True):
-		# Return image if already downloaded
-		if self.image:
-			return self.image
-		
-		if self.original_image_url:
-			# Download in the background if asked for
-			if background:
-				get_apod_photo.delay(self.pk)
-				return None
-			
+	def get_image(self):
+		if self.original_image_url and not self.image:
 			# Download the image
 			# @TODO: handle errors
 			try:
 				f = urllib2.urlopen(self.original_image_url)
-				self.image.save(self.original_image_url.split('/')[-1], ContentFile(f.read()))
+
+				# Save original file size for stats
+				self.original_file_size = int(f.headers['Content-Length'])
+
+				# Get filename from URL
+				filename = self.original_image_url.split('/')[-1]
+				
+				# Download original image
+				self.image.save(filename, ContentFile(f.read()))
+
+				# Check size and resize if bigger than 1Mb
+				if self.original_file_size > 1024 * 1024:
+					# Create a resized version
+					resized = get_thumbnail(self.image, '2000x2000')
+					# Delete the original
+					self.image.delete()
+					# Make jpg filename if needed
+					if filename.split('.')[-1].lower() is not 'jpg':
+						filename = re.sub('\.[^\.]+$', '.jpg', filename)
+					# Save the resized version
+					self.image.save(filename, ContentFile(resized.read()))
+				
 			except urllib2.HTTPError as error:
 				if error.code == 404:
 					# Reset image URL if not found
 					self.original_image_url = ''
+			
 			self.save()
 
-			return self.image
+	def has_image(self):
+		return len(self.original_image_url) > 0
 
+	@property
+	def type(self):
+		if self.original_image_url:
+			return 'image'
+		if self.youtube_url:
+			return 'youtube'
 		return None
 
 	@property
@@ -117,14 +141,3 @@ class Photo(models.Model):
 	class Meta:
 		ordering = ['-publish_date']
 		get_latest_by = 'publish_date'
-
-
-@task
-def get_apod_photo(image_id):
-	try:
-		photo = Photo.objects.get(pk=image_id)
-	except Photo.DoesNotExist:
-		# TODO: log error maybe
-		pass
-	
-	photo.get_image(background=False)
