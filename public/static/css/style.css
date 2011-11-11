@@ -245,6 +245,13 @@ article p:last-child {
 }
 
 
+/* Youtube */
+
+iframe.youtube {
+	display: block;
+	margin: 80px auto 0 auto;
+}
+
 /* Messages */
 
 div.message {

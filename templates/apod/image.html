@@ -17,6 +17,10 @@
 {% include "apod/image_only.html" %}
 {% endif %}
 
+{% if photo.type == "youtube" %}
+<iframe class="youtube" width="560" height="315" src="{{ photo.youtube_url }}" frameborder="0" allowfullscreen></iframe>
+{% endif %}
+
 <article class="info">
 	<header>
 		<h2>Details</h2>
