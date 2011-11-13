@@ -1,8 +1,8 @@
 from django.contrib import admin
-from apod.models import Photo, Keyword
+from apod.models import Picture, Keyword
 from sorl.thumbnail.admin import AdminImageMixin
 
-class PhotoAdmin(AdminImageMixin, admin.ModelAdmin):
+class PictureAdmin(AdminImageMixin, admin.ModelAdmin):
 	list_display = ['publish_date', 'title']
 	date_hierarchy = 'publish_date'
 	list_filter = ['publish_date', 'loaded']
@@ -12,16 +12,16 @@ class PhotoAdmin(AdminImageMixin, admin.ModelAdmin):
 
 	def reload_from_apod(self, request, queryset):
 		rows_updated = queryset.count()
-		for photo in queryset.all():
-			photo.load_from_apod(True)
+		for picture in queryset.all():
+			picture.load_from_apod(True)
 		if rows_updated == 1:
-			message = '1 photo was'
+			message = '1 picture was'
 		else:
-			message = '%s photos were' % rows_updated
+			message = '%s pictures were' % rows_updated
 		self.message_user(request, '%s successfully reloaded from APOD' % message)
-	reload_from_apod.short_description = 'Reload selected photos from APOD'
+	reload_from_apod.short_description = 'Reload selected pictures from APOD'
 
-admin.site.register(Photo, PhotoAdmin)
+admin.site.register(Picture, PictureAdmin)
 
 class KeywordAdmin(admin.ModelAdmin):
 	search_fields = ['label']

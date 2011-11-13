@@ -6,29 +6,29 @@
 
 {% block main %}
 <p>
-	{% if photos.has_previous %}
-	<a href="{% url archive_page photos.previous_page_number %}">Previous</a>
+	{% if pictures.has_previous %}
+	<a href="{% url archive_page pictures.previous_page_number %}">Previous</a>
 	{% endif %}
-	{% if photos.has_next %}
-	<a href="{% url archive_page photos.next_page_number %}">Next</a>
+	{% if pictures.has_next %}
+	<a href="{% url archive_page pictures.next_page_number %}">Next</a>
 	{% endif %}
 </p>
 <table>
-{% for photo in photos.object_list %}
+{% for picture in pictures.object_list %}
 <tr>
 	<td>
-		{% if photo.image %}
-		{% thumbnail photo.image "200x100" crop="center" as im %}
-		<a href="{{ photo.get_absolute_url }}"><img src="{{ im.url }}"></a>
+		{% if picture.image %}
+		{% thumbnail picture.image "200x100" crop="center" as im %}
+		<a href="{{ picture.get_absolute_url }}"><img src="{{ im.url }}"></a>
 		{% endthumbnail %}
 		{% else %}
 		No image
 		{% endif %}
 	</td>
 	<td>
-		<h3><a href="{{ photo.get_absolute_url }}">{{ photo.title }}</a></h3>
-		Published on: {{ photo.publish_date }}<br />
-		<a href="{{ photo.get_apod_url }}" target="_blank">View on APOD</a>
+		<h3><a href="{{ picture.get_absolute_url }}">{{ picture.title }}</a></h3>
+		Published on: {{ picture.publish_date }}<br />
+		<a href="{{ picture.get_apod_url }}" target="_blank">View on APOD</a>
 	</td>
 </tr>
 {% endfor %}

@@ -22,9 +22,9 @@ class Keyword(models.Model):
 
 
 def get_image_path(instance, filename):
-	return os.path.join('images', str(instance.publish_date.year), str(instance.publish_date.month), filename)
+	return os.path.join('pictures', str(instance.publish_date.year), str(instance.publish_date.month), filename)
 
-class Photo(models.Model):
+class Picture(models.Model):
 	publish_date = models.DateField(unique=True)
 	title = models.CharField(max_length=255)
 	explanation = models.TextField(max_length=4000, blank=True)
@@ -40,7 +40,7 @@ class Photo(models.Model):
 
 	loaded = models.BooleanField(default=False, verbose_name='Loaded from APOD')
 
-	keywords = models.ManyToManyField(Keyword, related_name='photos')
+	keywords = models.ManyToManyField(Keyword, related_name='pictures')
 
 	@models.permalink
 	def get_absolute_url(self):
@@ -128,14 +128,14 @@ class Photo(models.Model):
 	def next(self):
 		try:
 			return self.get_next_by_publish_date()
-		except Photo.DoesNotExist:
+		except Picture.DoesNotExist:
 			return None
 	
 	@property
 	def previous(self):
 		try:
 			return self.get_previous_by_publish_date()
-		except Photo.DoesNotExist:
+		except Picture.DoesNotExist:
 			return None
 	
 	class Meta:

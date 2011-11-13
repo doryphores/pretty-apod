@@ -263,6 +263,7 @@ div.message {
 	border-radius: 4px;
 	background: #333 url(../images/loading.gif) no-repeat 15px center;
 	-webkit-transition: all 0.5s ease-in;
+	-moz-transition: all 0.5s ease-in;
 	transition: all 0.5s ease-in;
 }
 

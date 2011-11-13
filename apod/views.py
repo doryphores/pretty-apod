@@ -1,13 +1,13 @@
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.shortcuts import render, redirect, get_object_or_404
-
 from django.db.models import Count
 
 from django.http import Http404, HttpResponse
 
-from apod.models import Photo, Keyword
+from apod.models import Picture, Keyword
 from apod import apodapi
 
+import json
 import datetime
 
 def image(request, year=None, month=None, day=None):
@@ -16,36 +16,43 @@ def image(request, year=None, month=None, day=None):
 			date = datetime.date(int(year), int(month), int(day))
 		except ValueError:
 			raise Http404
-		photo = get_object_or_404(Photo, publish_date=date)
+		picture = get_object_or_404(Picture, publish_date=date)
 	else:
 		# Home page, so get the latest
-		photo = Photo.objects.latest()
+		picture = Picture.objects.latest()
 	
-	return render(request, 'apod/image.html', { 'photo': photo })
+	return render(request, 'apod/image.html', { 'picture': picture })
 
 
-def image_only(request, photo_id):
-	photo = get_object_or_404(Photo, pk=photo_id)
+def image_only(request, picture_id):
+	picture = get_object_or_404(Picture, pk=picture_id)
 
-	photo.get_image()
-	
-	return render(request, 'apod/image_only.html', { 'photo': photo})
+	picture.get_image()
+
+	data = {
+		'url': picture.image.url,
+		'width': picture.image.width,
+		'height': picture.image.height,
+		'title': picture.title
+	}
+
+	return HttpResponse(json.dumps(data), mimetype='application/json')
 
 
 def archive(request, page=1):
-	all_photos  = Photo.objects.all()
+	all_pictures  = Picture.objects.all()
 
-	paginator = Paginator(all_photos, 25)
+	paginator = Paginator(all_pictures, 25)
 
 	try:
-		photos = paginator.page(page)
+		pictures = paginator.page(page)
 	except (EmptyPage, InvalidPage):
-		photos = paginator.page(1)
+		pictures = paginator.page(1)
 
-	return render(request, 'apod/index.html', { 'photos': photos })
+	return render(request, 'apod/index.html', { 'pictures': pictures })
 
 
 def tags(request):
-	tags = Keyword.objects.annotate(num_photos=Count('photos')).order_by('-num_photos')[:20]
+	tags = Keyword.objects.annotate(num_pictures=Count('pictures')).order_by('-num_pictures')[:20]
 
 	return render(request, 'apod/tags.html', { 'tags': tags })

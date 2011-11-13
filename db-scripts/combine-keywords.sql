@@ -1,4 +1,4 @@
-﻿UPDATE	apod_photo_keywords pk
+﻿UPDATE	apod_picture_keywords pk
 SET	keyword_id = dupes.id
 FROM	(
 SELECT id, label FROM apod_keyword WHERE label IN (
@@ -11,4 +11,4 @@ WHERE	keyword_id = k.id AND keyword_id != dupes.id AND lower(k.label) = lower(du
 
 DELETE
 FROM	apod_keyword
-WHERE	id NOT IN (SELECT keyword_id FROM apod_photo_keywords);
+WHERE	id NOT IN (SELECT keyword_id FROM apod_picture_keywords);

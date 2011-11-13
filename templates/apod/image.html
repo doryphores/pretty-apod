@@ -1,24 +1,30 @@
 {% extends "base.html" %}
 
-{% block page_title %}{{ photo.title }}{% endblock %}
+{% block page_title %}{{ picture.title }}{% endblock %}
 
 {% block extra_nav %}
-{% with photo.previous as previous %}{% if previous %}
+{% with picture.previous as previous %}{% if previous %}
 <li><a href="{{ previous.get_absolute_url }}" title="{{ previous.title }}">&laquo; Previous</a></li>
 {% endif %}{% endwith %}
-{% with photo.next as next %}{% if next %}
+{% with picture.next as next %}{% if next %}
 <li><a href="{{ next.get_absolute_url }}" title="{{ next.title }}">Next &raquo;</a></li>
 {% endif %}{% endwith %}
-<li><a href="{{ photo.get_apod_url }}" target="_blank">View on APOD</a></li>
+<li><a href="{{ picture.get_apod_url }}" target="_blank">View on APOD</a></li>
 {% endblock %}
 
 {% block main %}
-{% if photo.type == "image" %}
-{% include "apod/image_only.html" %}
+{% if picture.type == "image" %}
+{% if picture.image %}
+	<img src="{{ picture.image.url }}" id="large-image" width="{{ picture.image.width }}" height="{{ picture.image.height }}">
+{% else %}
+	<div class="message loading" data-replace="{% url image_only picture.pk %}">
+		<p>Downloading and processing picture...</p>
+	</div>
+{% endif %}
 {% endif %}
 
-{% if photo.type == "youtube" %}
-<iframe class="youtube" width="560" height="315" src="{{ photo.youtube_url }}" frameborder="0" allowfullscreen></iframe>
+{% if picture.type == "youtube" %}
+<iframe class="youtube" width="560" height="315" src="{{ picture.youtube_url }}" frameborder="0" allowfullscreen></iframe>
 {% endif %}
 
 <article class="info">
@@ -29,19 +35,19 @@
 	<div class="slider">
 		<section>
 			<h3>Explanation</h3>
-			<p>{{ photo.explanation|safe }}</p>
+			<p>{{ picture.explanation|safe }}</p>
 		</section>
 
 		<footer>
 			<h3>Published</h3>
-			<p><a href="#">{{ photo.publish_date|date:'F' }}</a> {{ photo.publish_date.day }} <a href="#">{{ photo.publish_date.year }}</a></p>
+			<p><a href="#">{{ picture.publish_date|date:'F' }}</a> {{ picture.publish_date.day }} <a href="#">{{ picture.publish_date.year }}</a></p>
 
 			<h3>Credits</h3>
-			<p>{{ photo.credits|safe }}</p>
+			<p>{{ picture.credits|safe }}</p>
 
 			<h3>Keywords</h3>
 			<p class="tags">
-				{% for keyword in  photo.keywords.all %}
+				{% for keyword in  picture.keywords.all %}
 				<a href="#">{{ keyword }}</a>
 				{% empty %}
 				<p>None set</p>

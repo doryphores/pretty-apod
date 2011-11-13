@@ -39,20 +39,14 @@
 
 		positionImage();
 
-		if (img.loaded) {
-			img.fadeIn(1000);
-		} else  {
-			img.load(function () {
-				img.fadeIn(1000);
-			});
-		}
+		img.fadeIn(1000);
 
 		win.resize(function () {
 			positionImage();
 		});
 	};
 
-	setupImage();
+	win.load(setupImage);
 
 	$("article.info header").click(function () {
 		$(this).toggleClass("open");
@@ -62,9 +56,18 @@
 	$("[data-replace]").each(function () {
 		var el = $(this);
 		var url = el.attr("data-replace");
-		$.get(url, function(r) {
-			el.replaceWith(r.trim());
-			setupImage();
+		$.getJSON(url, function(d) {
+			var image = new Image();
+			image.onload = setupImage;
+			image.src = d.url;
+
+			var img = $('<img />');
+			img.attr("width", d.width);
+			img.attr("height", d.height);
+			img.attr("id", "large-image");
+			img.attr("src", d.url);
+
+			el.replaceWith(img);
 		});
 	});
 
