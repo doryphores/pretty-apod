@@ -24,19 +24,30 @@ class Keyword(models.Model):
 def get_image_path(instance, filename):
 	return os.path.join('pictures', str(instance.publish_date.year), str(instance.publish_date.month), filename)
 
+TYPES = (
+	('IM', 'Image'),
+	('YT', 'YouTube'),
+	('VI', 'Vimeo'),
+	('UN', 'Unknown'),
+)
+
 class Picture(models.Model):
 	publish_date = models.DateField(unique=True)
 	title = models.CharField(max_length=255)
 	explanation = models.TextField(max_length=4000, blank=True)
 	credits = models.TextField(max_length=4000, blank=True)
+
+	media_type = models.CharField(max_length=2, choices=TYPES, default='UN')
 	
+	# Image data
 	original_image_url = models.URLField(blank=True)
 	original_file_size = models.PositiveIntegerField(default=0)
 	image = models.ImageField(upload_to=get_image_path, width_field='image_width', height_field='image_height', blank=True, null=True)
 	image_width = models.PositiveSmallIntegerField(editable=False, null=True)
 	image_height = models.PositiveSmallIntegerField(editable=False, null=True)
 
-	youtube_url = models.URLField(blank=True)
+	# Video data
+	video_id = models.URLField(blank=True, null=True)
 
 	loaded = models.BooleanField(default=False, verbose_name='Loaded from APOD')
 
@@ -63,8 +74,17 @@ class Picture(models.Model):
 			self.title = details['title']
 		self.explanation = details['explanation']
 		self.credits = details['credits']
-		self.original_image_url = details['image_url']
-		self.youtube_url = details['youtube_url']
+
+		if details['image_url']:
+			self.original_image_url = details['image_url']
+			self.media_type = 'IM'
+		if details['youtube_id']:
+			self.video_id = details['youtube_id']
+			self.media_type = 'YT'
+		if details['vimeo_id']:
+			self.video_id = details['vimeo_id']
+			self.media_type = 'VI'
+		
 		self.loaded = True
 		
 		self.keywords.clear()
@@ -115,14 +135,6 @@ class Picture(models.Model):
 
 	def has_image(self):
 		return len(self.original_image_url) > 0
-
-	@property
-	def type(self):
-		if self.original_image_url:
-			return 'image'
-		if self.youtube_url:
-			return 'youtube'
-		return None
 
 	@property
 	def next(self):

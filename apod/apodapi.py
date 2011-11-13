@@ -107,7 +107,8 @@ def get_apod_details(apod_date, force=False):
 		'explanation': '',
 		'credits': '',
 		'image_url': '',
-		'youtube_url': '',
+		'youtube_id': '',
+		'vimeo_id': '',
 		'keywords': [],
 	}
 
@@ -133,11 +134,17 @@ def get_apod_details(apod_date, force=False):
 		if href and href.split('/')[-1].split('.')[-1].lower() in ['jpg', 'jpeg', 'gif', 'png']:
 			details['image_url'] = settings.APOD_URL + "/" + href
 	
-	# Get YouTube URL if present
-	if soup.iframe and 'youtube' in soup.iframe['src']:
-		details['youtube_url'] = soup.iframe['src'].strip()
-
-	# @TODO: look for videos or other media
+	# Get video ID if present
+	if soup.iframe:
+		src = soup.iframe['src'].strip()
+		if 'youtube' in src:
+			s = re.search('embed/([0-9a-zA-Z]+?)(\?|$)', src)
+			if s:
+				details['youtube_id'] = s.groups()[0]
+		if 'vimeo' in src:
+			s = re.search('video/([0-9]+?)(\?|$)', src)
+			if s:
+				details['vimeo_id'] = s.groups()[0]
 
 	return details
 

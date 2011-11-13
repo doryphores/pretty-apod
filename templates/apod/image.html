@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block main %}
-{% if picture.type == "image" %}
+{% if picture.media_type == "IM" %}
 {% if picture.image %}
 	<img src="{{ picture.image.url }}" id="large-image" width="{{ picture.image.width }}" height="{{ picture.image.height }}">
 {% else %}
@@ -23,8 +23,12 @@
 {% endif %}
 {% endif %}
 
-{% if picture.type == "youtube" %}
-<iframe class="youtube" width="560" height="315" src="{{ picture.youtube_url }}" frameborder="0" allowfullscreen></iframe>
+{% if picture.media_type == "YT" %}
+<iframe class="youtube" type="text/html" width="640" height="385" src="http://www.youtube.com/embed/{{ picture.video_id }}?rel=0" frameborder="0"></iframe>
+{% endif %}
+
+{% if picture.media_type == "VI" %}
+<iframe class="youtube" src="http://player.vimeo.com/video/{{ picture.video_id }}" width="640" height="385" frameborder="0"></iframe>
 {% endif %}
 
 <article class="info">
