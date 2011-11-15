@@ -63,14 +63,17 @@ def month(request, year, month):
 
 	picture_calendar = [[dict(day=d, picture=pics.get(d, None)) for d in w] for w in cal]
 
+	tags = Keyword.objects.filter(pictures__publish_date__month=month, pictures__publish_date__year=year).annotate(num_pictures=Count('pictures')).order_by('label')
+
 	view_data = {
 		'month': datetime.date(int(year), int(month), 1),
-		'picture_calendar': picture_calendar
+		'picture_calendar': picture_calendar,
+		'tags':tags,
 	}
 
 	return render(request, 'apod/month.html', view_data)
 
 def tags(request):
-	tags = Keyword.objects.annotate(num_pictures=Count('pictures')).order_by('-num_pictures')[:20]
+	tags = Keyword.objects.annotate(num_pictures=Count('pictures')).order_by('label')[:20]
 
 	return render(request, 'apod/tags.html', { 'tags': tags })
