@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% load thumbnail %}
+
+{% block page_title %}Archive: {{ month|date:'F Y' }}{% endblock page_title %}
+
+{% block main %}
+<table class="calendar">
+	<thead>
+		<tr>
+			<th>Monday</th>
+			<th>Tuesday</th>
+			<th>Wednesday</th>
+			<th>Thursday</th>
+			<th>Friday</th>
+			<th>Saturday</th>
+			<th>Sunday</th>
+		</tr>
+	</thead>
+	<tbody>
+	{% for week in picture_calendar %}
+		<tr>
+		{% for d in week %}
+			{% with d.picture as picture %}
+			{% if picture.image %}
+			{% thumbnail picture.image "120x100" crop="center" as im %}
+			<td style="background-image:url({{ im.url }})">
+			{% endthumbnail %}
+			{% else %}
+			<td>
+			{% endif %}
+				{% if d.day %}
+				<span class="day">{{ d.day }}</span>
+				{% if picture %}
+				<a href="{{ picture.get_absolute_url }}"><span>{{ picture.title }}</span></a>
+				{% endif %}
+				{% endif %}
+			</td>
+			{% endwith %}
+		{% endfor %}
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>	
+{% endblock main %}

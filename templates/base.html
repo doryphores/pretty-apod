@@ -10,7 +10,8 @@
 </head>
 <body>
 	<header role="banner" class="toolbar">
-		<h1>Pretty APOD &ndash; {% block page_title %}{% endblock %}</h1>
+		<span class="branding">PRETTY APOD</span>
+		<h1>{% block page_title %}{% endblock %}</h1>
 		<nav>
 			<ul>
 				{% block extra_nav %}
@@ -23,7 +24,6 @@
 	</header>
 	{% block main %}
 	{% endblock %}
-	{% block image %}{% endblock %}
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
 	<script src="{{ STATIC_URL }}/js/scripts.js"></script>
 </body>

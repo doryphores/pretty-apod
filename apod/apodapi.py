@@ -65,6 +65,9 @@ def get_apod_details(apod_date, force=False):
 		explanation		the APOD explanation in HTML
 		credits			the APOD credits in HTML
 		image_url		the URL of the original APOD image
+		youtube_id		the YouTube ID of the embedded video
+		vimeo_id		the Vimeo ID of the embedded video
+		keywords		a list of keywords
 	"""
 	apod_url = get_apod_url(apod_date)
 	cache_file = os.path.join(CACHE_FOLDER, os.path.basename(apod_url))
@@ -138,7 +141,7 @@ def get_apod_details(apod_date, force=False):
 	if soup.iframe:
 		src = soup.iframe['src'].strip()
 		if 'youtube' in src:
-			s = re.search('embed/([0-9a-zA-Z]+?)(\?|$)', src)
+			s = re.search('embed/(.+?)(\?|$)', src)
 			if s:
 				details['youtube_id'] = s.groups()[0]
 		if 'vimeo' in src:

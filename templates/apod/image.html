@@ -44,7 +44,7 @@
 
 		<footer>
 			<h3>Published</h3>
-			<p><a href="#">{{ picture.publish_date|date:'F' }}</a> {{ picture.publish_date.day }} <a href="#">{{ picture.publish_date.year }}</a></p>
+			<p><a href="{% url month picture.publish_date.year picture.publish_date.month %}">{{ picture.publish_date|date:'F' }}</a> {{ picture.publish_date.day }} <a href="#">{{ picture.publish_date.year }}</a></p>
 
 			<h3>Credits</h3>
 			<p>{{ picture.credits|safe }}</p>

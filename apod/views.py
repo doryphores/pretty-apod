@@ -9,6 +9,7 @@ from apod import apodapi
 
 import json
 import datetime
+import calendar
 
 def image(request, year=None, month=None, day=None):
 	if year and month and day:
@@ -49,8 +50,25 @@ def archive(request, page=1):
 	except (EmptyPage, InvalidPage):
 		pictures = paginator.page(1)
 
-	return render(request, 'apod/index.html', { 'pictures': pictures })
+	return render(request, 'apod/archive.html', { 'pictures': pictures })
 
+def month(request, year, month):
+	year = int(year)
+	month = int(month)
+	pictures = Picture.objects.filter(publish_date__month=month, publish_date__year=year)
+
+	pics = dict([(p.publish_date.day, p) for p in pictures])
+
+	cal = calendar.monthcalendar(year, month)
+
+	picture_calendar = [[dict(day=d, picture=pics.get(d, None)) for d in w] for w in cal]
+
+	view_data = {
+		'month': datetime.date(int(year), int(month), 1),
+		'picture_calendar': picture_calendar
+	}
+
+	return render(request, 'apod/month.html', view_data)
 
 def tags(request):
 	tags = Keyword.objects.annotate(num_pictures=Count('pictures')).order_by('-num_pictures')[:20]
