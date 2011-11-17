@@ -1,12 +1,12 @@
 /* Colors */
 
 $bg-color  : #171717;
-$text-color: #ffffff;
+$text-color: #efefef;
 
 /* Font sizes */
 
 $base-font-size: 12px;
-$base-line-height: 18px;
+$base-line-height: 20px;
 
 /* Font faces */
 
@@ -20,3 +20,4 @@ $base-line-height: 18px;
 @import "compass/typography/links/link-colors";
 @import "compass/css3";
 @import "compass/typography/lists/horizontal-list";
+@import "rgbapng";

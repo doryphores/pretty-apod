@@ -20,27 +20,31 @@
 
 {% block main %}
 
-{# Image #}
+{# APOD block #}
 
-{% if picture.media_type == "IM" %}
-	{% if picture.image %}
-		<img src="{{ picture.image.url }}" id="large-image" width="{{ picture.image.width }}" height="{{ picture.image.height }}">
-	{% else %}
-		<div class="message loading" data-replace="{% url image_only picture.pk %}">
-			<p>Downloading and processing picture...</p>
-		</div>
+<div id="apod">
+	{# Image #}
+
+	{% if picture.media_type == "IM" %}
+		{% if picture.image %}
+			<img src="{{ picture.image.url }}" width="{{ picture.image.width }}" height="{{ picture.image.height }}">
+		{% else %}
+			<div class="message loading" data-replace="{% url image_only picture.pk %}">
+				<p>Downloading and processing picture...</p>
+			</div>
+		{% endif %}
 	{% endif %}
-{% endif %}
 
-{# Videos #}
+	{# Videos #}
 
-{% if picture.media_type == "YT" %}
-	<iframe class="youtube" type="text/html" width="640" height="385" src="http://www.youtube.com/embed/{{ picture.video_id }}?rel=0" frameborder="0"></iframe>
-{% endif %}
+	{% if picture.media_type == "YT" %}
+		<iframe class="youtube" type="text/html" width="640" height="385" src="http://www.youtube.com/embed/{{ picture.video_id }}?rel=0&amp;showinfo=0&amp;modestbranding=1&amp;autohide=1&amp;wmode=opaque&amp;origin=apod.dev&amp;enablejsapi=1" frameborder="0"></iframe>
+	{% endif %}
 
-{% if picture.media_type == "VI" %}
-	<iframe class="youtube" src="http://player.vimeo.com/video/{{ picture.video_id }}" width="640" height="385" frameborder="0"></iframe>
-{% endif %}
+	{% if picture.media_type == "VI" %}
+		<iframe class="vimeo" src="http://player.vimeo.com/video/{{ picture.video_id }}" width="640" height="385" frameborder="0"></iframe>
+	{% endif %}
+</div>
 
 {# Details panel #}
 
@@ -57,7 +61,7 @@
 
 		<div class="extra">
 			<h3>Published</h3>
-			<p><a href="{% url month picture.publish_date.year picture.publish_date.month %}">{{ picture.publish_date|date:'F' }}</a> {{ picture.publish_date.day }} <a href="{% url year picture.publish_date.year %}">{{ picture.publish_date.year }}</a></p>
+			<p>{{ picture.publish_date.day }} <a href="{% url month picture.publish_date.year picture.publish_date.month %}">{{ picture.publish_date|date:'F' }}</a> <a href="{% url year picture.publish_date.year %}">{{ picture.publish_date.year }}</a></p>
 
 			<h3>Credits</h3>
 			<p>{{ picture.credits|safe }}</p>

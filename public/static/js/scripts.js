@@ -2,58 +2,78 @@
 	var win = $(window);
 	var doc = $(document);
 
-	var setupImage = function () {
-		img = $("#large-image");
-		if (img.length == 0) return;
+	$("#apod").each(function () {
+		var viewport = $(this);
+		var img = $("img", this);
+		var video = $("iframe", this);
 
-		var topOffset = 31;
+		// Deal with image if exists
+		if (img.length) {
+			var imgDims = {
+				width: parseInt(img.attr("width")),
+				height: parseInt(img.attr("height"))
+			};
+			var isPortrait = imgDims.width < imgDims.height;
+			console.log(imgDims);
+			var redraw = function () {
+				var viewportDims = {
+					width: viewport.width(),
+					height: viewport.height()
+				};
+				
+				var newProps = {
+					width	: viewportDims.width,
+					height	: viewportDims.height,
+					top		: 0,
+					left	: 0
+				};
+				
+				if (isPortrait) {
+					newProps.height = Math.round(viewportDims.width / imgDims.width * imgDims.height);
+				} else {
+					newProps.width = Math.round(viewportDims.height / imgDims.height * imgDims.width);
+				}
+				newProps.top = Math.round((viewportDims.height - newProps.height) / 2);
+				newProps.left = Math.round((viewportDims.width - newProps.width) / 2);
 
-		var img_w = img.attr("width");
-		var img_h = img.attr("height");
-		var is_portrait = img_w < img_h;
+				img.css(newProps);
+			};
 
-		var positionImage = function () {
-			var win_w = win.width();
-			var win_h = win.height() - topOffset;
-			var new_w, new_h, left, top, anim;
-			
-			if (is_portrait) {
-				new_w = win_w;
-				new_h = Math.round(win_w / img_w * img_h);
-				left = 0;
-				top = topOffset + Math.round((win_h - new_h) / 2);
-			} else {
-				new_w = Math.round(win_h / img_h * img_w);
-				new_h = win_h;
-				left = Math.round((win_w - new_w) / 2);
-				top = topOffset;
-			}
-
-			img.css({
-				width: new_w,
-				height: new_h,
-				top: top,
-				left: left
+			win.load(function () {
+				redraw();
+				img.fadeIn(1000);
+			}).resize(function () {
+				redraw();
 			});
-		};
 
-		positionImage();
+			return;
+		}
 
-		img.fadeIn(1000);
+		// Deal with embedded videos
+		if (video.length) {
+			var redraw = function () {
+				var viewportDims = {
+					width: viewport.width(),
+					height: viewport.height()
+				};
+				
+				video.css(viewportDims);
+			};
 
-		win.resize(function () {
-			positionImage();
-		});
-	};
+			redraw();
 
-	win.load(setupImage);
-
-	$("article.info header").click(function () {
-		$(this).toggleClass("open");
-		$(".info .slider").slideToggle("fast");
+			win.resize(function () {
+				redraw();
+			});
+		}
 	});
 
-	$("[data-replace]").each(function () {
+	$(".details header").click(function () {
+		$(this).toggleClass("open");
+		$(".details .panel").slideToggle("fast");
+	});
+
+	$("[data-replsace]").each(function () {
 		var el = $(this);
 		var url = el.attr("data-replace");
 		$.getJSON(url, function(d) {

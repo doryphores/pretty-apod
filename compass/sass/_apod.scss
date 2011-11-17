@@ -1,0 +1,95 @@
+// APOD
+
+#apod {
+	position: fixed;
+	top: 31px;
+	bottom: 30px;
+	left: 0;
+	right: 0;
+	z-index: 1;
+	overflow: hidden;
+	
+	// Image
+
+	img {
+		@include box-shadow(black 0 0 20px);
+		.js & {
+			position: absolute;
+			display: none;
+		}
+	}
+
+	// Videos
+
+	iframe {
+		display: block;
+		margin: 80px auto 0 auto;
+		.js & {
+			position: absolute;
+			margin: 0;
+			top: 0;
+			left: 0;
+		}
+	}
+}
+
+// Details panel
+
+.details {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 2;
+	@include rgba-background(rgba(0,0,0,0.8));
+	border-top: 1px solid #000;
+
+	header {
+		padding: 0 20px;
+		cursor: pointer;
+		@include single-transition(background);
+
+		&:hover,
+		&.open {
+			background: #000;
+		}
+		
+		h2 {
+			@include adjust-font-size-to(16px);
+			line-height: 30px;
+			font-weight: normal;
+			text-shadow: 0 1px 2px #000;
+		}
+	}
+
+	.panel {
+		border-top: 1px solid #222;
+		padding: 15px 20px;
+		overflow: hidden;
+
+		.js & {
+			display: none;
+		}
+	}
+
+	.explanation {
+		float: left;
+		width: 62%;
+		max-width: 600px;
+	}
+
+	.extra {
+		float: right;
+		width: 34%;
+	}
+
+	h3 {
+		@include adjust-font-size-to(14px);
+		font-weight: normal;
+		text-shadow: 0 1px 2px #000;
+	}
+
+	p {
+		@include margin-trailer();
+	}
+}

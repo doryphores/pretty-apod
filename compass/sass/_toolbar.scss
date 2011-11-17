@@ -33,7 +33,7 @@
 			padding: 0 10px;
 			border-left: 1px solid #222;
 			border-right: 1px solid #000;
-			@include single-transition(background color);
+			@include single-transition();
 			&:hover {
 				color: #fff;
 				background: #000;
