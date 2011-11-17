@@ -66,12 +66,48 @@ def month(request, year, month):
 	tags = Keyword.objects.filter(pictures__publish_date__month=month, pictures__publish_date__year=year).annotate(num_pictures=Count('pictures')).order_by('label')
 
 	view_data = {
-		'month': datetime.date(int(year), int(month), 1),
-		'picture_calendar': picture_calendar,
+		'month': datetime.date(year, month, 1),
+		'calendar': picture_calendar,
 		'tags':tags,
 	}
 
 	return render(request, 'apod/month.html', view_data)
+
+def year(request, year):
+	year = int(year)
+
+	pictures = Picture.objects.filter(publish_date__year=year)
+
+	# If year has no pics, raise 404
+	if pictures.count() == 0:
+		raise Http404
+
+	# Build dict indexed by date
+	pics = dict([(str(p.publish_date), p) for p in pictures])
+
+	today = datetime.date.today()
+	last_month = 12
+	if today.year == year:
+		last_month = today.month
+
+	calendars = [
+		[
+			[
+				dict(day=d, picture=pics.get('%d-%#02d-%#02d' % (year, month, d), None))
+				for d in w
+			]
+			for w in calendar.monthcalendar(year, month)
+		]
+		for month in range(1, last_month+1)
+	]
+
+	view_data = {
+		'year': year,
+		'calendars': calendars,
+		'tags':tags,
+	}
+
+	return render(request, 'apod/year.html', view_data)
 
 def tags(request):
 	tags = Keyword.objects.annotate(num_pictures=Count('pictures')).order_by('label')[:20]
