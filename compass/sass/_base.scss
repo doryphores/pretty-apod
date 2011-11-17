@@ -1,0 +1,22 @@
+/* Colors */
+
+$bg-color  : #171717;
+$text-color: #ffffff;
+
+/* Font sizes */
+
+$base-font-size: 12px;
+$base-line-height: 18px;
+
+/* Font faces */
+
+@import url(http://fonts.googleapis.com/css?family=Ubuntu:400,bold,400italic,bolditalic);
+
+/* Compass extensions */
+
+@import "compass/reset";
+@import "compass/typography/vertical_rhythm";
+@import "compass/typography/links/hover-link";
+@import "compass/typography/links/link-colors";
+@import "compass/css3";
+@import "compass/typography/lists/horizontal-list";

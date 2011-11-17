@@ -1,0 +1,20 @@
+@import "base";
+
+html {
+	@include establish-baseline();
+}
+
+body {
+	font-family: Ubuntu, sans-serif;
+	background: $bg-color;
+	color: $text-color;
+	padding-top: 30px;
+}
+
+a {
+	@include link-colors(#516681, #6699FF);
+	@include hover-link();
+	@include single-transition(color);
+}
+
+@import "toolbar";

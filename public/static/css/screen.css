@@ -1,0 +1,185 @@
+/* Colors */
+/* Font sizes */
+/* Font faces */
+@import url(http://fonts.googleapis.com/css?family=Ubuntu:400,bold,400italic,bolditalic);
+/* Compass extensions */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/compass\.app\/lib\/ruby\/compass_0\.11\/compass-0\.11\.5\/frameworks\/compass\/stylesheets\/compass\/reset\/_utilities\.scss}line{font-family:\0000317}}
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/compass\.app\/lib\/ruby\/compass_0\.11\/compass-0\.11\.5\/frameworks\/compass\/stylesheets\/compass\/reset\/_utilities\.scss}line{font-family:\0000320}}
+body {
+  line-height: 1;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/compass\.app\/lib\/ruby\/compass_0\.11\/compass-0\.11\.5\/frameworks\/compass\/stylesheets\/compass\/reset\/_utilities\.scss}line{font-family:\0000322}}
+ol, ul {
+  list-style: none;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/compass\.app\/lib\/ruby\/compass_0\.11\/compass-0\.11\.5\/frameworks\/compass\/stylesheets\/compass\/reset\/_utilities\.scss}line{font-family:\0000324}}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/compass\.app\/lib\/ruby\/compass_0\.11\/compass-0\.11\.5\/frameworks\/compass\/stylesheets\/compass\/reset\/_utilities\.scss}line{font-family:\0000326}}
+caption, th, td {
+  text-align: left;
+  font-weight: normal;
+  vertical-align: middle;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/compass\.app\/lib\/ruby\/compass_0\.11\/compass-0\.11\.5\/frameworks\/compass\/stylesheets\/compass\/reset\/_utilities\.scss}line{font-family:\0000328}}
+q, blockquote {
+  quotes: none;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/compass\.app\/lib\/ruby\/compass_0\.11\/compass-0\.11\.5\/frameworks\/compass\/stylesheets\/compass\/reset\/_utilities\.scss}line{font-family:\00003101}}
+q:before, q:after, blockquote:before, blockquote:after {
+  content: "";
+  content: none;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/compass\.app\/lib\/ruby\/compass_0\.11\/compass-0\.11\.5\/frameworks\/compass\/stylesheets\/compass\/reset\/_utilities\.scss}line{font-family:\0000330}}
+a img {
+  border: none;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/compass\.app\/lib\/ruby\/compass_0\.11\/compass-0\.11\.5\/frameworks\/compass\/stylesheets\/compass\/reset\/_utilities\.scss}line{font-family:\00003114}}
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
+  display: block;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/compass\.app\/lib\/ruby\/compass_0\.11\/compass-0\.11\.5\/frameworks\/compass\/stylesheets\/compass\/typography\/_vertical_rhythm\.scss}line{font-family:\0000351}}
+html body {
+  font-size: 75%;
+  line-height: 1.5em;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/compass\.app\/lib\/ruby\/compass_0\.11\/compass-0\.11\.5\/frameworks\/compass\/stylesheets\/compass\/typography\/_vertical_rhythm\.scss}line{font-family:\0000355}}
+html html > body {
+  font-size: 12px;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/screen\.scss}line{font-family:\000037}}
+body {
+  font-family: Ubuntu, sans-serif;
+  background: #171717;
+  color: white;
+  padding-top: 30px;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/screen\.scss}line{font-family:\0000314}}
+a {
+  color: #516681;
+  text-decoration: none;
+  -moz-transition-property: color;
+  -webkit-transition-property: color;
+  -o-transition-property: color;
+  transition-property: color;
+  -moz-transition-duration: 1s;
+  -webkit-transition-duration: 1s;
+  -o-transition-duration: 1s;
+  transition-duration: 1s;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/compass\.app\/lib\/ruby\/compass_0\.11\/compass-0\.11\.5\/frameworks\/compass\/stylesheets\/compass\/typography\/links\/_link-colors\.scss}line{font-family:\0000324}}
+a:hover {
+  color: #6699ff;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/compass\.app\/lib\/ruby\/compass_0\.11\/compass-0\.11\.5\/frameworks\/compass\/stylesheets\/compass\/typography\/links\/_hover-link\.scss}line{font-family:\000034}}
+a:hover {
+  text-decoration: underline;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_toolbar\.scss}line{font-family:\000031}}
+.toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  height: 30px;
+  border-bottom: 1px solid #222;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #2b2b2b), color-stop(100%, #000000));
+  background-image: -webkit-linear-gradient(#2b2b2b, #000000);
+  background-image: -moz-linear-gradient(#2b2b2b, #000000);
+  background-image: -o-linear-gradient(#2b2b2b, #000000);
+  background-image: -ms-linear-gradient(#2b2b2b, #000000);
+  background-image: linear-gradient(#2b2b2b, #000000);
+  -moz-box-shadow: black 0 0 10px;
+  -webkit-box-shadow: black 0 0 10px;
+  -o-box-shadow: black 0 0 10px;
+  box-shadow: black 0 0 10px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_toolbar\.scss}line{font-family:\0000313}}
+.toolbar .branding,
+.toolbar h1 {
+  font-size: 16px;
+  line-height: 30px;
+  font-weight: bold;
+  float: left;
+  margin: 0 20px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_toolbar\.scss}line{font-family:\0000321}}
+.toolbar ul {
+  float: right;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  *zoom: 1;
+  margin: 0 20px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/compass\.app\/lib\/ruby\/compass_0\.11\/compass-0\.11\.5\/frameworks\/compass\/stylesheets\/compass\/typography\/lists\/_horizontal-list\.scss}line{font-family:\0000360}}
+.toolbar ul li {
+  list-style-image: none;
+  list-style-type: none;
+  margin-left: 0px;
+  white-space: nowrap;
+  display: inline;
+  float: left;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_toolbar\.scss}line{font-family:\0000327}}
+.toolbar li {
+  font-size: 12px;
+  line-height: 30px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_toolbar\.scss}line{font-family:\0000330}}
+.toolbar li a {
+  display: block;
+  color: #cccccc;
+  padding: 0 10px;
+  border-left: 1px solid #222;
+  border-right: 1px solid #000;
+  -moz-transition-property: background color;
+  -webkit-transition-property: background color;
+  -o-transition-property: background color;
+  transition-property: background color;
+  -moz-transition-duration: 1s;
+  -webkit-transition-duration: 1s;
+  -o-transition-duration: 1s;
+  transition-duration: 1s;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_toolbar\.scss}line{font-family:\0000337}}
+.toolbar li a:hover {
+  color: #fff;
+  background: #000;
+  text-decoration: none;
+}

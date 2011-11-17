@@ -46,7 +46,7 @@ p {
 .calendar {
 	table-layout: fixed;
 	border-collapse: separate;
-	border-spacing: 4px;
+	border-spacing: 0;
 	empty-cells: hide;
 	margin: 0 auto;
 }
