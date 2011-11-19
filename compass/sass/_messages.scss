@@ -1,0 +1,33 @@
+// Animated message boxes
+
+div.message {
+	position: relative;
+	top: -300px;
+	z-index: 3;
+	opacity: 0;
+	width: 260px;
+	margin: 0 auto;
+	padding: 15px;
+	background: #333;
+	border: 2px solid #666;
+	@include box-shadow(black 0 0 10px);
+	@include border-radius(3px);
+	@include transition(all 1s ease-in-out);
+
+	&.loading {
+		background: #333 url(../images/loading.gif) no-repeat 15px center;
+		padding-left: 60px;
+		min-height: 31px;
+	}
+
+	// Toggle this class to trigger animation
+	&.open {
+		opacity: 1;
+		top: 200px;
+	}
+
+	p {
+		font-weight: bold;
+		margin: 0;
+	}
+}

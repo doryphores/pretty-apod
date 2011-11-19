@@ -8,10 +8,10 @@
 
 {% block extra_nav %}
 	{% with picture.previous as previous %}{% if previous %}
-	<li><a href="{{ previous.get_absolute_url }}" title="{{ previous.title }}">&laquo; Previous</a></li>
+	<li><a href="{{ previous.get_absolute_url }}">&laquo; Previous</a></li>
 	{% endif %}{% endwith %}
 	{% with picture.next as next %}{% if next %}
-	<li><a href="{{ next.get_absolute_url }}" title="{{ next.title }}">Next &raquo;</a></li>
+	<li><a href="{{ next.get_absolute_url }}">Next &raquo;</a></li>
 	{% endif %}{% endwith %}
 	<li><a href="{{ picture.get_apod_url }}" target="_blank">View on APOD</a></li>
 {% endblock %}
@@ -22,16 +22,16 @@
 
 {# APOD block #}
 
-<div id="apod">
+<div id="apod" class="{{ picture.media_type }}">
 	{# Image #}
 
 	{% if picture.media_type == "IM" %}
 		{% if picture.image %}
 			<img src="{{ picture.image.url }}" width="{{ picture.image.width }}" height="{{ picture.image.height }}">
 		{% else %}
-			<div class="message loading" data-replace="{% url image_only picture.pk %}">
-				<p>Downloading and processing picture...</p>
-			</div>
+			<p id="apod-loader" data-url="{% url image_only picture.pk %}">
+				I am downloading and processing this picture from APOD. Please trying again in a minute...
+			</p>
 		{% endif %}
 	{% endif %}
 
@@ -42,13 +42,13 @@
 	{% endif %}
 
 	{% if picture.media_type == "VI" %}
-		<iframe class="vimeo" src="http://player.vimeo.com/video/{{ picture.video_id }}" width="640" height="385" frameborder="0"></iframe>
+		<iframe class="vimeo" src="http://player.vimeo.com/video/{{ picture.video_id }}?title=0&amp;byline=0&amp;portrait=0" width="640" height="385" frameborder="0"></iframe>
 	{% endif %}
 </div>
 
 {# Details panel #}
 
-<div class="details">
+<!-- <div class="details">
 	<header>
 		<h2>Details</h2>
 	</header>
@@ -76,5 +76,5 @@
 			</p>
 		</div>
 	</div>
-</div>
+</div> -->
 {% endblock %}

@@ -1,6 +1,7 @@
 @import "base";
 
 html {
+	overflow: hidden;
 	@include establish-baseline();
 }
 
@@ -8,7 +9,7 @@ body {
 	font-family: Ubuntu, sans-serif;
 	background: $bg-color;
 	color: $text-color;
-	padding-top: 30px;
+	min-width: 900px;
 }
 
 a {
@@ -19,3 +20,4 @@ a {
 
 @import "toolbar";
 @import "apod";
+@import "messages";
