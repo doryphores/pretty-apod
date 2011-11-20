@@ -1,7 +1,6 @@
 @import "base";
 
 html {
-	overflow: hidden;
 	@include establish-baseline();
 }
 

@@ -72,10 +72,6 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   Mixins are slightly modified from Benjamin Doherty's first implementations: http://gist.github.com/377912
   rgba-background mixin can now be passed an option $dir variable
 */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/screen\.scss}line{font-family:\000033}}
-html {
-  overflow: hidden;
-}
 @media -sass-debug-info{filename{font-family:file\:\/\/\/var\/lib\/gems\/1\.8\/gems\/compass-0\.11\.5\/frameworks\/compass\/stylesheets\/compass\/typography\/_vertical_rhythm\.scss}line{font-family:\0000351}}
 html body {
   font-size: 75%;
@@ -86,7 +82,7 @@ html html > body {
   font-size: 12px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/screen\.scss}line{font-family:\000038}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/screen\.scss}line{font-family:\000037}}
 body {
   font-family: Ubuntu, sans-serif;
   background: #171717;
@@ -94,7 +90,7 @@ body {
   min-width: 900px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/screen\.scss}line{font-family:\0000315}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/screen\.scss}line{font-family:\0000314}}
 a {
   color: #516681;
   text-decoration: none;
