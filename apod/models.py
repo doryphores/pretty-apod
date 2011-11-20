@@ -125,9 +125,7 @@ class Picture(models.Model):
 				# Check size and resize if bigger than 1Mb
 				if self.original_file_size > 1024 * 1024:
 					# Create a resized version
-					resized = get_thumbnail(self.image, '2000x2000', quality=90)
-					# Delete the original
-					self.image.delete()
+					resized = get_thumbnail(self.image, '2000x2000', progressive=False, quality=90)
 					# Make jpg filename if needed
 					if filename.split('.')[-1].lower() is not 'jpg':
 						filename = re.sub('\.[^\.]+$', '.jpg', filename)
@@ -167,7 +165,9 @@ class Picture(models.Model):
 
 @receiver(post_delete, sender=Picture)
 def post_delete_picture(sender, **kwargs):
-	delete_image(kwargs['instance'].image)
+	instance = kwargs['instance']
+	if instance.image:
+		delete_image(instance.image)
 
 @receiver(pre_save, sender=Picture)
 def pre_save_picture(sender, **kwargs):
