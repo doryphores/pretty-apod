@@ -42,6 +42,8 @@ class Picture(models.Model):
 	# Image data
 	original_image_url = models.URLField(blank=True)
 	original_file_size = models.PositiveIntegerField(default=0)
+	original_width = models.PositiveSmallIntegerField(null=True)
+	original_height = models.PositiveSmallIntegerField(null=True)
 	image = models.ImageField(upload_to=get_image_path, width_field='image_width', height_field='image_height', blank=True, null=True)
 	image_width = models.PositiveSmallIntegerField(editable=False, null=True)
 	image_height = models.PositiveSmallIntegerField(editable=False, null=True)
@@ -113,6 +115,10 @@ class Picture(models.Model):
 				
 				# Download original image
 				self.image.save(filename, ContentFile(f.read()))
+
+				# Save original dimensions
+				self.original_width = self.image.width
+				self.original_height = self.image.height
 
 				# Check size and resize if bigger than 1Mb
 				if self.original_file_size > 1024 * 1024:

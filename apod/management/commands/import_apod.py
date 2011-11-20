@@ -29,7 +29,7 @@ class Command(BaseCommand):
 		else:
 			pictures_to_load = Picture.objects.all()
 			
-		pictures_to_load = pictures_to_load.filter(original_image_url='')
+		pictures_to_load = pictures_to_load.filter(loaded=False)
 		
 		#transaction.commit_unless_managed()
 		#transaction.enter_transaction_management()
