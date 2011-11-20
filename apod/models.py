@@ -1,7 +1,9 @@
 from django.db import models
 from django.core.files.base import ContentFile
+from django.db.models.signals import post_delete, pre_save
+from django.dispatch import receiver
 
-from sorl.thumbnail import get_thumbnail
+from sorl.thumbnail import get_thumbnail, delete as delete_image
 
 import os
 import urllib2
@@ -42,8 +44,8 @@ class Picture(models.Model):
 	# Image data
 	original_image_url = models.URLField(blank=True)
 	original_file_size = models.PositiveIntegerField(default=0)
-	original_width = models.PositiveSmallIntegerField(null=True)
-	original_height = models.PositiveSmallIntegerField(null=True)
+	original_width = models.PositiveSmallIntegerField(null=True, blank=True)
+	original_height = models.PositiveSmallIntegerField(null=True, blank=True)
 	image = models.ImageField(upload_to=get_image_path, width_field='image_width', height_field='image_height', blank=True, null=True)
 	image_width = models.PositiveSmallIntegerField(editable=False, null=True)
 	image_height = models.PositiveSmallIntegerField(editable=False, null=True)
@@ -100,8 +102,8 @@ class Picture(models.Model):
 
 		self.save()
 	
-	def get_image(self):
-		if self.original_image_url and not self.image:
+	def get_image(self, force=False):
+		if self.original_image_url and (force or not self.image):
 			# Download the image
 			# @TODO: handle errors
 			try:
@@ -123,7 +125,7 @@ class Picture(models.Model):
 				# Check size and resize if bigger than 1Mb
 				if self.original_file_size > 1024 * 1024:
 					# Create a resized version
-					resized = get_thumbnail(self.image, '2000x2000')
+					resized = get_thumbnail(self.image, '2000x2000', quality=90)
 					# Delete the original
 					self.image.delete()
 					# Make jpg filename if needed
@@ -159,3 +161,18 @@ class Picture(models.Model):
 	class Meta:
 		ordering = ['-publish_date']
 		get_latest_by = 'publish_date'
+
+
+# Signals for file management (deleting unused images and thumbnails)
+
+@receiver(post_delete, sender=Picture)
+def post_delete_picture(sender, **kwargs):
+	delete_image(kwargs['instance'].image)
+
+@receiver(pre_save, sender=Picture)
+def pre_save_picture(sender, **kwargs):
+	instance = kwargs['instance']
+	if instance.pk:
+		old_instance = Picture.objects.get(pk=instance.pk)
+		if old_instance.image and old_instance.image != instance.image:
+			delete_image(old_instance.image)

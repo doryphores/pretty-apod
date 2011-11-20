@@ -166,7 +166,6 @@ LOGGING = {
 
 THUMBNAIL_UPSCALE = False
 THUMBNAIL_PROGRESSIVE = False
-THUMBNAIL_QUALITY = 80
 
 APOD_URL = "http://apod.nasa.gov/apod"
 
