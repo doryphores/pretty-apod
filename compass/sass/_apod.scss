@@ -49,15 +49,21 @@
 	// Videos
 
 	iframe {
+		background: black;
+		@include box-shadow(black 0 0 20px);
 		display: block;
 		// Basic positioning when js is off
 		margin: 80px auto 0 auto;
 		.js & {
+			display: none;
 			// Better positioning is achieved via js
 			position: absolute;
 			margin: 0;
 			top: 0;
 			left: 0;
+			&.loaded {
+				display: block;
+			}
 		}
 	}
 }

@@ -170,7 +170,7 @@
 					height: viewport.height()
 				};
 				
-				video.css(viewportDims);
+				video.css(viewportDims).addClass("loaded");
 			};
 
 			// Position video now
