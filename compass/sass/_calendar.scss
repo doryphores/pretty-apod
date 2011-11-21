@@ -20,6 +20,7 @@
 		@include adjust-font-size-to(11px);
 		@include box-shadow(#121212 1px 1px 0 inset, rgba(255, 255, 255, 0.09) 1px 1px 0);
 		background: #202020;
+		background-position: center center;
 
 		&.empty {
 			background: #252525;

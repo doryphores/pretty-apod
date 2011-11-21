@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.cache import cache
 from django.core.files.base import ContentFile
 from django.db.models.signals import post_delete, pre_save
 from django.dispatch import receiver
@@ -8,6 +9,7 @@ from sorl.thumbnail import get_thumbnail, delete as delete_image
 import os
 import urllib2
 import re
+import json
 
 from apod import apodapi
 
@@ -148,6 +150,29 @@ class Picture(models.Model):
 		if self.media_type == 'YT':
 			return u'http://img.youtube.com/vi/%s/2.jpg' % self.video_id
 		
+		if self.media_type == 'VI':
+			cache_key = 'vimeo_thumb_%s' % self.video_id
+			thumb_url = cache.get(cache_key)
+
+			# Retrieve Vimeo thumb URL if not in cache
+			if not thumb_url:
+				try:
+					# Call Vimeo API to get video info
+					f = urllib2.urlopen('http://vimeo.com/api/v2/video/%s.json' % self.video_id)
+				except urllib2.HTTPError:
+					return None
+				
+				# Decode received JSON packet
+				data = json.load(f)
+
+				# Extract thumbnail URL
+				thumb_url = data[0]['thumbnail_medium']
+
+				# Store in cache for later
+				cache.set(cache_key, thumb_url)
+			
+			return thumb_url
+
 		return
 	
 	def has_image(self):

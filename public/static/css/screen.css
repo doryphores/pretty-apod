@@ -466,8 +466,9 @@ div.message p {
   -o-box-shadow: #121212 1px 1px 0 inset, rgba(255, 255, 255, 0.09) 1px 1px 0;
   box-shadow: #121212 1px 1px 0 inset, rgba(255, 255, 255, 0.09) 1px 1px 0;
   background: #202020;
+  background-position: center center;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_calendar\.scss}line{font-family:\0000324}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_calendar\.scss}line{font-family:\0000325}}
 .calendar td.empty {
   background: #252525;
   -moz-box-shadow: none;
@@ -475,12 +476,12 @@ div.message p {
   -o-box-shadow: none;
   box-shadow: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_calendar\.scss}line{font-family:\0000328}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_calendar\.scss}line{font-family:\0000329}}
 .calendar td.empty span.day {
   color: #666;
   text-shadow: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_calendar\.scss}line{font-family:\0000334}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_calendar\.scss}line{font-family:\0000335}}
 .calendar td span.day {
   font-size: 50px;
   font-weight: bold;
@@ -492,7 +493,7 @@ div.message p {
   text-align: center;
   text-shadow: 0 0 3px black;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_calendar\.scss}line{font-family:\0000347}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_calendar\.scss}line{font-family:\0000348}}
 .calendar a {
   color: #fff;
   text-decoration: none;
@@ -505,7 +506,7 @@ div.message p {
   -o-transition: background 0.6s;
   transition: background 0.6s;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_calendar\.scss}line{font-family:\0000356}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_calendar\.scss}line{font-family:\0000357}}
 .calendar a span {
   display: block;
   opacity: 0;
@@ -516,11 +517,11 @@ div.message p {
   -o-transition: all 0.4s;
   transition: all 0.4s;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_calendar\.scss}line{font-family:\0000364}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_calendar\.scss}line{font-family:\0000365}}
 .calendar a:hover {
   background: rgba(0, 0, 0, 0.8);
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_calendar\.scss}line{font-family:\0000367}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_calendar\.scss}line{font-family:\0000368}}
 .calendar a:hover span {
   opacity: 1;
   padding-top: 10px;
