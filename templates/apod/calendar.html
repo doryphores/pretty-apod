@@ -14,18 +14,23 @@
 	{% for week in calendar %}
 		<tr>
 		{% for d in week %}{% with d.picture as picture %}
-			{% if picture %}
-			<td style="background-image:url({{ picture.thumb }})">
-			{% else %}
-			<td class="empty">
-			{% endif %}
-				{% if d.day %}
-				<span class="day">{{ d.day }}</span>
+			{% if d.day %}
 				{% if picture %}
-				<a href="{{ picture.get_absolute_url }}"><span>{{ picture.title }}</span></a>
+				<td><div>
+					{% if picture.thumb %}
+					<img src="{{ picture.thumb }}" width="120" height="90">
+					{% endif %}
+					<span class="day">{{ d.day }}</span>
+					<a href="{{ picture.get_absolute_url }}"><span>{{ picture.title }}</span></a>
+				</div></td>
+				{% else %}
+				<td class="empty"><div>
+					<span class="day">{{ d.day }}</span>
+				</div></td>
 				{% endif %}
-				{% endif %}
-			</td>
+			{% else %}
+			<td></td>
+			{% endif %}
 		{% endwith %}{% endfor %}
 		</tr>
 	{% endfor %}
