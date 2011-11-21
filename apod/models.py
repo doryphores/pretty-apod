@@ -10,6 +10,7 @@ import os
 import urllib2
 import re
 import json
+import Image
 
 from apod import apodapi
 
@@ -116,20 +117,42 @@ class Picture(models.Model):
 
 				# Get filename from URL
 				filename = self.original_image_url.split('/')[-1]
-				
-				# Download original image
-				self.image.save(filename, ContentFile(f.read()))
+				extension = filename.split('.')[-1].lower()
+
+				# Read image file
+				image_file = ContentFile(f.read())
+
+				# Download and save original image
+				self.image.save(filename, image_file, save=False)
 
 				# Save original dimensions
 				self.original_width = self.image.width
 				self.original_height = self.image.height
 
+				resize = True
+
+				# Check whether image is animated GIF
+				if extension == 'gif':
+					gif = Image.open(self.image.file.name)
+					try:
+						gif.seek(1)
+					except EOFError:
+						pass
+					else:
+						# It's an animated GIF so leave as is
+						resize = False
+
 				# Check size and resize if bigger than 1Mb
-				if self.original_file_size > 1024 * 1024:
+				if resize and self.original_file_size > 1024 * 1024:
+					logging.debug('Resizing')
 					# Create a resized version
 					resized = get_thumbnail(self.image, '2000x2000', progressive=False, quality=90)
+
+					# Delete original image
+					self.image.delete(save=False)
+					
 					# Make jpg filename if needed
-					if filename.split('.')[-1].lower() is not 'jpg':
+					if extension != 'jpg':
 						filename = re.sub('\.[^\.]+$', '.jpg', filename)
 					# Save the resized version
 					self.image.save(filename, ContentFile(resized.read()))
