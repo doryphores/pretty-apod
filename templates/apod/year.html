@@ -1,12 +1,14 @@
-{% extends "base.html" %}
+{% extends "apod/page.html" %}
 
 {% load apod %}
 
 {% block page_title %}Archive: {{ year }}{% endblock page_title %}
 
-{% block main %}
+{% block page %}
+
 {% for calendar in calendars %}
 <h2>{{ forloop.counter|month_name }}</h2>
 {% include 'apod/calendar.html' %}
 {% endfor %}
-{% endblock main %}
+
+{% endblock page %}

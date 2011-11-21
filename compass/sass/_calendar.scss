@@ -1,0 +1,74 @@
+.calendar {
+	table-layout: fixed;
+	border-collapse: separate;
+	border-spacing: 6px;
+	empty-cells: hide;
+	margin: 0 auto;
+
+	th {
+		text-align: center;
+		font-weight: bold;
+		text-shadow: 0 -1px 0 #000;
+	}
+
+	td {
+		position: relative;
+		width: 120px;
+		height: 90px;
+		vertical-align: top;
+		padding: 0;
+		@include adjust-font-size-to(11px);
+		@include box-shadow(#121212 1px 1px 0 inset, rgba(255, 255, 255, 0.09) 1px 1px 0);
+		background: #202020;
+
+		&.empty {
+			background: #252525;
+			@include box-shadow(none);
+
+			span.day {
+				color: #666;
+				text-shadow: none;
+			}
+		}
+
+		span.day {
+			font-size: 50px;
+			font-weight: bold;
+			line-height: 90px;
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			text-align: center;
+			text-shadow: 0 0 3px black;
+		}
+	}
+
+	a {
+		color: #fff;
+		text-decoration: none;
+		display: block;
+		height: 90px;
+		position: relative;
+		overflow: hidden;
+		@include transition(background 0.6s);
+
+		span {
+			display: block;
+			opacity: 0;
+			text-align: center;
+			padding: 120px 5px 5px 5px;
+			@include transition(all 0.4s);
+		}
+
+		&:hover {
+			background: rgba(0,0,0,0.8);
+
+			span {
+				opacity: 1;
+				padding-top: 10px;
+			}
+		}
+
+	}
+}

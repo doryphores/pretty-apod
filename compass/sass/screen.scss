@@ -2,13 +2,16 @@
 
 html {
 	@include establish-baseline();
+	overflow: hidden;
+	min-height: 100%;
 }
 
 body {
 	font-family: Ubuntu, sans-serif;
-	background: $bg-color;
+	background: #2e2e2e;
 	color: $text-color;
 	min-width: 900px;
+	min-height: 100%;
 }
 
 a {
@@ -20,3 +23,5 @@ a {
 @import "toolbar";
 @import "apod";
 @import "messages";
+@import "page";
+@import "calendar";

@@ -5,9 +5,9 @@ from sorl.thumbnail import get_thumbnail
 
 class PictureAdmin(admin.ModelAdmin):
 	def _get_thumb(obj):
-		if obj.image:
-			im = get_thumbnail(obj.image, '60x60', crop='center', quality=70)
-			return u'<img src="%s" width="60" height="60" />' % im.url
+		thumb = obj.thumb
+		if thumb:
+			return u'<img src="%s" width="120" height="90" />' % thumb
 		else:
 			return u'(No picture)'
 	_get_thumb.short_description = u'thumbnail'

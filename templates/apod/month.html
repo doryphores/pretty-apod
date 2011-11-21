@@ -1,17 +1,9 @@
-{% extends "base.html" %}
+{% extends "apod/page.html" %}
 
 {% block page_title %}Archive: {{ month|date:'F Y' }}{% endblock page_title %}
 
-{% block main %}
+{% block page %}
+
 {% include 'apod/calendar.html' %}
 
-{% if tags %}
-<h2>Tags</h2>
-
-<p class="tags">
-	{% for tag in tags %}
-	<a href="#">{{ tag.label }} ({{ tag.num_pictures }})</a>
-	{% endfor %}
-</p>
-{% endif %}
-{% endblock main %}
+{% endblock page %}

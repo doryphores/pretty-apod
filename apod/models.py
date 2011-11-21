@@ -139,6 +139,17 @@ class Picture(models.Model):
 			
 			self.save()
 
+	@property
+	def thumb(self):
+		if self.image:
+			im = get_thumbnail(self.image, '120x90', crop='center', quality=85)
+			return im.url
+		
+		if self.media_type == 'YT':
+			return u'http://img.youtube.com/vi/%s/2.jpg' % self.video_id
+		
+		return
+	
 	def has_image(self):
 		return len(self.original_image_url) > 0
 
