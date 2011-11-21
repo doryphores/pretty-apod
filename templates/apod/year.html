@@ -6,9 +6,11 @@
 
 {% block page %}
 
-{% for calendar in calendars %}
-<h2>{{ forloop.counter|month_name }}</h2>
+{% for month in calendars %}
+<h2>{{ month.label }}</h2>
+{% with month.calendar as calendar %}
 {% include 'apod/calendar.html' %}
+{% endwith %}
 {% endfor %}
 
 {% endblock page %}

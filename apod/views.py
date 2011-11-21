@@ -55,7 +55,12 @@ def archive(request, page=1):
 def month(request, year, month):
 	year = int(year)
 	month = int(month)
+
 	pictures = Picture.objects.filter(publish_date__month=month, publish_date__year=year)
+
+	# If month has no pics, raise 404
+	if pictures.count() == 0:
+		raise Http404
 
 	pics = dict([(p.publish_date.day, p) for p in pictures])
 
@@ -76,7 +81,7 @@ def month(request, year, month):
 def year(request, year):
 	year = int(year)
 
-	pictures = Picture.objects.filter(publish_date__year=year)
+	pictures = Picture.objects.filter(publish_date__year=year).reverse()
 
 	# If year has no pics, raise 404
 	if pictures.count() == 0:
@@ -87,18 +92,25 @@ def year(request, year):
 
 	today = datetime.date.today()
 	last_month = 12
+
+	# Set last month to current month if looking at current year
 	if today.year == year:
 		last_month = today.month
 
+	first_month = pictures[0].publish_date.month
+
 	calendars = [
-		[
-			[
-				dict(day=d, picture=pics.get('%d-%#02d-%#02d' % (year, month, d), None))
-				for d in w
+		{
+			'label': calendar.month_name[month],
+			'calendar': [
+				[
+					dict(day=d, picture=pics.get('%d-%#02d-%#02d' % (year, month, d), None))
+					for d in w
+				]
+				for w in calendar.monthcalendar(year, month)
 			]
-			for w in calendar.monthcalendar(year, month)
-		]
-		for month in range(1, last_month+1)
+		}
+		for month in range(first_month, last_month+1)
 	]
 
 	view_data = {
