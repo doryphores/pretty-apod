@@ -144,7 +144,6 @@ class Picture(models.Model):
 
 				# Check size and resize if bigger than 1Mb
 				if resize and self.original_file_size > 1024 * 1024:
-					logging.debug('Resizing')
 					# Create a resized version
 					resized = get_thumbnail(self.image, '2000x2000', progressive=False, quality=90)
 
