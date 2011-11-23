@@ -1,19 +1,27 @@
-/* Colors */
+// Colors
 
-$bg-color  : #171717;
+$bg-color: #2e2e2e;
 $text-color: #cccccc;
 $border-color: #171717;
+$link-color: #516681;
+$link-hover-color: #6699FF;
 
-/* Font sizes */
+// Font sizes
 
 $base-font-size: 12px;
 $base-line-height: 16px;
 
-/* Font faces */
+// Font faces
 
 @import url(http://fonts.googleapis.com/css?family=Ubuntu:400,bold,400italic,bolditalic);
 
-/* Compass extensions */
+// Layout
+
+$toolbar-height: 30px;
+$toolbar-border: 1px;
+$viewport-padding: 10px;
+
+// Compass extensions
 
 @import "compass/reset";
 @import "compass/typography/vertical_rhythm";

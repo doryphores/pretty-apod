@@ -1,18 +1,25 @@
+$bg: darken($bg-color, 8%);
+$bevel-light: lighten($bg, 10%);
+$bevel-dark: darken($bg, 10%);
+$menu-text: darken($text-color, 10%);
+$menu-text-hover: $text-color;
+$menu-hover: darken($bg, 20%);
+
 .toolbar {
 	position: fixed;
 	top: 0;
 	left: 0;
 	right: 0;
 	z-index: 4;
-	height: 30px;
-	border-bottom: 1px solid #222;
-	@include background-image(linear-gradient(#2b2b2b, #000000));
-	@include box-shadow(black 0 0 10px);
+	height: $toolbar-height;
+	background: $bg;
+	border-bottom: $toolbar-border solid black;
+	@include box-shadow(black 0 0 5px);
 
 	.branding,
 	h1 {
-		font-size: 16px;
-		line-height: 30px;
+		@include adjust-font-size-to(16px);
+		line-height: $toolbar-height;
 		font-weight: bold;
 		float: left;
 		margin: 0 20px;
@@ -22,21 +29,23 @@
 		float: right;
 		@include horizontal-list(false);
 		margin: 0 20px;
+		overflow: hidden;
+		border-left: 1px solid $bevel-dark;
+		border-right: 1px solid $bevel-light;
 	}
 
 	li {
-		font-size: 12px;
-		line-height: 30px;
+		line-height: $toolbar-height;
 		a {
 			display: block;
-			color: #cccccc;
+			color: $menu-text;
 			padding: 0 10px;
-			border-left: 1px solid #222;
-			border-right: 1px solid #000;
-			@include single-transition();
+			border-right: 1px solid $bevel-dark;
+			border-left: 1px solid $bevel-light;
+			@include transition(all 0.3s);
 			&:hover {
-				color: #fff;
-				background: #000;
+				color: $menu-text-hover;
+				background: $menu-hover;
 				text-decoration: none;
 			}
 		}

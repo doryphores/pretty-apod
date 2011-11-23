@@ -8,16 +8,17 @@ html {
 
 body {
 	font-family: Ubuntu, sans-serif;
-	background: #2e2e2e;
+	background: $bg-color;
 	color: $text-color;
 	min-width: 900px;
 	min-height: 100%;
 }
 
 a {
-	@include link-colors(#516681, #6699FF);
+	@include link-colors($link-color, $link-hover-color);
 	@include hover-link();
-	@include single-transition(color);
+	outline: none;
+	//@include single-transition(color);
 }
 
 @import "toolbar";

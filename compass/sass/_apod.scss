@@ -2,21 +2,21 @@
 
 #apod {
 	position: absolute;
-	top: 31px;
+	top: $toolbar-height + $toolbar-border;
 	left: 0;
 	right: 0;
 	bottom: 0;
 	z-index: 1;
 	overflow: auto;
-	padding: 10px;
+	padding: $viewport-padding;
 	text-align: center;
 	
 	// Viewport setup when js is on
 	.js & {
-		top: 41px;
-		left: 10px;
-		right: 10px;
-		bottom: 10px;
+		top: $toolbar-height + $toolbar-border + $viewport-padding;
+		left: $viewport-padding;
+		right: $viewport-padding;
+		bottom: $viewport-padding;
 		padding: 0;
 		overflow: visible;
 	}
@@ -24,7 +24,7 @@
 	// Image
 
 	img {
-		@include box-shadow(black 0 0 20px);
+		@include box-shadow(black 0 0 10px);
 		// Hide initially if js is on (for nice fade effect)
 		.js & {
 			position: absolute;
@@ -50,7 +50,7 @@
 
 	iframe {
 		background: black;
-		@include box-shadow(black 0 0 20px);
+		@include box-shadow(black 0 0 10px);
 		display: block;
 		// Basic positioning when js is off
 		margin: 80px auto 0 auto;
