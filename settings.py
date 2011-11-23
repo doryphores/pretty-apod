@@ -7,6 +7,8 @@ PROJECT_ROOT = os.path.dirname(os.path.realpath(__file__))
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+INTERNAL_IPS = ('127.0.0.1','192.168.0.4',)
+
 ADMINS = (
 	# ('Your Name', 'your_email@example.com'),
 )
@@ -106,6 +108,7 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
+	'debug_toolbar.middleware.DebugToolbarMiddleware',
 	'django.middleware.common.CommonMiddleware',
 	'django.contrib.sessions.middleware.SessionMiddleware',
 	'django.middleware.csrf.CsrfViewMiddleware',
@@ -131,6 +134,7 @@ INSTALLED_APPS = (
 	'south',
 	'apod',
 	'sorl.thumbnail',
+	'debug_toolbar',
 	#'djcelery',
 )
 
