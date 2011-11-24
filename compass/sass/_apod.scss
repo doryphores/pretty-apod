@@ -24,7 +24,7 @@
 	// Image
 
 	img {
-		@include box-shadow(black 0 0 10px);
+		@include box-shadow(black 0 0 5px);
 		// Hide initially if js is on (for nice fade effect)
 		.js & {
 			position: absolute;

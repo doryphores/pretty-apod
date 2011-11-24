@@ -1,6 +1,6 @@
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.shortcuts import render, redirect, get_object_or_404
-from django.db.models import Count
+from django.db.models import Count, Min, Max
 
 from django.http import Http404, HttpResponse
 
@@ -122,6 +122,12 @@ def year(request, year):
 	return render(request, 'apod/year.html', view_data)
 
 def tags(request):
-	tags = Keyword.objects.annotate(num_pictures=Count('pictures')).order_by('label')[:20]
+	tags = Keyword.objects.annotate(num_pictures=Count('pictures'))
 
-	return render(request, 'apod/tags.html', { 'tags': tags })
+	min_max = tags.aggregate(Min('num_pictures'), Max('num_pictures'))
+	
+	return render(request, 'apod/tags.html', {
+		'tags': tags,
+		'min_count': min_max['num_pictures__min'],
+		'max_count': min_max['num_pictures__max'],
+	})

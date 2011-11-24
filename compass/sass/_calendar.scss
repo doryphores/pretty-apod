@@ -1,3 +1,6 @@
+$bevel-light: lighten($page-bg, 10%);
+$bevel-dark: darken($page-bg, 10%);
+
 .calendar {
 	table-layout: fixed;
 	border-collapse: separate;
@@ -14,12 +17,13 @@
 	td {
 		@include adjust-font-size-to(11px);
 		vertical-align: top;
-		background: #202020;
-		border: 1px solid #121212;
-		border-color: #121212 rgba(255, 255, 255, 0.09) rgba(255, 255, 255, 0.09) #121212;
+		background: rgba(0,0,0,0.2);
+		// border: 1px solid darken($page-bg, 10%);
+		// border-color: darken($page-bg, 10%) $bevel-light $bevel-light darken($page-bg, 10%);
 
 		&.empty {
-			background: #252525;
+			background: rgba(255,255,255,0.05);
+			border: none;
 
 			span.day {
 				color: #666;

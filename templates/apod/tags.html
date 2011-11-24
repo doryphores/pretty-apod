@@ -1,11 +1,13 @@
-{% extends "base.html" %}
+{% extends "apod/page.html" %}
 
-{% block page_title %}Pretty APOD - Tags{% endblock page_title %}
+{% load apod %}
 
-{% block main %}
+{% block page_title %}Tags{% endblock page_title %}
+
+{% block page %}
 <p class="tags">
 {% for tag in tags %}
-	<a href="#">{{ tag.label }} ({{ tag.num_pictures }})</a>
+	<a href="#" class="{% cloud_class tag.num_pictures min_count max_count %}">{{ tag.label }}</a>
 {% endfor %}
 </p>
-{% endblock main %}
+{% endblock page %}

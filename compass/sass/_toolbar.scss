@@ -1,4 +1,4 @@
-$bg: darken($bg-color, 8%);
+$bg: #2a2a2a;
 $bevel-light: lighten($bg, 10%);
 $bevel-dark: darken($bg, 10%);
 $menu-text: darken($text-color, 10%);
@@ -42,7 +42,7 @@ $menu-hover: darken($bg, 20%);
 			padding: 0 10px;
 			border-right: 1px solid $bevel-dark;
 			border-left: 1px solid $bevel-light;
-			@include transition(all 0.3s);
+			@include transition(all 0.5s);
 			&:hover {
 				color: $menu-text-hover;
 				background: $menu-hover;

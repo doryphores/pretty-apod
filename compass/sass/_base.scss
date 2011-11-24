@@ -1,6 +1,6 @@
 // Colors
 
-$bg-color: #2e2e2e;
+$page-bg: #121212;
 $text-color: #cccccc;
 $border-color: #171717;
 $link-color: #516681;
@@ -19,7 +19,7 @@ $base-line-height: 16px;
 
 $toolbar-height: 30px;
 $toolbar-border: 1px;
-$viewport-padding: 10px;
+$viewport-padding: 20px;
 
 // Compass extensions
 
@@ -29,4 +29,5 @@ $viewport-padding: 10px;
 @import "compass/typography/links/link-colors";
 @import "compass/css3";
 @import "compass/typography/lists/horizontal-list";
+@import "compass/utilities/general/tag-cloud";
 @import "rgbapng";
