@@ -16,8 +16,67 @@ from apod import apodapi
 
 # Models
 
+class KeywordManager(models.Manager):
+	FORMATTERS = [
+		(r'^NGC *([0-9]+[a-z]?)$', r'NGC \1',),
+		(r'^NGC *([0-9]+[a-z]?/[0-9]+[a-z]?)$', r'NGC \1',),
+		(r'^GRB *([0-9]+[a-z]?)$', r'GRB \1',),
+		(r'^ARP *([0-9]+)$', r'ARP \1',),
+		(r'^IC *([0-9]+)$', r'IC \1',),
+		(r'^M *([0-9]+)$', r'M\1',),
+		(r'^LDN *([0-9]+)$', r'LDN \1',),
+		(r'^VDB *([0-9]+)$', r'VDB \1',),
+		(r'^STS\-?([0-9]+\-[a-z]?)$', r'STS-\1',),
+		(r'^OV\-?([0-9]+)?$', r'OV-\1',),
+	]
+	
+	def get_or_create(self, label):
+		label = label.strip()
+
+		for f in self.FORMATTERS:
+			p = re.compile(f[0], re.I)
+			if re.match(p, label):
+				label = re.sub(p, f[1], label)
+				break
+		
+		try:
+			return self.get(label__iexact=label)
+		except Keyword.DoesNotExist:
+			return self.create(label=label)
+
+	def format_labels(self):
+		for f in self.FORMATTERS:
+			keywords = self.filter(label__iregex=f[0])
+			
+			# Build groups of duplicate keywords
+			groups = {}
+			for k in keywords:
+				formatted_label = re.sub(re.compile(f[0], re.I), f[1], k.label)
+				if groups.has_key(formatted_label):
+					groups[formatted_label].append(k)
+				else:
+					groups[formatted_label] = [k]
+			
+			# Iterate over groups
+			for label in groups:
+				# Select one as primary
+				primary = groups[label].pop()
+				# Iterate over others
+				for k in groups[label]:
+					# Switch to primary keyword
+					for p in k.pictures.all():
+						p.keywords.remove(k)
+						p.keywords.add(primary)
+					# Delete obsolete keyword
+					k.delete()
+				# Update primary label to formatted version
+				primary.label = label
+				primary.save()
+
 class Keyword(models.Model):
 	label = models.CharField(max_length=400, unique=True)
+
+	objects = KeywordManager()
 
 	def __unicode__(self):
 		return u'%s' % self.label
@@ -97,11 +156,7 @@ class Picture(models.Model):
 		self.keywords.clear()
 		
 		for word in details['keywords']:
-			try:
-				keyword = Keyword.objects.get(label__iexact=word.strip())
-			except Keyword.DoesNotExist:
-				keyword = Keyword.objects.create(label=word.strip())
-			self.keywords.add(keyword)
+			self.keywords.add(Keyword.objects.get_or_create(label=word))
 
 		self.save()
 	
