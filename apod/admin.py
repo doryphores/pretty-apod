@@ -3,7 +3,7 @@ from django.conf.urls.defaults import patterns
 from django.http import HttpResponseRedirect
 from django.contrib.admin.views.decorators import staff_member_required
 
-from apod.models import Picture, Keyword
+from apod.models import Picture, Keyword, KeywordFormatter
 
 from sorl.thumbnail import get_thumbnail
 
@@ -70,3 +70,5 @@ class KeywordAdmin(admin.ModelAdmin):
 		return my_urls + urls
 
 admin.site.register(Keyword, KeywordAdmin)
+
+admin.site.register(KeywordFormatter)

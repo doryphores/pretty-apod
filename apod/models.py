@@ -1,7 +1,7 @@
 from django.db import models
 from django.core.cache import cache
 from django.core.files.base import ContentFile
-from django.db.models.signals import post_delete, pre_save
+from django.db.models.signals import post_delete, pre_save, post_save
 from django.dispatch import receiver
 
 from sorl.thumbnail import get_thumbnail, delete as delete_image
@@ -16,27 +16,40 @@ from apod import apodapi
 
 # Models
 
+class KeywordFormatter(models.Model):
+	label = models.CharField(max_length=400)
+	pattern = models.CharField(max_length=400)
+	format = models.CharField(max_length=400)
+
+	def __unicode__(self):
+		return u'%s' % self.label
+
 class KeywordManager(models.Manager):
-	FORMATTERS = [
-		(r'^NGC *([0-9]+[a-z]?)$', r'NGC \1',),
-		(r'^NGC *([0-9]+[a-z]?/[0-9]+[a-z]?)$', r'NGC \1',),
-		(r'^GRB *([0-9]+[a-z]?)$', r'GRB \1',),
-		(r'^ARP *([0-9]+)$', r'ARP \1',),
-		(r'^IC *([0-9]+)$', r'IC \1',),
-		(r'^M *([0-9]+)$', r'M\1',),
-		(r'^LDN *([0-9]+)$', r'LDN \1',),
-		(r'^VDB *([0-9]+)$', r'VDB \1',),
-		(r'^STS\-?([0-9]+\-[a-z]?)$', r'STS-\1',),
-		(r'^OV\-?([0-9]+)?$', r'OV-\1',),
-	]
+	FORMATTERS_CACHE_KEY = 'KEYWORD_FORMATTERS'
+
+	@property
+	def formatters(self):
+		# Cache formatters for better performance
+		# The cache is cleared on deletes and saves (via signals, see below)
+		if cache.get(self.FORMATTERS_CACHE_KEY):
+			formatters = cache.get(self.FORMATTERS_CACHE_KEY)
+		else:
+			formatters = KeywordFormatter.objects.all()
+			cache.set(self.FORMATTERS_CACHE_KEY, formatters)
+		
+		return formatters
+
+	@classmethod
+	def refresh_formatters(cls):
+		cache.delete(cls.FORMATTERS_CACHE_KEY)
 	
 	def get_or_create(self, label):
 		label = label.strip()
 
-		for f in self.FORMATTERS:
-			p = re.compile(f[0], re.I)
+		for f in self.formatters:
+			p = re.compile(f.pattern, re.I)
 			if re.match(p, label):
-				label = re.sub(p, f[1], label)
+				label = re.sub(p, f.format, label)
 				break
 		
 		try:
@@ -48,13 +61,13 @@ class KeywordManager(models.Manager):
 		obsolete_count = 0
 		formatted_count = 0
 
-		for f in self.FORMATTERS:
-			keywords = self.filter(label__iregex=f[0])
+		for f in self.formatters:
+			keywords = self.filter(label__iregex=f.pattern)
 			
 			# Build groups of duplicate keywords
 			groups = {}
 			for k in keywords:
-				formatted_label = re.sub(re.compile(f[0], re.I), f[1], k.label)
+				formatted_label = re.sub(re.compile(f.pattern, re.I), f.format, k.label)
 				if groups.has_key(formatted_label):
 					groups[formatted_label].append(k)
 				else:
@@ -80,6 +93,14 @@ class KeywordManager(models.Manager):
 					primary.save()
 		
 		return (obsolete_count, formatted_count)
+
+# Clear formatter cache when formatters are updated
+
+@receiver(post_delete, sender=KeywordFormatter)
+@receiver(post_save, sender=KeywordFormatter)
+def refresh_formatters(sender, **kwargs):
+	KeywordManager.refresh_formatters()
+
 
 class Keyword(models.Model):
 	label = models.CharField(max_length=400, unique=True)

@@ -89,7 +89,7 @@ def get_apod_details(apod_date, force=False):
 	
 	html = html.strip()
 
-	old_keywords = None
+	old_keywords = ''
 
 	# Handle weird keywords comment
 	if '<!- ' in html:
@@ -116,12 +116,14 @@ def get_apod_details(apod_date, force=False):
 	}
 
 	# Parse keywords
-	if old_keywords:
-		details['keywords'] = filter(len, old_keywords.split(','))
+	meta_keywords = soup.find('meta', attrs={'name':'keywords'})
+	if meta_keywords:
+		details['keywords'] = meta_keywords['content'].split(',')
 	else:
-		meta_keywords = soup.find('meta', attrs={'name':'keywords'})
-		if meta_keywords:
-			details['keywords'] = filter(len, meta_keywords['content'].split(','))
+		details['keywords'] = old_keywords.split(',')
+
+	# Parse into a list (strip and remove empty items)
+	details['keywords'] = filter(len, map(unicode.strip, details['keywords']))
 
 	# Get info from HTML if we can read B tags at all
 	# If we can't, the page is too screwed even for Beautiful Soup
