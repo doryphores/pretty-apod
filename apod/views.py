@@ -122,7 +122,7 @@ def year(request, year):
 	return render(request, 'apod/year.html', view_data)
 
 def tags(request):
-	tags = Keyword.objects.annotate(num_pictures=Count('pictures'))
+	tags = Keyword.objects.annotate(num_pictures=Count('pictures')).filter(num_pictures__gt=0)
 
 	min_max = tags.aggregate(Min('num_pictures'), Max('num_pictures'))
 	
