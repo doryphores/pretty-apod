@@ -162,6 +162,10 @@ LOGGING = {
 
 THUMBNAIL_UPSCALE = False
 
+DEBUG_TOOLBAR_CONFIG = {
+	'INTERCEPT_REDIRECTS': False,
+}
+
 APOD_URL = "http://apod.nasa.gov/apod"
 
 APOD_ARCHIVE_URL = APOD_URL + "/archivepix.html"

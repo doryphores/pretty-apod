@@ -1,4 +1,8 @@
 from django.contrib import admin
+from django.conf.urls.defaults import patterns
+from django.http import HttpResponseRedirect
+from django.contrib.admin.views.decorators import staff_member_required
+
 from apod.models import Picture, Keyword
 
 from sorl.thumbnail import get_thumbnail
@@ -46,7 +50,23 @@ class PictureAdmin(admin.ModelAdmin):
 
 admin.site.register(Picture, PictureAdmin)
 
+@staff_member_required
+def format_label_view(request, model_admin):
+	result = Keyword.objects.format_labels()
+	
+	model_admin.message_user(request, u'Successfully formatted keyword labels (%d obsolete keywords removed, %d keywords reformatted)' % result)
+	
+	return HttpResponseRedirect('../')
+
 class KeywordAdmin(admin.ModelAdmin):
 	search_fields = ['label']
+
+	def format_labels(self, request):
+		return format_label_view(request, self)
+	
+	def get_urls(self):
+		urls = super(KeywordAdmin, self).get_urls()
+		my_urls = patterns('', (r'^format/$', self.format_labels))
+		return my_urls + urls
 
 admin.site.register(Keyword, KeywordAdmin)

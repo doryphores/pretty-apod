@@ -45,6 +45,9 @@ class KeywordManager(models.Manager):
 			return self.create(label=label)
 
 	def format_labels(self):
+		obsolete_count = 0
+		formatted_count = 0
+
 		for f in self.FORMATTERS:
 			keywords = self.filter(label__iregex=f[0])
 			
@@ -65,13 +68,18 @@ class KeywordManager(models.Manager):
 				for k in groups[label]:
 					# Switch to primary keyword
 					for p in k.pictures.all():
+						obsolete_count = obsolete_count + 1
 						p.keywords.remove(k)
 						p.keywords.add(primary)
 					# Delete obsolete keyword
 					k.delete()
 				# Update primary label to formatted version
-				primary.label = label
-				primary.save()
+				if primary.label != label:
+					formatted_count = formatted_count + 1
+					primary.label = label
+					primary.save()
+		
+		return (obsolete_count, formatted_count)
 
 class Keyword(models.Model):
 	label = models.CharField(max_length=400, unique=True)
