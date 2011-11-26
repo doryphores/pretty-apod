@@ -11,6 +11,7 @@ import urllib2
 import re
 import json
 import Image
+import datetime
 
 from apod import apodapi
 
@@ -21,6 +22,12 @@ class KeywordFormatter(models.Model):
 	pattern = models.CharField(max_length=400)
 	format = models.CharField(max_length=400)
 
+	def run(self, label_to_format):
+		p = re.compile(self.pattern, re.I)
+		if re.match(p, label_to_format):
+			label_to_format = re.sub(p, self.format, label_to_format)
+		return label_to_format
+
 	def __unicode__(self):
 		return u'%s' % self.label
 
@@ -29,8 +36,10 @@ class KeywordManager(models.Manager):
 
 	@property
 	def formatters(self):
-		# Cache formatters for better performance
-		# The cache is cleared on deletes and saves (via signals, see below)
+		"""
+		Returns all KeywordFormatter records as queryset
+		QuerySet is cached for performance
+		"""
 		if cache.get(self.FORMATTERS_CACHE_KEY):
 			formatters = cache.get(self.FORMATTERS_CACHE_KEY)
 		else:
@@ -41,16 +50,21 @@ class KeywordManager(models.Manager):
 
 	@classmethod
 	def refresh_formatters(cls):
+		"""
+		Removes the KeywordFormatter QuerySet from cache
+		Called via post_save and post_delete signals
+		"""
 		cache.delete(cls.FORMATTERS_CACHE_KEY)
 	
-	def get_or_create(self, label):
+	def get_or_create_from_label(self, label):
+		"""
+		Runs label through keyword formatters first
+		and returns existing keyword or creates a new one
+		"""
 		label = label.strip()
 
 		for f in self.formatters:
-			p = re.compile(f.pattern, re.I)
-			if re.match(p, label):
-				label = re.sub(p, f.format, label)
-				break
+			label = f.run(label)
 		
 		try:
 			return self.get(label__iexact=label)
@@ -114,6 +128,18 @@ class Keyword(models.Model):
 		ordering = ['label']
 
 
+class PictureManager(models.Manager):
+	def get_by_apodurl(self, apodurl):
+		"""
+		Returns Picture matching the APOD url (apYYMMDD.html)
+		"""
+		try:
+			date = datetime.datetime.strptime(apodurl, 'ap%y%m%d.html')
+		except ValueError:
+			raise Picture.DoesNotExist
+
+		return self.get(publish_date=date)
+
 def get_image_path(instance, filename):
 	return os.path.join('pictures', str(instance.publish_date.year), str(instance.publish_date.month), filename)
 
@@ -147,6 +173,8 @@ class Picture(models.Model):
 	loaded = models.BooleanField(default=False, verbose_name='Loaded from APOD')
 
 	keywords = models.ManyToManyField(Keyword, related_name='pictures')
+
+	objects = PictureManager()
 
 	@models.permalink
 	def get_absolute_url(self):
@@ -185,7 +213,7 @@ class Picture(models.Model):
 		self.keywords.clear()
 		
 		for word in details['keywords']:
-			self.keywords.add(Keyword.objects.get_or_create(label=word))
+			self.keywords.add(Keyword.objects.get_or_create_from_label(label=word))
 
 		self.save()
 	
