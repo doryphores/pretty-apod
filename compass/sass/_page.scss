@@ -1,5 +1,4 @@
-$bevel-light: lighten($page-bg, 10%);
-$bevel-dark: darken($page-bg, 10%);
+$border: lighten($page-bg, 10%);
 
 .page {
 	position: absolute;
@@ -43,11 +42,9 @@ $bevel-dark: darken($page-bg, 10%);
 		@include padding-trailer(0.5);
 		@include margin-leader();
 		@include margin-trailer();
-		box-shadow: $bevel-light 0 1px 0;
-		border-bottom: 1px solid $bevel-dark;
+		border-bottom: 1px solid $border;
 		text-align: center;
 		font-weight: bold;
-		// text-shadow: 1px 1px 2px #000;
 
 		&:first-child {
 			margin-top: 0;
@@ -62,7 +59,6 @@ $bevel-dark: darken($page-bg, 10%);
 			line-height: 32px;
 			margin: 0 5px;
 			font-weight: bold;
-			// @include transition(background 0.4s, color 0.4s);
 
 			&:hover {
 				background: $link-color;

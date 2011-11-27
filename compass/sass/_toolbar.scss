@@ -1,6 +1,5 @@
 $bg: #2a2a2a;
-$bevel-light: lighten($bg, 10%);
-$bevel-dark: darken($bg, 10%);
+$border: lighten($bg, 10%);
 $menu-text: darken($text-color, 10%);
 $menu-text-hover: $text-color;
 $menu-hover: darken($bg, 20%);
@@ -10,18 +9,17 @@ $menu-hover: darken($bg, 20%);
 	top: $titlebar-height + $titlebar-border;
 	left: 0;
 	bottom: 0;
-	z-index: 5;
+	z-index: 2;
 	width: $toolbar-width;
-	border-right: $toolbar-border solid $bevel-light;
+	border-right: $toolbar-border solid $border;
 	background: rgba(255,255,255,0.05);
 	text-shadow: 0 -1px 0 black;
-	// @include box-shadow(black 0 0 5px);
 
 	ul {
 		width: 100%;
 		@include adjust-font-size-to(12px);
 		margin-bottom: 20px;
-		border-top: 1px solid $bevel-light;
+		border-top: 1px solid $border;
 		&:first-child{
 			border: none;
 		}
@@ -32,7 +30,7 @@ $menu-hover: darken($bg, 20%);
 			display: block;
 			color: $menu-text;
 			padding: 5px 10px;
-			border-bottom: 1px solid $bevel-light;
+			border-bottom: 1px solid $border;
 			@include transition(all 0.5s);
 			background: rgba(0,0,0,0.2);
 			&:hover {

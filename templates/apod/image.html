@@ -17,7 +17,7 @@
 	<li><a href="{{ next.get_absolute_url }}">Next &raquo;</a></li>
 	{% endif %}{% endwith %}
 	<li><a href="{{ picture.get_apod_url }}" target="_blank">View on APOD</a></li>
-	<li><a href="#details" id="open-details">Details</a></li>
+	<li><a href="#details">Details</a></li>
 </ul>
 {% endblock %}
 
@@ -34,7 +34,7 @@
 		{% if picture.image %}
 			<img src="{{ picture.image.url }}" width="{{ picture.image.width }}" height="{{ picture.image.height }}">
 		{% else %}
-			<p id="apod-loader" data-url="{% url image_json picture.pk %}">
+			<p data-url="{% url image_json picture.pk %}">
 				I am downloading and processing this picture from APOD. Please trying again in a minute...
 			</p>
 		{% endif %}
@@ -53,10 +53,10 @@
 
 {# Details panel #}
 
-<div class="details" id="details">
-	<h2>Details</h2>
+<div class="panel" id="details">
+	<div class="inner-panel">
+		<h2>Details</h2>
 
-	<div class="panel">
 		<p>{{ picture.publish_date.day }} <a href="{% url month picture.publish_date.year picture.publish_date.month %}">{{ picture.publish_date|date:'F' }}</a> <a href="{% url year picture.publish_date.year %}">{{ picture.publish_date.year }}</a></p>
 
 		<h3>Credits</h3>

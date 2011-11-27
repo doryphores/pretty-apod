@@ -19,12 +19,6 @@
 		bottom: $viewport-padding;
 		padding: 0;
 		overflow: visible;
-
-		@include transition(left 0.4s ease-out);
-	}
-
-	.open-panel & {
-		left: $viewport-padding + $toolbar-width + $toolbar-border + $panel-width;
 	}
 
 	// Image
@@ -46,7 +40,7 @@
 	// Should be hidden when js is enabled
 	// This element is replaced by image when ready on the server
 
-	#apod-loader {
+	p {
 		.js & {
 			display: none;
 		}
@@ -76,40 +70,39 @@
 
 // Details panel
 
-.details {
+.panel {
 	position: fixed;
 	top: $titlebar-height + $titlebar-border;
 	bottom: 0;
 	left: $toolbar-width + $toolbar-border;
+	z-index: 3;
 	width: 0;
 	overflow: hidden;
 	@include rgba-background(rgba(0,0,0,0.5));
-	@include transition(width 0.4s ease-out);
 
-	.open-panel & {
+	.js & {
 		width: $panel-width;
+		visibility: hidden;
+
+		&.ready {
+			width: 0;
+			visibility: visible;
+
+			& .inner-panel {
+				margin-left: -$panel-width;
+			}
+		}
 	}
 	
-	h2 {
-		@include adjust-font-size-to(16px);
-		padding: 10px 20px 0 20px;
-		font-weight: normal;
-		width: $panel-width - 40;
-		margin-left: -$panel-width;
-		@include transition(margin 0.4s ease-out);
-		.open-panel & {
-			margin-left: 0;
-		}
-	}
-
-	.panel {
+	.inner-panel {
 		padding: 20px;
 		width: $panel-width - 40;
-		margin-left: -$panel-width;
-		@include transition(margin 0.4s ease-out);
-		.open-panel & {
-			margin-left: 0;
-		}
+	}
+
+	h2 {
+		@include adjust-font-size-to(16px);
+		@include margin-trailer();
+		font-weight: normal;
 	}
 
 	h3 {
@@ -120,6 +113,5 @@
 
 	p {
 		@include margin-trailer();
-		text-align: justify;
 	}
 }
