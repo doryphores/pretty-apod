@@ -1,6 +1,6 @@
 // Colors
 
-$page-bg: #121212;
+$page-bg: #2e2e2e;
 $text-color: #cccccc;
 $border-color: #171717;
 $link-color: #516681;
@@ -13,12 +13,15 @@ $base-line-height: 16px;
 
 // Font faces
 
-@import url(http://fonts.googleapis.com/css?family=Ubuntu:400,bold,400italic,bolditalic);
+@import url("http://fonts.googleapis.com/css?family=Ubuntu:400,bold,400italic,bolditalic");
 
 // Layout
 
-$toolbar-height: 30px;
+$titlebar-height: 40px;
+$titlebar-border: 0;
+$toolbar-width: 80px;
 $toolbar-border: 1px;
+$panel-width: 500px;
 $viewport-padding: 20px;
 
 // Compass extensions

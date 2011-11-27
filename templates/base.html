@@ -9,21 +9,24 @@
 	</script>
 </head>
 <body>
-	<header role="banner" class="toolbar">
+	<header role="banner" class="titlebar">
 		<span class="branding">PRETTY APOD</span>
 		<h1>{% block page_title %}{% endblock %}</h1>
-		<nav>
-			<ul>
-				{% block extra_nav %}
-				{% endblock extra_nav %}
-				<li><a href="{% url home %}">Today</a></li>
-				<li><a href="{% url tags %}">Tags</a></li>
-				<li><a href="#">About</a></li>
-			</ul>
-		</nav>
 	</header>
+	
+	<nav role="navigation" class="toolbar">
+		<ul>
+			<li><a href="{% url home %}">Today</a></li>
+			<li><a href="{% url tags %}">Tags</a></li>
+			<li><a href="#">About</a></li>
+		</ul>
+		{% block extra_nav %}
+		{% endblock extra_nav %}
+	</nav>
+
 	{% block main %}
 	{% endblock main %}
+	
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
 	<script src="{{ STATIC_URL }}js/scripts.js"></script>
 </body>

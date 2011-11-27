@@ -101,6 +101,8 @@
 		}
 	};
 
+	var redraw;
+
 	$("#apod").each(function () {
 		var viewport = $(this);
 
@@ -108,7 +110,7 @@
 		if (viewport.hasClass("IM")) {
 			var imageShape, message;
 
-			var redraw = function () {
+			redraw = function () {
 				// Hide any messages
 				Message.hide();
 
@@ -164,7 +166,7 @@
 
 		// Deal with embedded videos
 		if (video.length) {
-			var redraw = function () {
+			redraw = function () {
 				var viewportDims = {
 					width: viewport.width(),
 					height: viewport.height()
@@ -179,5 +181,20 @@
 			// Reposition image on browser resize
 			win.resize(redraw);
 		}
+	});
+
+	$("#open-details").click(function (e) {
+		e.preventDefault();
+		$("html").toggleClass("open-panel");
+		var clear = setInterval(redraw, 1);
+		var stopRedraw = function () {
+			clearInterval(clear);
+		};
+		$("details").bind({
+			"transitionend": stopRedraw,
+			"webkitTransitionEnd": stopRedraw,
+			"MSTransitionEnd": stopRedraw,
+			"oTransitionEnd": stopRedraw
+		});
 	});
 })(jQuery);

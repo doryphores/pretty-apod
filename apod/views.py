@@ -25,7 +25,7 @@ def image(request, year=None, month=None, day=None):
 	return render(request, 'apod/image.html', { 'picture': picture })
 
 
-def image_only(request, picture_id):
+def image_json(request, picture_id):
 	picture = get_object_or_404(Picture, pk=picture_id)
 
 	picture.get_image()
@@ -122,7 +122,7 @@ def year(request, year):
 	return render(request, 'apod/year.html', view_data)
 
 def tags(request):
-	tags = Keyword.objects.annotate(num_pictures=Count('pictures')).filter(num_pictures__gt=0)
+	tags = Keyword.objects.annotate(num_pictures=Count('pictures')).filter(num_pictures__gt=20)
 
 	min_max = tags.aggregate(Min('num_pictures'), Max('num_pictures'))
 	

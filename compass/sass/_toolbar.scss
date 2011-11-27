@@ -7,45 +7,37 @@ $menu-hover: darken($bg, 20%);
 
 .toolbar {
 	position: fixed;
-	top: 0;
+	top: $titlebar-height + $titlebar-border;
 	left: 0;
-	right: 0;
-	z-index: 4;
-	height: $toolbar-height;
-	background: $bg;
-	border-bottom: $toolbar-border solid black;
-	@include box-shadow(black 0 0 5px);
-
-	.branding,
-	h1 {
-		@include adjust-font-size-to(16px);
-		line-height: $toolbar-height;
-		font-weight: bold;
-		float: left;
-		margin: 0 20px;
-	}
+	bottom: 0;
+	z-index: 5;
+	width: $toolbar-width;
+	border-right: $toolbar-border solid $bevel-light;
+	background: rgba(255,255,255,0.05);
+	text-shadow: 0 -1px 0 black;
+	// @include box-shadow(black 0 0 5px);
 
 	ul {
-		float: right;
-		@include horizontal-list(false);
-		margin: 0 20px;
-		overflow: hidden;
-		border-left: 1px solid $bevel-dark;
-		border-right: 1px solid $bevel-light;
+		width: 100%;
+		@include adjust-font-size-to(12px);
+		margin-bottom: 20px;
+		border-top: 1px solid $bevel-light;
+		&:first-child{
+			border: none;
+		}
 	}
 
 	li {
-		line-height: $toolbar-height;
 		a {
 			display: block;
 			color: $menu-text;
-			padding: 0 10px;
-			border-right: 1px solid $bevel-dark;
-			border-left: 1px solid $bevel-light;
+			padding: 5px 10px;
+			border-bottom: 1px solid $bevel-light;
 			@include transition(all 0.5s);
+			background: rgba(0,0,0,0.2);
 			&:hover {
 				color: $menu-text-hover;
-				background: $menu-hover;
+				background: rgba(0,0,0,0.8);
 				text-decoration: none;
 			}
 		}

@@ -3,9 +3,9 @@ $bevel-dark: darken($page-bg, 10%);
 
 .page {
 	position: absolute;
-	top: 31px;
+	top: $titlebar-height + $titlebar-border;
 	bottom: 0;
-	left: 0;
+	left: $toolbar-width + $toolbar-border;
 	right: 0;
 	overflow: auto;
 
@@ -61,8 +61,8 @@ $bevel-dark: darken($page-bg, 10%);
 			white-space: nowrap;
 			line-height: 32px;
 			margin: 0 5px;
-			text-shadow: 0 -1px 0 black;
-			@include transition(background 0.4s, color 0.4s);
+			font-weight: bold;
+			// @include transition(background 0.4s, color 0.4s);
 
 			&:hover {
 				background: $link-color;

@@ -2,8 +2,8 @@
 
 #apod {
 	position: absolute;
-	top: $toolbar-height + $toolbar-border;
-	left: 0;
+	top: $titlebar-height + $titlebar-border;
+	left: $toolbar-width + $toolbar-border;
 	right: 0;
 	bottom: 0;
 	z-index: 1;
@@ -13,12 +13,18 @@
 	
 	// Viewport setup when js is on
 	.js & {
-		top: $toolbar-height + $toolbar-border + $viewport-padding;
-		left: $viewport-padding;
+		top: $titlebar-height + $titlebar-border + $viewport-padding;
+		left: $viewport-padding + $toolbar-width + $toolbar-border;
 		right: $viewport-padding;
 		bottom: $viewport-padding;
 		padding: 0;
 		overflow: visible;
+
+		@include transition(left 0.4s ease-out);
+	}
+
+	.open-panel & {
+		left: $viewport-padding + $toolbar-width + $toolbar-border + $panel-width;
 	}
 
 	// Image
@@ -72,50 +78,38 @@
 
 .details {
 	position: fixed;
+	top: $titlebar-height + $titlebar-border;
 	bottom: 0;
-	left: 0;
-	right: 0;
-	z-index: 2;
-	@include rgba-background(rgba(0,0,0,0.8));
-	border-top: 1px solid #000;
+	left: $toolbar-width + $toolbar-border;
+	width: 0;
+	overflow: hidden;
+	@include rgba-background(rgba(0,0,0,0.5));
+	@include transition(width 0.4s ease-out);
 
-	header {
-		padding: 0 20px;
-		cursor: pointer;
-		@include single-transition(background);
-
-		&:hover,
-		&.open {
-			background: #000;
-		}
-		
-		h2 {
-			@include adjust-font-size-to(16px);
-			line-height: 30px;
-			font-weight: normal;
-			text-shadow: 0 1px 2px #000;
+	.open-panel & {
+		width: $panel-width;
+	}
+	
+	h2 {
+		@include adjust-font-size-to(16px);
+		padding: 10px 20px 0 20px;
+		font-weight: normal;
+		width: $panel-width - 40;
+		margin-left: -$panel-width;
+		@include transition(margin 0.4s ease-out);
+		.open-panel & {
+			margin-left: 0;
 		}
 	}
 
 	.panel {
-		border-top: 1px solid #222;
-		padding: 15px 20px;
-		overflow: hidden;
-
-		.js & {
-			display: none;
+		padding: 20px;
+		width: $panel-width - 40;
+		margin-left: -$panel-width;
+		@include transition(margin 0.4s ease-out);
+		.open-panel & {
+			margin-left: 0;
 		}
-	}
-
-	.explanation {
-		float: left;
-		width: 62%;
-		max-width: 600px;
-	}
-
-	.extra {
-		float: right;
-		width: 34%;
 	}
 
 	h3 {
@@ -126,5 +120,6 @@
 
 	p {
 		@include margin-trailer();
+		text-align: justify;
 	}
 }

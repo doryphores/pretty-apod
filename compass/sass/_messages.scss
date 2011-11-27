@@ -3,6 +3,7 @@
 div.message {
 	position: relative;
 	top: -300px;
+	left: ($toolbar-width + $toolbar-border) / 2;
 	z-index: 3;
 	opacity: 0;
 	width: 230px;
@@ -10,7 +11,7 @@ div.message {
 	padding: 15px;
 	background: #333;
 	@include box-shadow(black 0 0 5px);
-	@include transition(all 1s ease-in-out);
+	@include transition(top 0.4s ease-out, opacity 1s ease-out);
 
 	&.loading {
 		background: #333 url(../images/loading.gif) no-repeat 15px center;

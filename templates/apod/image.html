@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load apod_tags %}
+
 {# Page title #}
 
 {% block page_title %}{{ picture.title }}{% endblock %}
@@ -7,6 +9,7 @@
 {# Extra navigation options #}
 
 {% block extra_nav %}
+<ul>
 	{% with picture.previous as previous %}{% if previous %}
 	<li><a href="{{ previous.get_absolute_url }}">&laquo; Previous</a></li>
 	{% endif %}{% endwith %}
@@ -14,6 +17,8 @@
 	<li><a href="{{ next.get_absolute_url }}">Next &raquo;</a></li>
 	{% endif %}{% endwith %}
 	<li><a href="{{ picture.get_apod_url }}" target="_blank">View on APOD</a></li>
+	<li><a href="#details" id="open-details">Details</a></li>
+</ul>
 {% endblock %}
 
 {# Main block #}
@@ -29,7 +34,7 @@
 		{% if picture.image %}
 			<img src="{{ picture.image.url }}" width="{{ picture.image.width }}" height="{{ picture.image.height }}">
 		{% else %}
-			<p id="apod-loader" data-url="{% url image_only picture.pk %}">
+			<p id="apod-loader" data-url="{% url image_json picture.pk %}">
 				I am downloading and processing this picture from APOD. Please trying again in a minute...
 			</p>
 		{% endif %}
@@ -48,33 +53,26 @@
 
 {# Details panel #}
 
-<!-- <div class="details">
-	<header>
-		<h2>Details</h2>
-	</header>
+<div class="details" id="details">
+	<h2>Details</h2>
 
 	<div class="panel">
-		<div class="explanation">
-			<h3>Explanation</h3>
-			<p>{{ picture.explanation|safe }}</p>
-		</div>
+		<p>{{ picture.publish_date.day }} <a href="{% url month picture.publish_date.year picture.publish_date.month %}">{{ picture.publish_date|date:'F' }}</a> <a href="{% url year picture.publish_date.year %}">{{ picture.publish_date.year }}</a></p>
 
-		<div class="extra">
-			<h3>Published</h3>
-			<p>{{ picture.publish_date.day }} <a href="{% url month picture.publish_date.year picture.publish_date.month %}">{{ picture.publish_date|date:'F' }}</a> <a href="{% url year picture.publish_date.year %}">{{ picture.publish_date.year }}</a></p>
+		<h3>Credits</h3>
+		<p>{{ picture.credits|safe }}</p>
 
-			<h3>Credits</h3>
-			<p>{{ picture.credits|safe }}</p>
+		<h3>Explanation</h3>
+		<p>{{ picture.explanation|apod_html|safe }}</p>
 
-			<h3>Keywords</h3>
-			<p class="tags">
-				{% for keyword in  picture.keywords.all %}
-				<a href="#">{{ keyword }}</a>
-				{% empty %}
-				<p>None set</p>
-				{% endfor %}
-			</p>
-		</div>
+		<h3>Keywords</h3>
+		<p class="tags">
+			{% for keyword in  picture.keywords.all %}
+			<a href="#">{{ keyword }}</a>
+			{% empty %}
+			<p>None set</p>
+			{% endfor %}
+		</p>
 	</div>
-</div> -->
+</div>
 {% endblock %}

@@ -1,9 +1,0 @@
-{% if picture.image %}
-	<img src="{{ picture.image.url }}" id="large-image" width="{{ picture.image.width }}" height="{{ picture.image.height }}">
-{% else %}
-	{% if picture.has_image %}
-		<div class="message loading" data-replace="{% url image_only picture.pk %}">
-			<p>Downloading and processing picture...</p>
-		</div>
-	{% endif %}
-{% endif %}
