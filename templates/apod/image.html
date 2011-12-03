@@ -15,8 +15,7 @@
 	<span class="year"><a href="{% url year picture.publish_date.year %}">{{ picture.publish_date.year }}</a></span>
 </p>
 
-<div class="nav">
-<p>
+<div class="nav"><p>
 	{% with picture.previous as previous %}{% if previous %}
 	<a href="{{ previous.get_absolute_url }}" class="prev">
 		<span class="preview"><span>
@@ -26,6 +25,8 @@
 			{% endif %}
 		</span></span>
 	</a>
+	{% else %}
+	<span class="disabled"></span>
 	{% endif %}{% endwith %}
 	{% with picture.next as next %}{% if next %}
 	<a href="{{ next.get_absolute_url }}" class="next">
@@ -36,19 +37,21 @@
 			{% endif %}
 		</span></span>
 	</a>
+	{% else %}
+	<span class="disabled"></span>
 	{% endif %}{% endwith %}
-</p>
-</div>
+</p></div>
 
-<a href="#details">Details</a></li>
-
-{% endblock %}
+<ul>
+	<li class="icon details"><a href="#details">Details</a></li>
+</ul>
+{% endblock extra_nav %}
 
 {# Main block #}
 
 {% block main %}
 
-{# APOD block #}
+{# Viewport #}
 
 <div class="viewport">
 	{# Image #}
@@ -89,9 +92,9 @@
 			{% for keyword in  picture.keywords.all %}
 			<a href="#">{{ keyword }}</a>
 			{% empty %}
-			<p>None set</p>
+			<p>No keywords set for this image</p>
 			{% endfor %}
 		</p>
 	</div>
 </div>
-{% endblock %}
+{% endblock main %}

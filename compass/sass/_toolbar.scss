@@ -15,39 +15,108 @@ $menu-hover: darken($bg, 20%);
 	background: $page-bg;
 	@include box-shadow(black 0 0 5px);
 	
+	// Main navigation menu
+
+	ul {
+		float: left;
+		width: 100%;
+		@include adjust-font-size-to(12px);
+		margin-bottom: 20px;
+		&:first-child{
+			border: none;
+		}
+	}
+
+	li {
+		float: left;
+		width: 100%;
+		background: rgba(0,0,0,0.2);
+		@include transition(background 0.5s);
+		margin-bottom: 1px;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+
+		a {
+			display: block;
+			color: $menu-text;
+			padding: 5px 10px;
+			@include transition(center 0.5s);
+			&:hover {
+				color: $menu-text-hover;
+				text-decoration: none;
+			}
+		}
+
+		&:hover {
+			background: rgba(0,0,0,0.8);
+		}
+
+		&.icon {
+			a {
+				min-height: 24px;
+				background-repeat: no-repeat;
+				background-position: 5px 5px;
+				padding: 8px 10px 5px 35px;
+			}
+			&.details a {
+				background-image: url(../images/details.png);
+			}
+		}
+	}
+
+	// APOD date
+
 	p.date {
 		background: rgba(0,0,0,0.1);
 		@include border-radius(2px);
-		@include box-shadow(black 0 0 2px inset);
+		@include box-shadow(black 0 0 5px inset);
 		margin: 0 5px 20px 5px;
 		padding: 5px;
 		text-align: center;
+		font-weight: bold;
+		clear: both;
+		user-select: none;
+		-moz-user-select: none;
+		-webkit-user-select: none;
 
 		span.day {
 			display: block;
-			font-size: 40px;
+			font-size: 50px;
 			line-height: 1;
-			font-weight: bold;
 			text-shadow: -1px-1px 0 black;
+			cursor: default;
 		}
 
 		span.month {
-			text-transform: capitalize;
+			margin-right: 5px;
+			text-transform: uppercase;
 		}
 	}
+
+	// APOD previous and next navigation
 
 	div.nav {
 		position: relative;
 		float: left;
 		width: 100%;
+		margin-bottom: 20px;
 		p {
 			float: left;
-			background: url(../images/next_prev.png) no-repeat 0 center;
+			width: 100%;
+			background: url(../images/next_prev.png) no-repeat center center;
 			margin: 0;
+		}
+		span.disabled {
+			float: left;
+			width: $toolbar-width / 2;
+			height: 40px;
+			background: rgba(red($page-bg),green($page-bg),blue($page-bg),0.9);
 		}
 		a {
 			float: left;
-			width: 40px;
+			width: $toolbar-width / 2;
 			height: 40px;
 			text-decoration: none;
 			background: rgba(red($page-bg),green($page-bg),blue($page-bg),0.5);
@@ -99,32 +168,6 @@ $menu-hover: darken($bg, 20%);
 					margin: 0;
 					@include transition-delay(1s);
 				}
-			}
-		}
-	}
-
-	ul {
-		width: 100%;
-		@include adjust-font-size-to(12px);
-		margin-bottom: 20px;
-		border-top: 1px solid $border;
-		&:first-child{
-			border: none;
-		}
-	}
-
-	li {
-		a {
-			display: block;
-			color: $menu-text;
-			padding: 5px 10px;
-			border-bottom: 1px solid $border;
-			@include transition(all 0.5s);
-			background: rgba(0,0,0,0.2);
-			&:hover {
-				color: $menu-text-hover;
-				background: rgba(0,0,0,0.8);
-				text-decoration: none;
 			}
 		}
 	}
