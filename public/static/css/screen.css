@@ -76,7 +76,7 @@ html {
 @media -sass-debug-info{filename{font-family:file\:\/\/\/var\/lib\/gems\/1\.8\/gems\/compass-0\.11\.5\/frameworks\/compass\/stylesheets\/compass\/typography\/_vertical_rhythm\.scss}line{font-family:\0000351}}
 html body {
   font-size: 75%;
-  line-height: 1.333em;
+  line-height: 1.5em;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/var\/lib\/gems\/1\.8\/gems\/compass-0\.11\.5\/frameworks\/compass\/stylesheets\/compass\/typography\/_vertical_rhythm\.scss}line{font-family:\0000355}}
 html html > body {
@@ -113,17 +113,17 @@ a:hover {
   top: 0;
   left: 0;
   right: 0;
-  z-index: 4;
+  z-index: 5;
   height: 40px;
   padding-left: 81px;
-  background: rgba(255, 255, 255, 0.1);
+  background: #2e2e2e;
   border-bottom: 0 solid black;
   -moz-box-shadow: black 0 0 5px;
   -webkit-box-shadow: black 0 0 5px;
   -o-box-shadow: black 0 0 5px;
   box-shadow: black 0 0 5px;
   font-size: 1.333em;
-  line-height: 2em;
+  line-height: 2.25em;
   line-height: 40px;
   font-weight: bold;
   text-shadow: 0 -1px 0 black;
@@ -141,25 +141,150 @@ a:hover {
   top: 40px;
   left: 0;
   bottom: 0;
-  z-index: 2;
+  z-index: 3;
   width: 80px;
   border-right: 1px solid #444444;
-  background: rgba(255, 255, 255, 0.05);
-  text-shadow: 0 -1px 0 black;
+  background: #2e2e2e;
+  -moz-box-shadow: black 0 0 5px;
+  -webkit-box-shadow: black 0 0 5px;
+  -o-box-shadow: black 0 0 5px;
+  box-shadow: black 0 0 5px;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_toolbar\.scss}line{font-family:\0000318}}
+.toolbar p.date {
+  background: rgba(0, 0, 0, 0.1);
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  -o-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -khtml-border-radius: 2px;
+  border-radius: 2px;
+  -moz-box-shadow: black 0 0 2px inset;
+  -webkit-box-shadow: black 0 0 2px inset;
+  -o-box-shadow: black 0 0 2px inset;
+  box-shadow: black 0 0 2px inset;
+  margin: 0 5px 20px 5px;
+  padding: 5px;
+  text-align: center;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_toolbar\.scss}line{font-family:\0000326}}
+.toolbar p.date span.day {
+  display: block;
+  font-size: 40px;
+  line-height: 1;
+  font-weight: bold;
+  text-shadow: -1px -1px 0 black;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_toolbar\.scss}line{font-family:\0000334}}
+.toolbar p.date span.month {
+  text-transform: capitalize;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_toolbar\.scss}line{font-family:\0000339}}
+.toolbar div.nav {
+  position: relative;
+  float: left;
+  width: 100%;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_toolbar\.scss}line{font-family:\0000343}}
+.toolbar div.nav p {
+  float: left;
+  background: url(../images/next_prev.png) no-repeat 0 center;
+  margin: 0;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_toolbar\.scss}line{font-family:\0000348}}
+.toolbar div.nav a {
+  float: left;
+  width: 40px;
+  height: 40px;
+  text-decoration: none;
+  background: rgba(46, 46, 46, 0.5);
+  -moz-transition: background 0.5s;
+  -webkit-transition: background 0.5s;
+  -o-transition: background 0.5s;
+  transition: background 0.5s;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_toolbar\.scss}line{font-family:\0000356}}
+.toolbar div.nav a:hover {
+  background: rgba(46, 46, 46, 0);
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_toolbar\.scss}line{font-family:\0000360}}
+.toolbar div.nav a.next {
+  float: right;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_toolbar\.scss}line{font-family:\0000364}}
+.toolbar div.nav a span.preview {
+  position: absolute;
+  left: 100%;
+  top: -50%;
+  width: 0;
+  padding: 5px 0;
+  overflow: hidden;
+  margin-left: 1px;
+  -moz-transition: width 0.4s;
+  -webkit-transition: width 0.4s;
+  -o-transition: width 0.4s;
+  transition: width 0.4s;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_toolbar\.scss}line{font-family:\0000374}}
+.toolbar div.nav a span.preview span {
+  display: block;
+  padding: 5px;
+  width: 120px;
+  margin-left: -136px;
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid #444444;
+  border-left: 0;
+  -moz-border-radius: 0 3px 3px 0;
+  -webkit-border-radius: 0 3px 3px 0;
+  -o-border-radius: 0 3px 3px 0;
+  -ms-border-radius: 0 3px 3px 0;
+  -khtml-border-radius: 0 3px 3px 0;
+  border-radius: 0 3px 3px 0;
+  text-align: center;
+  color: #b3b3b3;
+  -moz-transition: margin 0.4s;
+  -webkit-transition: margin 0.4s;
+  -o-transition: margin 0.4s;
+  transition: margin 0.4s;
+  -moz-box-shadow: black 0 0 5px;
+  -webkit-box-shadow: black 0 0 5px;
+  -o-box-shadow: black 0 0 5px;
+  box-shadow: black 0 0 5px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_toolbar\.scss}line{font-family:\0000389}}
+.toolbar div.nav a span.preview img {
+  margin-top: 4px;
+  display: block;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_toolbar\.scss}line{font-family:\0000395}}
+.toolbar div.nav a:hover span.preview {
+  width: 136px;
+  -moz-transition-delay: 1s;
+  -webkit-transition-delay: 1s;
+  -o-transition-delay: 1s;
+  transition-delay: 1s;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_toolbar\.scss}line{font-family:\0000398}}
+.toolbar div.nav a:hover span.preview span {
+  margin: 0;
+  -moz-transition-delay: 1s;
+  -webkit-transition-delay: 1s;
+  -o-transition-delay: 1s;
+  transition-delay: 1s;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_toolbar\.scss}line{font-family:\00003106}}
 .toolbar ul {
   width: 100%;
   font-size: 1em;
-  line-height: 1.333em;
+  line-height: 1.5em;
   margin-bottom: 20px;
   border-top: 1px solid #444444;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_toolbar\.scss}line{font-family:\0000323}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_toolbar\.scss}line{font-family:\00003111}}
 .toolbar ul:first-child {
   border: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_toolbar\.scss}line{font-family:\0000329}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_toolbar\.scss}line{font-family:\00003117}}
 .toolbar li a {
   display: block;
   color: #b3b3b3;
@@ -171,15 +296,15 @@ a:hover {
   transition: all 0.5s;
   background: rgba(0, 0, 0, 0.2);
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_toolbar\.scss}line{font-family:\0000336}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_toolbar\.scss}line{font-family:\00003124}}
 .toolbar li a:hover {
   color: #cccccc;
   background: rgba(0, 0, 0, 0.8);
   text-decoration: none;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_apod\.scss}line{font-family:\000033}}
-#apod {
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_picture\.scss}line{font-family:\000033}}
+.viewport {
   position: absolute;
   top: 40px;
   left: 81px;
@@ -190,8 +315,8 @@ a:hover {
   padding: 20px;
   text-align: center;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_apod\.scss}line{font-family:\0000315}}
-.js #apod {
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_picture\.scss}line{font-family:\0000315}}
+.js .viewport {
   top: 60px;
   left: 101px;
   right: 20px;
@@ -199,15 +324,15 @@ a:hover {
   padding: 0;
   overflow: visible;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_apod\.scss}line{font-family:\0000326}}
-#apod img {
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_picture\.scss}line{font-family:\0000326}}
+.viewport img {
   -moz-box-shadow: black 0 0 5px;
   -webkit-box-shadow: black 0 0 5px;
   -o-box-shadow: black 0 0 5px;
   box-shadow: black 0 0 5px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_apod\.scss}line{font-family:\0000329}}
-.js #apod img {
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_picture\.scss}line{font-family:\0000329}}
+.js .viewport img {
   position: absolute;
   opacity: 0;
   -moz-transition-property: opacity;
@@ -223,85 +348,80 @@ a:hover {
   -o-transition-timing-function: ease-in;
   transition-timing-function: ease-in;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_apod\.scss}line{font-family:\0000333}}
-.js #apod img.loaded {
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_picture\.scss}line{font-family:\0000333}}
+.js .viewport img.loaded {
   opacity: 1;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_apod\.scss}line{font-family:\0000344}}
-.js #apod p {
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_picture\.scss}line{font-family:\0000344}}
+.js .viewport p {
   display: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_apod\.scss}line{font-family:\0000351}}
-#apod iframe {
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_picture\.scss}line{font-family:\0000351}}
+.viewport iframe {
   background: black;
-  -moz-box-shadow: black 0 0 10px;
-  -webkit-box-shadow: black 0 0 10px;
-  -o-box-shadow: black 0 0 10px;
-  box-shadow: black 0 0 10px;
+  -moz-box-shadow: black 0 0 5px;
+  -webkit-box-shadow: black 0 0 5px;
+  -o-box-shadow: black 0 0 5px;
+  box-shadow: black 0 0 5px;
   display: block;
   margin: 80px auto 0 auto;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_apod\.scss}line{font-family:\0000357}}
-.js #apod iframe {
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_picture\.scss}line{font-family:\0000357}}
+.js .viewport iframe {
   display: none;
   position: absolute;
   margin: 0;
   top: 0;
   left: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_apod\.scss}line{font-family:\0000364}}
-.js #apod iframe.loaded {
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_picture\.scss}line{font-family:\0000364}}
+.js .viewport iframe.loaded {
   display: block;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_apod\.scss}line{font-family:\0000373}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_panel\.scss}line{font-family:\000033}}
 .panel {
   position: fixed;
   top: 40px;
   bottom: 0;
   left: 81px;
-  z-index: 3;
+  z-index: 2;
   width: 0;
-  overflow: hidden;
-  background: url('../images/rgbapng/0000007f.png?1322314695');
-  background: rgba(0, 0, 0, 0.5);
+  overflow: auto;
+  overflow-x: hidden;
+  background: url('../images/rgbapng/00000033.png?1322599005');
+  background: rgba(0, 0, 0, 0.2);
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_apod\.scss}line{font-family:\0000383}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_panel\.scss}line{font-family:\0000314}}
 .js .panel {
   width: 500px;
   visibility: hidden;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_apod\.scss}line{font-family:\0000387}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_panel\.scss}line{font-family:\0000318}}
 .js .panel.ready {
   width: 0;
   visibility: visible;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_apod\.scss}line{font-family:\0000391}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_panel\.scss}line{font-family:\0000322}}
 .js .panel.ready .inner-panel {
   margin-left: -500px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_apod\.scss}line{font-family:\0000397}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_panel\.scss}line{font-family:\0000328}}
 .panel .inner-panel {
   padding: 20px;
   width: 460px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_apod\.scss}line{font-family:\00003102}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_panel\.scss}line{font-family:\0000333}}
 .panel h2 {
-  font-size: 1.333em;
-  line-height: 2em;
-  margin-bottom: 1.333em;
-  font-weight: normal;
-}
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_apod\.scss}line{font-family:\00003108}}
-.panel h3 {
   font-size: 1.167em;
-  line-height: 2.286em;
-  font-weight: normal;
-  text-shadow: 0 1px 2px #000;
+  line-height: 1.286em;
+  margin-bottom: 0.5em;
+  font-weight: bold;
+  text-shadow: 0 -1px 0 black;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_apod\.scss}line{font-family:\00003114}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_panel\.scss}line{font-family:\0000340}}
 .panel p {
-  margin-bottom: 1.333em;
+  margin-bottom: 1.5em;
 }
 
 @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_messages\.scss}line{font-family:\000033}}
@@ -309,33 +429,32 @@ div.message {
   position: relative;
   top: -300px;
   left: 40.5px;
-  z-index: 5;
+  z-index: 4;
   opacity: 0;
   width: 230px;
   margin: 0 auto;
   padding: 15px;
-  background: #333;
-  -moz-box-shadow: black 0 0 5px;
-  -webkit-box-shadow: black 0 0 5px;
-  -o-box-shadow: black 0 0 5px;
-  box-shadow: black 0 0 5px;
-  -moz-transition: top 0.4s ease-out, opacity 1s ease-out;
-  -webkit-transition: top 0.4s ease-out, opacity 1s ease-out;
-  -o-transition: top 0.4s ease-out, opacity 1s ease-out;
-  transition: top 0.4s ease-out, opacity 1s ease-out;
+  -moz-box-shadow: black 0 0 4px;
+  -webkit-box-shadow: black 0 0 4px;
+  -o-box-shadow: black 0 0 4px;
+  box-shadow: black 0 0 4px;
+  -moz-transition: top 1s ease-out, opacity 1s ease-out;
+  -webkit-transition: top 1s ease-out, opacity 1s ease-out;
+  -o-transition: top 1s ease-out, opacity 1s ease-out;
+  transition: top 1s ease-out, opacity 1s ease-out;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_messages\.scss}line{font-family:\0000316}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_messages\.scss}line{font-family:\0000315}}
 div.message.loading {
-  background: #333333 url(../images/loading.gif) no-repeat 15px center;
+  background: rgba(255, 255, 255, 0.1) url(../images/loading.gif) no-repeat 15px center;
   padding-left: 60px;
   min-height: 31px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_messages\.scss}line{font-family:\0000323}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_messages\.scss}line{font-family:\0000322}}
 div.message.open {
   opacity: 1;
   top: 200px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_messages\.scss}line{font-family:\0000328}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_messages\.scss}line{font-family:\0000327}}
 div.message p {
   font-weight: bold;
   margin: 0;
@@ -383,10 +502,10 @@ div.message p {
 @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_page\.scss}line{font-family:\0000340}}
 .page h2 {
   font-size: 1.833em;
-  line-height: 1.455em;
-  padding-bottom: 0.667em;
-  margin-top: 1.333em;
-  margin-bottom: 1.333em;
+  line-height: 1.636em;
+  padding-bottom: 0.75em;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
   border-bottom: 1px solid #484848;
   text-align: center;
   font-weight: bold;
@@ -461,7 +580,7 @@ div.message p {
 @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_calendar\.scss}line{font-family:\0000314}}
 .calendar td {
   font-size: 0.917em;
-  line-height: 1.455em;
+  line-height: 1.636em;
   vertical-align: top;
   background: rgba(0, 0, 0, 0.2);
 }
@@ -490,6 +609,7 @@ div.message p {
 @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_calendar\.scss}line{font-family:\0000342}}
 .calendar span.day {
   position: absolute;
+  z-index: 1;
   top: 0;
   left: 0;
   width: 100%;
@@ -498,37 +618,40 @@ div.message p {
   font-weight: bold;
   text-align: center;
   text-shadow: 0 0 3px black;
+  cursor: default;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_calendar\.scss}line{font-family:\0000354}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_calendar\.scss}line{font-family:\0000356}}
 .calendar a {
   position: relative;
+  z-index: 2;
   display: block;
   width: 120px;
   height: 90px;
   text-decoration: none;
   overflow: hidden;
   color: #cccccc;
+  background: rgba(0, 0, 0, 0);
   -moz-transition: background 0.6s;
   -webkit-transition: background 0.6s;
   -o-transition: background 0.6s;
   transition: background 0.6s;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_calendar\.scss}line{font-family:\0000365}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_calendar\.scss}line{font-family:\0000369}}
 .calendar a span {
   display: block;
-  opacity: 0;
   text-align: center;
   padding: 90px 5px 5px 5px;
-  -moz-transition: all 0.4s;
-  -webkit-transition: all 0.4s;
-  -o-transition: all 0.4s;
-  transition: all 0.4s;
+  opacity: 0;
+  -moz-transition: padding 0.4s, opacity 0.6s ease-in-out 0.1s;
+  -webkit-transition: padding 0.4s, opacity 0.6s ease-in-out 0.1s;
+  -o-transition: padding 0.4s, opacity 0.6s ease-in-out 0.1s;
+  transition: padding 0.4s, opacity 0.6s ease-in-out 0.1s;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_calendar\.scss}line{font-family:\0000373}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_calendar\.scss}line{font-family:\0000377}}
 .calendar a:hover {
   background: rgba(0, 0, 0, 0.8);
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_calendar\.scss}line{font-family:\0000376}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_calendar\.scss}line{font-family:\0000380}}
 .calendar a:hover span {
   opacity: 1;
   padding-top: 10px;

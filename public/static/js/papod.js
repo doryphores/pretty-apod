@@ -39,7 +39,7 @@ $.Class("PAPOD.Base",
 	}
 );
 
-// Message class
+// Message class (for showing user messages)
 
 PAPOD.Base.extend("PAPOD.Message",
 	// Static methods and properties
@@ -112,6 +112,12 @@ PAPOD.Base.extend("PAPOD.Viewport",
 
 		init: function (el, options) {
 			this.element = el;
+			
+			// Do nothing if the element doesn't exist
+			if (this.element.length == 0) {
+				return;
+			}
+
 			this.options = options;
 
 			if (this.options.events) {
@@ -219,6 +225,8 @@ PAPOD.Base.extend("PAPOD.Viewport",
 	}
 );
 
+// Panel class (handles opening and closing toolbar panels)
+
 PAPOD.Base.extend("PAPOD.Panel",
 	{
 		openPanel: null
@@ -262,9 +270,11 @@ PAPOD.Base.extend("PAPOD.Panel",
 	}
 );
 
+// Initialise loading message
 var loadingMessage = new PAPOD.Message("loading", "Please wait while I download and process the image...");
 
-var viewport = new PAPOD.Viewport("#apod", {
+// Enhance viewport
+var viewport = new PAPOD.Viewport(".viewport", {
 	events: {
 		loading: function () {
 			loadingMessage.show();
@@ -275,6 +285,7 @@ var viewport = new PAPOD.Viewport("#apod", {
 	}
 });
 
+// Enhance panels
 $(".panel").each(function () {
 	var panel = new PAPOD.Panel(this);
 	panel.addEvent("toggle", function (e, closing) {

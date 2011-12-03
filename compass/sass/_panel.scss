@@ -1,0 +1,43 @@
+// Details panel
+
+.panel {
+	position: fixed;
+	top: $titlebar-height + $titlebar-border;
+	bottom: 0;
+	left: $toolbar-width + $toolbar-border;
+	z-index: 2;
+	width: 0;
+	overflow: auto;
+	overflow-x: hidden; // Disable horizontal scrolling
+	@include rgba-background(rgba(0,0,0,0.2));
+	
+	.js & {
+		width: $panel-width;
+		visibility: hidden;
+
+		&.ready {
+			width: 0;
+			visibility: visible;
+
+			& .inner-panel {
+				margin-left: -$panel-width;
+			}
+		}
+	}
+	
+	.inner-panel {
+		padding: 20px;
+		width: $panel-width - 40;
+	}
+
+	h2 {
+		@include adjust-font-size-to(14px);
+		margin-bottom: 0.5em;
+		font-weight: bold;
+		text-shadow: 0 -1px 0 #000;
+	}
+
+	p {
+		@include margin-trailer();
+	}
+}

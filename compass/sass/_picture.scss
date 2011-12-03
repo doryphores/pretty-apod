@@ -1,6 +1,6 @@
 // APOD
 
-#apod {
+.viewport {
 	position: absolute;
 	top: $titlebar-height + $titlebar-border;
 	left: $toolbar-width + $toolbar-border;
@@ -50,7 +50,7 @@
 
 	iframe {
 		background: black;
-		@include box-shadow(black 0 0 10px);
+		@include box-shadow(black 0 0 5px);
 		display: block;
 		// Basic positioning when js is off
 		margin: 80px auto 0 auto;
@@ -65,53 +65,5 @@
 				display: block;
 			}
 		}
-	}
-}
-
-// Details panel
-
-.panel {
-	position: fixed;
-	top: $titlebar-height + $titlebar-border;
-	bottom: 0;
-	left: $toolbar-width + $toolbar-border;
-	z-index: 3;
-	width: 0;
-	overflow: hidden;
-	@include rgba-background(rgba(0,0,0,0.5));
-
-	.js & {
-		width: $panel-width;
-		visibility: hidden;
-
-		&.ready {
-			width: 0;
-			visibility: visible;
-
-			& .inner-panel {
-				margin-left: -$panel-width;
-			}
-		}
-	}
-	
-	.inner-panel {
-		padding: 20px;
-		width: $panel-width - 40;
-	}
-
-	h2 {
-		@include adjust-font-size-to(16px);
-		@include margin-trailer();
-		font-weight: normal;
-	}
-
-	h3 {
-		@include adjust-font-size-to(14px);
-		font-weight: normal;
-		text-shadow: 0 1px 2px #000;
-	}
-
-	p {
-		@include margin-trailer();
 	}
 }

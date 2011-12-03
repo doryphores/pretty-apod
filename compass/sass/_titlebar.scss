@@ -3,10 +3,10 @@
 	top: 0;
 	left: 0;
 	right: 0;
-	z-index: 4;
+	z-index: 5;
 	height: $titlebar-height;
 	padding-left: $toolbar-width + $toolbar-border;
-	background: rgba(255,255,255,0.1);
+	background: $page-bg;
 	border-bottom: $titlebar-border solid black;
 	@include box-shadow(black 0 0 5px);
 	@include adjust-font-size-to(16px);
