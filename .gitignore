@@ -3,7 +3,7 @@
 *.sublime*
 .env
 logs
-public/media
-public/static/admin
+public/assets/media
+public/assets/admin
 .sass-cache
-public/static/images/icons
+public/assets/images/icons

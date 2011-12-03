@@ -4,10 +4,10 @@ require "rgbapng"
 
 # Set this to the root of your project when deployed:
 http_path = "/"
-css_dir = "../public/static/css"
+css_dir = "../public/assets/css"
 sass_dir = "sass"
-images_dir = "../public/static/images"
-javascripts_dir = "../public/static/js"
+images_dir = "../public/assets/images"
+javascripts_dir = "../public/assets/js"
 
 # You can select your preferred output style here (can be overridden via the command line):
 # output_style = :expanded or :nested or :compact or :compressed
