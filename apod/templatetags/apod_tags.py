@@ -35,6 +35,8 @@ def picture_url(match):
 
 @register.filter
 def apod_html(html):
+	# Trim href attributes
+	html = re.sub(r'href="\s*([^"]+)\s*"', r'href="\1"', html)
 	# Convert APOD links to PRETTY APOD links
 	html = re.sub(r'ap[0-9]{6}\.html', picture_url, html)
 	# Convert relative links to point to actual page on APOD site
