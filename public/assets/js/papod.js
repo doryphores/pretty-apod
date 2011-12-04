@@ -1,3 +1,13 @@
+// jQuery.support.transition
+// to verify that CSS3 transition is supported (or any of its browser-specific implementations)
+$.support.transition = (function(){
+	var thisBody = document.body || document.documentElement,
+	thisStyle = thisBody.style,
+	support = thisStyle.transition !== undefined || thisStyle.WebkitTransition !== undefined || thisStyle.MozTransition !== undefined || thisStyle.MsTransition !== undefined || thisStyle.OTransition !== undefined;
+	
+	return support;
+})();
+
 // Base class (debug and event handling methods)
 
 $.Class("PAPOD.Base",
@@ -99,13 +109,6 @@ PAPOD.Base.extend("PAPOD.Viewport",
 
 	// Instance methods and properties
 	{
-		offsets: {
-			top: 0,
-			right: 0,
-			bottom: 0,
-			left: 0
-		},
-
 		setup: function (htmlElement, options) {
 			return [$(htmlElement), $.extend({}, this.Class.defaults, options)];
 		},
@@ -124,7 +127,7 @@ PAPOD.Base.extend("PAPOD.Viewport",
 				this.addEvents(this.options.events);
 			}
 			
-			this.image = this.element.children().first();
+			this.image = $(".picture", this.element).first();
 			var imageTag = this.image.get(0).tagName.toLowerCase();
 
 			if (imageTag == "iframe") {
@@ -147,22 +150,24 @@ PAPOD.Base.extend("PAPOD.Viewport",
 		},
 
 		initImage: function () {
-			this.imageWidth = parseInt(this.image.attr("width"));
-			this.imageHeight = parseInt(this.image.attr("height"));
+			this.imageWidth = parseInt(this.image.css("max-width"));
+			this.imageHeight = parseInt(this.image.css("max-height"));
 			this.imageAspectRatio = this.imageWidth / this.imageHeight;
 			this.redraw();
 			
 			// Apply loaded class (for opacity transition)
-			this.image.addClass("loaded");
+			setTimeout(this.proxy(function () {
+				this.image.addClass("loaded");
+			}, 500));
 			
 			$(window).resize(this.proxy("redraw"));
 		},
 
 		processImage: function (image_data) {
 			// Replace with empty IMG tag
-			var imgTag = ($('<img />').attr({
-				width: image_data.width,
-				height: image_data.height
+			var imgTag = ($('<img />').css({
+				maxWidth: image_data.width,
+				maxHeight: image_data.height
 			}));
 			this.image.replaceWith(imgTag);
 			this.image = imgTag;
@@ -178,49 +183,28 @@ PAPOD.Base.extend("PAPOD.Viewport",
 			image.src = image_data.url;
 		},
 
-		getImageProps: function (offsets) {
-			// Apply any offsets and save them
-			this.offsets  = $.extend(this.offsets, offsets);
-
+		redraw: function () {
 			// Measure viewport
-			var viewportWidth = this.element.width() - this.offsets.left - this.offsets.right;
-			var viewportHeight = this.element.height() - this.offsets.top - this.offsets.bottom;
+			var viewportWidth = this.element.width();
+			var viewportHeight = this.element.height();
 			var viewportAspectRatio = viewportWidth / viewportHeight;
 
-			// Calculate if downscale needed
 			var downscale = this.imageWidth > viewportWidth || this.imageHeight > viewportHeight;
 
-			// New CSS properties to be applied
-			var css = {
-				width: this.imageWidth,
-				height: this.imageHeight
-			};
-
-			// Calculate new size if needed
-			if ((this.mediaType == "image" && this.options.upscale) || downscale) {
-				if (this.imageAspectRatio < viewportAspectRatio) {
-					css.width = Math.round(viewportHeight / this.imageHeight * this.imageWidth);
-					css.height = viewportHeight;
-				} else {
-					css.height = Math.round(viewportWidth / this.imageWidth * this.imageHeight);
-					css.width = viewportWidth;
-				}
+			if (downscale && viewportAspectRatio > this.imageAspectRatio) {
+				this.element.addClass("portrait");
+			} else {
+				this.element.removeClass("portrait");
 			}
-
-			// Calculate new positioning
-			css.top = Math.round((viewportHeight - css.height) / 2) + this.offsets.top;
-			css.left = Math.round((viewportWidth - css.width) / 2) + this.offsets.left;
-
-			return css;
 		},
 
-		redraw: function () {
-			// Apply new CSS properties
-			this.image.css(this.getImageProps());
+		checkAspectRatio: function () {
+			this.checking = setInterval(this.proxy("redraw"), 10);
 		},
 
-		resizeTo: function (offsets) {
-			this.image.animate(this.getImageProps(offsets));
+		stopChecking: function () {
+			this.redraw();
+			clearInterval(this.checking);
 		}
 	}
 );
@@ -228,24 +212,32 @@ PAPOD.Base.extend("PAPOD.Viewport",
 // Panel class (handles opening and closing toolbar panels)
 
 PAPOD.Base.extend("PAPOD.Panel",
+	// Static methods and properties
 	{
-		openPanel: null
+		openPanel: null,
+		defaults: {
+			upscale: false,
+			events: null
+		}
 	},
 
 	{
-		init: function (el) {
-			this.element = $(el);
-			this.innerPanel = $(".inner-panel", this.element);
-			this.panelWidth = this.element.width();
-			$.fx.off = true;
-			this.element.animate({
-				width: 0
-			});
-			$.fx.off = false;
-			this.element.addClass("ready");
+		setup: function (htmlElement, options) {
+			return [$(htmlElement), $.extend({}, this.Class.defaults, options)];
+		},
 
-			this.animating
-			this.open = false;
+		init: function (el, options) {
+			this.options = options;
+
+			if (this.options.events) {
+				this.addEvents(this.options.events);
+			}
+
+			this.element = el;
+
+			this.element.bind("transitionend", this.proxy(function () {
+				this.fireEvent("complete");
+			}));
 
 			$("a[href=#" + this.element.attr("id") + "]").click(this.proxy("togglePanel"));
 		},
@@ -253,18 +245,8 @@ PAPOD.Base.extend("PAPOD.Panel",
 		togglePanel: function (e) {
 			e.preventDefault();
 
-			this.element.animate({
-				width: this.open ? 0 : this.panelWidth
-			}, {
-				complete: this.proxy(function () {
-					this.open = !this.open;
-				})
-			});
-			
-			this.innerPanel.animate({
-				marginLeft: this.open ? -this.panelWidth : 0
-			});
-			
+			$("body").toggleClass("open-panel");
+
 			this.fireEvent("toggle", [this.open]);
 		}
 	}
@@ -287,10 +269,18 @@ var viewport = new PAPOD.Viewport(".viewport", {
 
 // Enhance panels
 $(".panel").each(function () {
-	var panel = new PAPOD.Panel(this);
-	panel.addEvent("toggle", function (e, closing) {
-		viewport.resizeTo({
-			left: closing ? 0 : panel.panelWidth
-		});
+	var panel = new PAPOD.Panel(this, {
+		events: {
+			"toggle": function (e, closing) {
+				if ($.support.transition) {
+					viewport.checkAspectRatio();
+				} else {
+					viewport.redraw();
+				}
+			},
+			"complete": function () {
+				viewport.stopChecking();
+			}
+		}
 	});
 });

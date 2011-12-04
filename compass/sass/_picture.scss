@@ -10,30 +10,62 @@
 	overflow: auto;
 	padding: $viewport-padding;
 	text-align: center;
-	
+
 	// Viewport setup when js is on
 	.js & {
-		top: $titlebar-height + $titlebar-border + $viewport-padding;
-		left: $viewport-padding + $toolbar-width + $toolbar-border;
-		right: $viewport-padding;
-		bottom: $viewport-padding;
-		padding: 0;
 		overflow: visible;
+		@include transition(left 1s);
+	}
+
+	.open-panel & {
+		left: $toolbar-width + $toolbar-border + $panel-width;
+	}
+
+	.outer-viewport {
+		display: table;
+		height: 100%;
+		width: 100%;
+	}
+
+	.inner-viewport {
+		display: table-cell;
+		vertical-align: middle;
+		height: 100%;
+	}
+
+	&.portrait {
+		.outer-viewport,
+		.inner-viewport {
+			display: inline;
+		}
+
+		img {
+			width: auto;
+			height: 100%;
+		}
 	}
 
 	// Image
 
-	img {
+	.picture {
 		@include box-shadow(black 0 0 5px);
+		background: black;
+		display: inline;
+
 		// Hide initially if js is on (for nice fade effect)
 		.js & {
-			position: absolute;
+			// position: absolute;
 			opacity: 0;
 			@include single-transition(opacity, 1s, ease-in);
 			&.loaded {
 				opacity: 1;
 			}
 		}
+	}
+
+	img {
+		width: 100%;
+		height: auto;
 	}
 
 	// Loader message
@@ -49,21 +81,10 @@
 	// Videos
 
 	iframe {
-		background: black;
-		@include box-shadow(black 0 0 5px);
-		display: block;
-		// Basic positioning when js is off
-		margin: 80px auto 0 auto;
-		.js & {
-			display: none;
-			// Better positioning is achieved via js
-			position: absolute;
-			margin: 0;
-			top: 0;
-			left: 0;
-			&.loaded {
-				display: block;
-			}
-		}
+		display: inline-block !important;
+		max-width: 640px;
+		max-height: 385px;
+		width: 100%;
+		height: auto;
 	}
 }
