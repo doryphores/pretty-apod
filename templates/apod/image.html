@@ -54,31 +54,31 @@
 {# Viewport #}
 
 <div class="viewport">
+	{# Image #}
+	
+	{% if picture.media_type == "IM" %}
 	<div class="outer-viewport">
 		<div class="inner-viewport">
-		{# Image #}
-		
-		{% if picture.media_type == "IM" %}
-			{% if picture.image %}
-				<img src="{{ picture.image.url }}" style="max-width:{{ picture.image.width }}px;max-height:{{ picture.image.height }}px" class="picture">
-			{% else %}
-				<p data-url="{% url image_json picture.pk %}" class="picture">
-					I am downloading and processing this picture from APOD. Please trying again in a minute...
-				</p>
-			{% endif %}
-		{% endif %}
-		
-		{# Videos #}
-		
-		{% if picture.media_type == "YT" %}
-			<iframe class="picture youtube" type="text/html" width="640" height="385" src="http://www.youtube.com/embed/{{ picture.video_id }}?rel=0&amp;showinfo=0&amp;modestbranding=1&amp;autohide=1&amp;wmode=opaque&amp;origin=apod.dev&amp;enablejsapi=1" frameborder="0"></iframe>
-		{% endif %}
-		
-		{% if picture.media_type == "VI" %}
-			<iframe class="picture vimeo" src="http://player.vimeo.com/video/{{ picture.video_id }}?title=0&amp;byline=0&amp;portrait=0" width="640" height="385" frameborder="0"></iframe>
+		{% if picture.image %}
+			<img src="{{ picture.image.url }}" width="{{ picture.image.width }}" height="{{ picture.image.height }}" style="max-width:{{ picture.image.width }}px;max-height:{{ picture.image.height }}px" class="picture">
+		{% else %}
+			<p data-url="{% url image_json picture.pk %}" class="picture">
+				I am downloading and processing this picture from APOD. Please trying again in a minute...
+			</p>
 		{% endif %}
 		</div>
 	</div>
+	{% endif %}
+		
+	{# Videos #}
+	
+	{% if picture.media_type == "YT" %}
+		<iframe class="youtube" type="text/html" src="http://www.youtube.com/embed/{{ picture.video_id }}?rel=0&amp;showinfo=0&amp;modestbranding=1&amp;autohide=1&amp;wmode=opaque&amp;origin=apod.dev&amp;enablejsapi=1" frameborder="0"></iframe>
+	{% endif %}
+	
+	{% if picture.media_type == "VI" %}
+		<iframe class="vimeo" src="http://player.vimeo.com/video/{{ picture.video_id }}?title=0&amp;byline=0&amp;portrait=0" frameborder="0"></iframe>
+	{% endif %}
 </div>
 
 {# Details panel #}

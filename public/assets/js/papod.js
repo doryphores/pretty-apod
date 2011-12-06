@@ -102,13 +102,14 @@ PAPOD.Base.extend("PAPOD.Viewport",
 	// Static methods and properties
 	{
 		defaults: {
-			upscale: false,
 			events: null
 		}
 	},
 
 	// Instance methods and properties
 	{
+		observing: null,
+
 		setup: function (htmlElement, options) {
 			return [$(htmlElement), $.extend({}, this.Class.defaults, options)];
 		},
@@ -127,40 +128,40 @@ PAPOD.Base.extend("PAPOD.Viewport",
 				this.addEvents(this.options.events);
 			}
 			
-			this.image = $(".picture", this.element).first();
+			this.image = $(".picture", this.element);
+
+			if (this.image.length == 0) {
+				return;
+			}
+
 			var imageTag = this.image.get(0).tagName.toLowerCase();
 
-			if (imageTag == "iframe") {
-				this.mediaType = "video";
-
-				this.initImage();
+			if (imageTag == "img") {
+				// Image is ready
+				$(window).load(this.proxy("initImage"));
 			} else {
-				this.mediaType = "image";
-
-				if (imageTag == "img") {
-					// Image is ready
-					$(window).load(this.proxy("initImage"));
-				} else {
-					// Call server to process image
-					this.fireEvent("loading");
-					
-					$.getJSON(this.image.attr("data-url"), this.proxy("processImage"));
-				}
+				// Call server to process image
+				this.fireEvent("loading");
+				
+				$.getJSON(this.image.attr("data-url"), this.proxy("processImage"));
 			}
 		},
 
 		initImage: function () {
-			this.imageWidth = parseInt(this.image.css("max-width"));
-			this.imageHeight = parseInt(this.image.css("max-height"));
+			// Measure the image
+			this.imageWidth = parseInt(this.image.attr("width"));
+			this.imageHeight = parseInt(this.image.attr("height"));
 			this.imageAspectRatio = this.imageWidth / this.imageHeight;
+
+			// 
 			this.redraw();
+
+			$(window).resize(this.proxy("redraw"));
 			
 			// Apply loaded class (for opacity transition)
 			setTimeout(this.proxy(function () {
 				this.image.addClass("loaded");
 			}, 500));
-			
-			$(window).resize(this.proxy("redraw"));
 		},
 
 		processImage: function (image_data) {
@@ -189,22 +190,30 @@ PAPOD.Base.extend("PAPOD.Viewport",
 			var viewportHeight = this.element.height();
 			var viewportAspectRatio = viewportWidth / viewportHeight;
 
+			// Do we need to downscale the image?
 			var downscale = this.imageWidth > viewportWidth || this.imageHeight > viewportHeight;
 
+			// Add portrait class if we have to downscale and
 			if (downscale && viewportAspectRatio > this.imageAspectRatio) {
-				this.element.addClass("portrait");
+				this.element.addClass("maximise-height");
 			} else {
-				this.element.removeClass("portrait");
+				this.element.removeClass("maximise-height");
 			}
 		},
 
-		checkAspectRatio: function () {
-			this.checking = setInterval(this.proxy("redraw"), 10);
+		startObserver: function () {
+			this.redraw();
+			// Start observing the viewport every 10 ms
+			if ($.support.transition) {
+				this.observing = setInterval(this.proxy("redraw"), 10);
+			}
 		},
 
-		stopChecking: function () {
+		stopObserver: function () {
+			// Do a final redraw
 			this.redraw();
-			clearInterval(this.checking);
+			// And stop observing the viewport
+			clearInterval(this.observing);
 		}
 	}
 );
@@ -216,7 +225,6 @@ PAPOD.Base.extend("PAPOD.Panel",
 	{
 		openPanel: null,
 		defaults: {
-			upscale: false,
 			events: null
 		}
 	},
@@ -247,7 +255,7 @@ PAPOD.Base.extend("PAPOD.Panel",
 
 			$("body").toggleClass("open-panel");
 
-			this.fireEvent("toggle", [this.open]);
+			this.fireEvent("toggle");
 		}
 	}
 );
@@ -271,15 +279,11 @@ var viewport = new PAPOD.Viewport(".viewport", {
 $(".panel").each(function () {
 	var panel = new PAPOD.Panel(this, {
 		events: {
-			"toggle": function (e, closing) {
-				if ($.support.transition) {
-					viewport.checkAspectRatio();
-				} else {
-					viewport.redraw();
-				}
+			"toggle": function (e) {
+				viewport.startObserver();
 			},
 			"complete": function () {
-				viewport.stopChecking();
+				viewport.stopObserver();
 			}
 		}
 	});
