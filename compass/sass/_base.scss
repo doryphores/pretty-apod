@@ -21,7 +21,7 @@ $titlebar-height: 40px;
 $titlebar-border: 0;
 $toolbar-width: 100px;
 $toolbar-border: 1px;
-$panel-width: 500px;
+$panel-width: 400px;
 $viewport-padding: 20px;
 
 // Compass extensions
@@ -33,4 +33,3 @@ $viewport-padding: 20px;
 @import "compass/css3";
 @import "compass/typography/lists/horizontal-list";
 @import "compass/utilities/general/tag-cloud";
-@import "rgbapng";
