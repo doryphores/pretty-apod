@@ -49,6 +49,7 @@ $menu-hover: darken($bg, 20%);
 			}
 		}
 
+		&.active,
 		&:hover {
 			background: rgba(0,0,0,0.8);
 		}

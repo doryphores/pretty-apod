@@ -17,7 +17,7 @@
 		@include transition(left 0.8s);
 	}
 
-	.open-panel & {
+	[class|=open-panel] & {
 		left: $toolbar-width + $toolbar-border + $panel-width;
 	}
 

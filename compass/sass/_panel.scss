@@ -12,7 +12,7 @@
 	background: rgba(0,0,0,0.2);
 	@include transition(width 0.8s);
 	
-	.open-panel & {
+	.open-panel-details &#details {
 		width: $panel-width;
 
 		.inner-panel {

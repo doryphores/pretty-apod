@@ -243,48 +243,58 @@ PAPOD.Base.extend("PAPOD.Panel",
 
 			this.element = el;
 
+			this.id = this.element.attr("id");
+
+			this.toggleLink = $("a[href=#" + this.element.attr("id") + "]");
+
 			this.element.bind("transitionend", this.proxy(function () {
 				this.fireEvent("complete");
 			}));
 
-			$("a[href=#" + this.element.attr("id") + "]").click(this.proxy("togglePanel"));
+			this.toggleLink.click(this.proxy("togglePanel"));
 		},
 
 		togglePanel: function (e) {
 			e.preventDefault();
 
-			$("body").toggleClass("open-panel");
+			$("body").toggleClass("open-panel-" + this.id);
+
+			this.toggleLink.parent().toggleClass("active");
 
 			this.fireEvent("toggle");
 		}
 	}
 );
 
-// Initialise loading message
-var loadingMessage = new PAPOD.Message("loading", "Please wait while I download and process the image...");
+PAPOD.init = function () {
+	// Initialise loading message
+	var loadingMessage = new PAPOD.Message("loading", "Please wait while I download and process the image...");
 
-// Enhance viewport
-var viewport = new PAPOD.Viewport(".viewport", {
-	events: {
-		loading: function () {
-			loadingMessage.show();
-		},
-		loaded: function () {
-			loadingMessage.hide();
-		}
-	}
-});
-
-// Enhance panels
-$(".panel").each(function () {
-	var panel = new PAPOD.Panel(this, {
+	// Enhance viewport
+	var viewport = new PAPOD.Viewport(".viewport", {
 		events: {
-			"toggle": function (e) {
-				viewport.startObserver();
+			loading: function () {
+				loadingMessage.show();
 			},
-			"complete": function () {
-				viewport.stopObserver();
+			loaded: function () {
+				loadingMessage.hide();
 			}
 		}
 	});
-});
+
+	// Enhance panels
+	$(".panel").each(function () {
+		var panel = new PAPOD.Panel(this, {
+			events: {
+				"toggle": function (e) {
+					viewport.startObserver();
+				},
+				"complete": function () {
+					viewport.stopObserver();
+				}
+			}
+		});
+	});
+};
+
+PAPOD.init();
