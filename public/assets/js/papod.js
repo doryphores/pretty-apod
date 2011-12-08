@@ -166,7 +166,10 @@ PAPOD.Base.extend("PAPOD.Viewport",
 
 		processImage: function (image_data) {
 			// Replace with empty IMG tag
-			var imgTag = ($('<img />').css({
+			var imgTag = ($('<img />').attr({
+				width: image_data.width,
+				height: image_data.height
+			}).css({
 				maxWidth: image_data.width,
 				maxHeight: image_data.height
 			}));

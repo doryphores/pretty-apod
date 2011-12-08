@@ -690,12 +690,12 @@ div.message p {
 .calendar a span {
   display: block;
   text-align: center;
-  padding: 90px 5px 5px 5px;
+  padding: 30px 5px 5px 5px;
   opacity: 0;
-  -moz-transition: padding 0.4s, opacity 0.6s ease-in-out 0.1s;
-  -webkit-transition: padding 0.4s, opacity 0.6s ease-in-out 0.1s;
-  -o-transition: padding 0.4s, opacity 0.6s ease-in-out 0.1s;
-  transition: padding 0.4s, opacity 0.6s ease-in-out 0.1s;
+  -moz-transition: all 0.4s;
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  transition: all 0.4s;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_calendar\.scss}line{font-family:\0000377}}
 .calendar a:hover {
@@ -705,4 +705,65 @@ div.message p {
 .calendar a:hover span {
   opacity: 1;
   padding-top: 10px;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_picture-list\.scss}line{font-family:\000031}}
+.picture-list {
+  margin: 0 auto;
+  overflow: auto;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_picture-list\.scss}line{font-family:\000035}}
+.picture-list li {
+  float: left;
+  width: 120px;
+  height: 90px;
+  margin: 3px;
+  overflow: hidden;
+  position: relative;
+  background: rgba(0, 0, 0, 0.2);
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_picture-list\.scss}line{font-family:\0000314}}
+.picture-list li a {
+  position: relative;
+  z-index: 2;
+  display: block;
+  width: 120px;
+  height: 90px;
+  text-decoration: none;
+  overflow: hidden;
+  color: #cccccc;
+  background: rgba(0, 0, 0, 0);
+  -moz-transition: background 0.6s;
+  -webkit-transition: background 0.6s;
+  -o-transition: background 0.6s;
+  transition: background 0.6s;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_picture-list\.scss}line{font-family:\0000327}}
+.picture-list li a span {
+  position: relative;
+  z-index: 2;
+  display: block;
+  text-align: center;
+  padding: 30px 5px 5px 5px;
+  opacity: 0;
+  -moz-transition: all 0.4s;
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  transition: all 0.4s;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_picture-list\.scss}line{font-family:\0000337}}
+.picture-list li a:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_picture-list\.scss}line{font-family:\0000340}}
+.picture-list li a:hover span {
+  opacity: 1;
+  padding-top: 10px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_picture-list\.scss}line{font-family:\0000347}}
+.picture-list li img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
 }
