@@ -94,7 +94,7 @@
 		<h2>Keywords</h2>
 		<p class="tags">
 			{% for keyword in  picture.keywords.all %}
-			<a href="#">{{ keyword }}</a>
+			<a href="{{ keyword.get_absolute_url }}">{{ keyword }}</a>
 			{% empty %}
 			<p>No keywords set for this image</p>
 			{% endfor %}

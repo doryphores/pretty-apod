@@ -1,0 +1,37 @@
+{% extends "apod/page.html" %}
+
+{% load apod_tags %}
+
+{% block page_title %}Archive for keyword {{ tag }} ({{ paginator.count }} picture{{ paginator.count|pluralize }}){% endblock page_title %}
+
+{% block page %}
+<p>
+	{% if pictures.has_previous %}
+	<a href="{% url tag_page tag.slug pictures.previous_page_number %}">Previous</a>
+	{% endif %}
+	{% for p in paginator.page_range %}
+	{% if p == page %}
+	<strong>{{ p }}</strong>
+	{% else %}
+	<a href="{% url tag_page tag.slug p %}">{{ p }}</a>
+	{% endif %}
+	{% endfor %}
+	{% if pictures.has_next %}
+	<a href="{% url tag_page tag.slug pictures.next_page_number %}">Next</a>
+	{% endif %}
+</p>
+
+<ul class="picture-list">
+	{% for picture in pictures.object_list %}
+	<li>
+		{% if picture.thumb %}
+			<img src="{{ picture.thumb }}" width="120" height="90">
+		{% endif %}
+		<a href="{{ picture.get_absolute_url }}">
+			<span>{{ picture.title }}</span>
+			{# <span class="day">{{ picture.publish_date }}</span> #}
+		</a>
+	</li>
+	{% endfor %}
+</ul>
+{% endblock page %}
