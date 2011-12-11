@@ -39,19 +39,6 @@ def image_json(request, picture_id):
 
 	return HttpResponse(json.dumps(data), mimetype='application/json')
 
-
-def archive(request, page=1):
-	all_pictures  = Picture.objects.all()
-
-	paginator = Paginator(all_pictures, 25)
-
-	try:
-		pictures = paginator.page(page)
-	except (EmptyPage, InvalidPage):
-		pictures = paginator.page(1)
-
-	return render(request, 'apod/archive.html', { 'pictures': pictures })
-
 def month(request, year, month):
 	year = int(year)
 	month = int(month)
