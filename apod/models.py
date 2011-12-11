@@ -17,7 +17,7 @@ from apod import apodapi
 
 # Models
 
-class KeywordFormatter(models.Model):
+class TagFormatter(models.Model):
 	label = models.CharField(max_length=400)
 	pattern = models.CharField(max_length=400)
 	format = models.CharField(max_length=400)
@@ -31,19 +31,19 @@ class KeywordFormatter(models.Model):
 	def __unicode__(self):
 		return u'%s' % self.label
 
-class KeywordManager(models.Manager):
-	FORMATTERS_CACHE_KEY = 'KEYWORD_FORMATTERS'
+class TagManager(models.Manager):
+	FORMATTERS_CACHE_KEY = 'TAG_FORMATTERS'
 
 	@property
 	def formatters(self):
 		"""
-		Returns all KeywordFormatter records as queryset
+		Returns all TagFormatter records as queryset
 		QuerySet is cached for performance
 		"""
 		if cache.get(self.FORMATTERS_CACHE_KEY):
 			formatters = cache.get(self.FORMATTERS_CACHE_KEY)
 		else:
-			formatters = KeywordFormatter.objects.all()
+			formatters = TagFormatter.objects.all()
 			cache.set(self.FORMATTERS_CACHE_KEY, formatters)
 		
 		return formatters
@@ -51,15 +51,15 @@ class KeywordManager(models.Manager):
 	@classmethod
 	def refresh_formatters(cls):
 		"""
-		Removes the KeywordFormatter QuerySet from cache
+		Removes the TagFormatter QuerySet from cache
 		Called via post_save and post_delete signals
 		"""
 		cache.delete(cls.FORMATTERS_CACHE_KEY)
 	
 	def get_or_create_from_label(self, label):
 		"""
-		Runs label through keyword formatters first
-		and returns existing keyword or creates a new one
+		Runs label through tag formatters first
+		and returns existing tag or creates a new one
 		"""
 		label = label.strip()
 
@@ -68,7 +68,7 @@ class KeywordManager(models.Manager):
 		
 		try:
 			return self.get(label__iexact=label)
-		except Keyword.DoesNotExist:
+		except Tag.DoesNotExist:
 			return self.create(label=label)
 
 	def format_labels(self):
@@ -76,11 +76,11 @@ class KeywordManager(models.Manager):
 		formatted_count = 0
 
 		for f in self.formatters:
-			keywords = self.filter(label__iregex=f.pattern)
+			tags = self.filter(label__iregex=f.pattern)
 			
-			# Build groups of duplicate keywords
+			# Build groups of duplicate tags
 			groups = {}
-			for k in keywords:
+			for k in tags:
 				formatted_label = re.sub(re.compile(f.pattern, re.I), f.format, k.label)
 				if groups.has_key(formatted_label):
 					groups[formatted_label].append(k)
@@ -93,12 +93,12 @@ class KeywordManager(models.Manager):
 				primary = groups[label].pop()
 				# Iterate over others
 				for k in groups[label]:
-					# Switch to primary keyword
+					# Switch to primary tag
 					for p in k.pictures.all():
 						obsolete_count = obsolete_count + 1
-						p.keywords.remove(k)
-						p.keywords.add(primary)
-					# Delete obsolete keyword
+						p.tags.remove(k)
+						p.tags.add(primary)
+					# Delete obsolete tag
 					k.delete()
 				# Update primary label to formatted version
 				if primary.label != label:
@@ -114,16 +114,16 @@ class KeywordManager(models.Manager):
 
 # Clear formatter cache when formatters are updated
 
-@receiver(post_delete, sender=KeywordFormatter)
-@receiver(post_save, sender=KeywordFormatter)
+@receiver(post_delete, sender=TagFormatter)
+@receiver(post_save, sender=TagFormatter)
 def refresh_formatters(sender, **kwargs):
-	KeywordManager.refresh_formatters()
+	TagManager.refresh_formatters()
 
 
-class Keyword(models.Model):
+class Tag(models.Model):
 	label = models.CharField(max_length=400, unique=True)
 
-	objects = KeywordManager()
+	objects = TagManager()
 
 	@property
 	def slug(self):
@@ -186,7 +186,7 @@ class Picture(models.Model):
 
 	loaded = models.BooleanField(default=False, verbose_name='Loaded from APOD')
 
-	keywords = models.ManyToManyField(Keyword, related_name='pictures')
+	tags = models.ManyToManyField(Tag, related_name='pictures')
 
 	objects = PictureManager()
 
@@ -224,10 +224,10 @@ class Picture(models.Model):
 		
 		self.loaded = True
 		
-		self.keywords.clear()
+		self.tags.clear()
 		
-		for word in details['keywords']:
-			self.keywords.add(Keyword.objects.get_or_create_from_label(label=word))
+		for word in details['tags']:
+			self.tags.add(Tag.objects.get_or_create_from_label(label=word))
 
 		self.save()
 	

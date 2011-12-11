@@ -4,7 +4,7 @@ from django.db.models import Count, Min, Max
 
 from django.http import Http404, HttpResponse
 
-from apod.models import Picture, Keyword
+from apod.models import Picture, Tag
 from apod import apodapi
 
 import json
@@ -68,7 +68,7 @@ def month(request, year, month):
 
 	picture_calendar = [[dict(day=d, picture=pics.get(d, None)) for d in w] for w in cal]
 
-	tags = Keyword.objects.filter(pictures__publish_date__month=month, pictures__publish_date__year=year).annotate(num_pictures=Count('pictures')).order_by('label')
+	tags = Tag.objects.filter(pictures__publish_date__month=month, pictures__publish_date__year=year).annotate(num_pictures=Count('pictures')).order_by('label')
 
 	view_data = {
 		'month': datetime.date(year, month, 1),
@@ -122,7 +122,7 @@ def year(request, year):
 	return render(request, 'apod/year.html', view_data)
 
 def tags(request):
-	tags = Keyword.objects.annotate(num_pictures=Count('pictures')).filter(num_pictures__gt=20)
+	tags = Tag.objects.annotate(num_pictures=Count('pictures')).filter(num_pictures__gt=20)
 
 	min_max = tags.aggregate(Min('num_pictures'), Max('num_pictures'))
 	
@@ -136,11 +136,11 @@ def tag(request, tag, page=1):
 	page = int(page)
 
 	try:
-		keyword = Keyword.objects.get_by_slug(tag)
-	except Keyword.DoesNotExist:
+		tag = Tag.objects.get_by_slug(tag)
+	except Tag.DoesNotExist:
 		raise Http404
 
-	all_pictures = Picture.objects.filter(keywords=keyword)
+	all_pictures = Picture.objects.filter(tags=tag)
 
 	if all_pictures.count() == 0:
 		raise Http404
@@ -155,6 +155,6 @@ def tag(request, tag, page=1):
 	return render(request, 'apod/tag.html', {
 		'page': page,
 		'paginator': paginator,
-		'tag': keyword,
+		'tag': tag,
 		'pictures': pictures,
 	})

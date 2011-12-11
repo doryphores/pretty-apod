@@ -93,12 +93,12 @@
 		<h2>Explanation</h2>
 		<p>{{ picture.explanation|apod_html|safe }}</p>
 
-		<h2>Keywords</h2>
+		<h2>Tags</h2>
 		<p class="tags">
-			{% for keyword in  picture.keywords.all %}
-			<a href="{{ keyword.get_absolute_url }}">{{ keyword }}</a>
+			{% for tag in  picture.tags.all %}
+			<a href="{{ tag.get_absolute_url }}">{{ tag }}</a>
 			{% empty %}
-			<p>No keywords set for this image</p>
+			<p>No tags set for this image</p>
 			{% endfor %}
 		</p>
 	</div>
