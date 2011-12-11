@@ -55,12 +55,26 @@ def month(request, year, month):
 
 	picture_calendar = [[dict(day=d, picture=pics.get(d, None)) for d in w] for w in cal]
 
-	tags = Tag.objects.filter(pictures__publish_date__month=month, pictures__publish_date__year=year).annotate(num_pictures=Count('pictures')).order_by('label')
+	today = datetime.date.today()
+	last_month = 12
+
+	# Set last month to current month if looking at current year
+	if today.year == year:
+		last_month = today.month
+	
+	first_month = Picture.objects.filter(publish_date__year=year).reverse()[0].publish_date.month
+
+	# month_range = [(calendar.month_abbr[m], m) for m in ]
+
+	# tags = Tag.objects.filter(pictures__publish_date__month=month, pictures__publish_date__year=year).annotate(num_pictures=Count('pictures')).order_by('label')
 
 	view_data = {
-		'month': datetime.date(year, month, 1),
+		'year': year,
+		'month': month,
+		'archive_label': '%s %s Archive' % (calendar.month_name[month], year),
 		'calendar': picture_calendar,
-		'tags':tags,
+		'month_range': Picture.objects.filter(publish_date__year=year).dates('publish_date', 'month'),
+		# 'tags': tags,
 	}
 
 	return render(request, 'apod/month.html', view_data)
@@ -77,33 +91,25 @@ def year(request, year):
 	# Build dict indexed by date
 	pics = dict([(str(p.publish_date), p) for p in pictures])
 
-	today = datetime.date.today()
-	last_month = 12
-
-	# Set last month to current month if looking at current year
-	if today.year == year:
-		last_month = today.month
-
-	first_month = pictures[0].publish_date.month
-
 	calendars = [
 		{
-			'label': calendar.month_name[month],
+			'label': calendar.month_name[m.month],
 			'calendar': [
 				[
-					dict(day=d, picture=pics.get('%d-%#02d-%#02d' % (year, month, d), None))
+					dict(day=d, picture=pics.get('%d-%#02d-%#02d' % (year, m.month, d), None))
 					for d in w
 				]
-				for w in calendar.monthcalendar(year, month)
+				for w in calendar.monthcalendar(year, m.month)
 			]
 		}
-		for month in range(first_month, last_month+1)
+		for m in pictures.reverse().dates('publish_date', 'month')
 	]
 
 	view_data = {
 		'year': year,
+		'archive_label': '%s Archive' % year,
 		'calendars': calendars,
-		'tags':tags,
+		'year_range': Picture.objects.dates('publish_date', 'year'),
 	}
 
 	return render(request, 'apod/year.html', view_data)

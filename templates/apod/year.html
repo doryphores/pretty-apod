@@ -2,9 +2,24 @@
 
 {% load apod_tags %}
 
-{% block page_title %}{{ year }} Archive{% endblock page_title %}
+{% block page_title %}{{ archive_label }}{% endblock page_title %}
 
 {% block page %}
+
+<div class="pagination months">
+	<h3>Yearly archives:</h3>
+	<ul>
+	{% for y in year_range %}
+	<li>
+		{% if y.year == year %}
+		<strong>{{ y.year }}</strong>
+		{% else %}
+		<a href="{% url year y.year %}">{{ y.year }}</a>
+		{% endif %}
+	</li>
+	{% endfor %}
+	</ul>
+</div>
 
 {% for month in calendars %}
 <h2>{{ month.label }}</h2>
@@ -12,5 +27,4 @@
 {% include 'apod/calendar.html' %}
 {% endwith %}
 {% endfor %}
-
 {% endblock page %}
