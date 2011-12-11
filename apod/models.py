@@ -108,6 +108,10 @@ class KeywordManager(models.Manager):
 		
 		return (obsolete_count, formatted_count)
 
+	def get_by_slug(self, slug):
+		return self.extra(where=["regexp_replace(lower(label), '\\\\W+', '-', 'g')=%s"], params=[slug]).get()
+
+
 # Clear formatter cache when formatters are updated
 
 @receiver(post_delete, sender=KeywordFormatter)
@@ -120,6 +124,16 @@ class Keyword(models.Model):
 	label = models.CharField(max_length=400, unique=True)
 
 	objects = KeywordManager()
+
+	@property
+	def slug(self):
+		return re.sub(r'\W+', '-', self.label.lower()).strip('-')
+
+	@models.permalink
+	def get_absolute_url(self):
+		return ('tag', (), {
+			'tag': self.slug,
+		}) 
 
 	def __unicode__(self):
 		return u'%s' % self.label

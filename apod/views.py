@@ -131,3 +131,30 @@ def tags(request):
 		'min_count': min_max['num_pictures__min'],
 		'max_count': min_max['num_pictures__max'],
 	})
+
+def tag(request, tag, page=1):
+	page = int(page)
+
+	try:
+		keyword = Keyword.objects.get_by_slug(tag)
+	except Keyword.DoesNotExist:
+		raise Http404
+
+	all_pictures = Picture.objects.filter(keywords=keyword)
+
+	if all_pictures.count() == 0:
+		raise Http404
+
+	paginator = Paginator(all_pictures, 35)
+
+	try:
+		pictures = paginator.page(page)
+	except (EmptyPage, InvalidPage):
+		pictures = paginator.page(1)
+
+	return render(request, 'apod/tag.html', {
+		'page': page,
+		'paginator': paginator,
+		'tag': keyword,
+		'pictures': pictures,
+	})

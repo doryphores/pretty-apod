@@ -7,7 +7,7 @@
 {% block page %}
 <p class="tags">
 {% for tag in tags %}
-	<a href="#" class="{% cloud_class tag.num_pictures min_count max_count %}">{{ tag.label }}</a>
+	<a href="{{ tag.get_absolute_url }}" class="{% cloud_class tag.num_pictures min_count max_count %}">{{ tag.label }}</a>
 {% endfor %}
 </p>
 {% endblock page %}

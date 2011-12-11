@@ -1,0 +1,40 @@
+.pagination {
+	overflow: hidden;
+	margin: 20px auto;
+	text-align: center;
+
+	strong,
+	a {
+		display: inline-block;
+		font-size: 16px;
+		width: 30px;
+		line-height: 30px;
+		background: rgba(255,255,255,0.1);
+		color: white;
+		text-decoration: none;
+		@include transition(all 0.5s);
+
+		&:first-child {
+			@include border-radius(4px 0 0 4px);
+		}
+
+		&:last-child {
+			@include border-radius(0 4px 4px 0);
+		}
+
+		&:first-child:last-child {
+			@include border-radius(4px);
+		}
+	}
+
+	a:hover {
+		background: rgba(0,0,0,0.2);
+		@include transition-duration(0.2s);
+	}
+
+	strong {
+		font-weight: bold;
+		background: rgba(255,255,255,0.5);
+		color: #000;
+	}
+}
