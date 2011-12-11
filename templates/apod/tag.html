@@ -5,9 +5,10 @@
 {% block page_title %}Archive for keyword {{ tag }} ({{ paginator.count }} picture{{ paginator.count|pluralize }}){% endblock page_title %}
 
 {% block page %}
-<p>
+{% if paginator.num_pages > 1 %}
+<p class="pagination">
 	{% if pictures.has_previous %}
-	<a href="{% url tag_page tag.slug pictures.previous_page_number %}">Previous</a>
+	<a href="{% url tag_page tag.slug pictures.previous_page_number %}">&lt;</a>
 	{% endif %}
 	{% for p in paginator.page_range %}
 	{% if p == page %}
@@ -17,9 +18,10 @@
 	{% endif %}
 	{% endfor %}
 	{% if pictures.has_next %}
-	<a href="{% url tag_page tag.slug pictures.next_page_number %}">Next</a>
+	<a href="{% url tag_page tag.slug pictures.next_page_number %}">&gt;</a>
 	{% endif %}
 </p>
+{% endif %}
 
 <ul class="picture-list">
 	{% for picture in pictures.object_list %}
@@ -34,4 +36,22 @@
 	</li>
 	{% endfor %}
 </ul>
+
+{% if paginator.num_pages > 1 %}
+<p class="pagination">
+	{% if pictures.has_previous %}
+	<a href="{% url tag_page tag.slug pictures.previous_page_number %}">&lt;</a>
+	{% endif %}
+	{% for p in paginator.page_range %}
+	{% if p == page %}
+	<strong>{{ p }}</strong>
+	{% else %}
+	<a href="{% url tag_page tag.slug p %}">{{ p }}</a>
+	{% endif %}
+	{% endfor %}
+	{% if pictures.has_next %}
+	<a href="{% url tag_page tag.slug pictures.next_page_number %}">&gt;</a>
+	{% endif %}
+</p>
+{% endif %}
 {% endblock page %}

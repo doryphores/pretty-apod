@@ -709,10 +709,11 @@ div.message p {
 
 @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_picture-list\.scss}line{font-family:\000031}}
 .picture-list {
+  width: 882px;
   margin: 0 auto;
   overflow: auto;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_picture-list\.scss}line{font-family:\000035}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_picture-list\.scss}line{font-family:\000036}}
 .picture-list li {
   float: left;
   width: 120px;
@@ -722,7 +723,7 @@ div.message p {
   position: relative;
   background: rgba(0, 0, 0, 0.2);
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_picture-list\.scss}line{font-family:\0000314}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_picture-list\.scss}line{font-family:\0000315}}
 .picture-list li a {
   position: relative;
   z-index: 2;
@@ -738,7 +739,7 @@ div.message p {
   -o-transition: background 0.6s;
   transition: background 0.6s;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_picture-list\.scss}line{font-family:\0000327}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_picture-list\.scss}line{font-family:\0000328}}
 .picture-list li a span {
   position: relative;
   z-index: 2;
@@ -751,19 +752,85 @@ div.message p {
   -o-transition: all 0.4s;
   transition: all 0.4s;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_picture-list\.scss}line{font-family:\0000337}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_picture-list\.scss}line{font-family:\0000338}}
 .picture-list li a:hover {
   background: rgba(0, 0, 0, 0.8);
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_picture-list\.scss}line{font-family:\0000340}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_picture-list\.scss}line{font-family:\0000341}}
 .picture-list li a:hover span {
   opacity: 1;
   padding-top: 10px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_picture-list\.scss}line{font-family:\0000347}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_picture-list\.scss}line{font-family:\0000348}}
 .picture-list li img {
   position: absolute;
   top: 0;
   left: 0;
   z-index: 1;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_pagination\.scss}line{font-family:\000031}}
+.pagination {
+  overflow: hidden;
+  margin: 10px auto;
+  text-align: center;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_pagination\.scss}line{font-family:\000037}}
+.pagination strong,
+.pagination a {
+  display: inline-block;
+  font-size: 16px;
+  width: 30px;
+  line-height: 30px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  text-decoration: none;
+  -moz-transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_pagination\.scss}line{font-family:\0000317}}
+.pagination strong:first-child,
+.pagination a:first-child {
+  -moz-border-radius: 4px 0 0 4px;
+  -webkit-border-radius: 4px 0 0 4px;
+  -o-border-radius: 4px 0 0 4px;
+  -ms-border-radius: 4px 0 0 4px;
+  -khtml-border-radius: 4px 0 0 4px;
+  border-radius: 4px 0 0 4px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_pagination\.scss}line{font-family:\0000321}}
+.pagination strong:last-child,
+.pagination a:last-child {
+  -moz-border-radius: 0 4px 4px 0;
+  -webkit-border-radius: 0 4px 4px 0;
+  -o-border-radius: 0 4px 4px 0;
+  -ms-border-radius: 0 4px 4px 0;
+  -khtml-border-radius: 0 4px 4px 0;
+  border-radius: 0 4px 4px 0;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_pagination\.scss}line{font-family:\0000325}}
+.pagination strong:first-child:last-child,
+.pagination a:first-child:last-child {
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -o-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -khtml-border-radius: 4px;
+  border-radius: 4px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_pagination\.scss}line{font-family:\0000330}}
+.pagination a:hover {
+  background: rgba(0, 0, 0, 0.2);
+  -moz-transition-duration: 0.2s;
+  -webkit-transition-duration: 0.2s;
+  -o-transition-duration: 0.2s;
+  transition-duration: 0.2s;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/martin\/Projects\/django\/pretty-apod\/compass\/sass\/_pagination\.scss}line{font-family:\0000335}}
+.pagination strong {
+  font-weight: bold;
+  background: rgba(255, 255, 255, 0.5);
+  color: #000;
 }
