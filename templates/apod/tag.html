@@ -2,37 +2,19 @@
 
 {% load apod_tags %}
 
-{% block page_title %}Archive for keyword {{ tag }} ({{ paginator.count }} picture{{ paginator.count|pluralize }}){% endblock page_title %}
+{% block page_title %}Archive for tag "<em>{{ tag }}</em>" ({{ paginator.count }} picture{{ paginator.count|pluralize }}){% endblock page_title %}
 
 {% block page %}
-{% if paginator.num_pages > 1 %}
-<p class="pagination">
-	{% if pictures.has_previous %}
-	<a href="{% url tag_page tag.slug pictures.previous_page_number %}">&lt;</a>
-	{% endif %}
-	{% for p in paginator.page_range %}
-	{% if p == page %}
-	<strong>{{ p }}</strong>
-	{% else %}
-	<a href="{% url tag_page tag.slug p %}">{{ p }}</a>
-	{% endif %}
-	{% endfor %}
-	{% if pictures.has_next %}
-	<a href="{% url tag_page tag.slug pictures.next_page_number %}">&gt;</a>
-	{% endif %}
-</p>
-{% endif %}
-
-<ul class="picture-list">
+<ul class="archive">
 	{% for picture in pictures.object_list %}
-	<li>
+	<li class="item">
 		{% if picture.thumb %}
 			<img src="{{ picture.thumb }}" width="120" height="90">
 		{% endif %}
-		<a href="{{ picture.get_absolute_url }}">
+		<a href="{{ picture.get_absolute_url }}" class="item">
 			<span>{{ picture.title }}</span>
-			{# <span class="day">{{ picture.publish_date }}</span> #}
 		</a>
+		<span class="date">{{ picture.publish_date|date:"d b Y" }}</span>
 	</li>
 	{% endfor %}
 </ul>
