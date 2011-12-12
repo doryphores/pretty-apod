@@ -226,7 +226,7 @@ class Picture(models.Model):
 		
 		self.tags.clear()
 		
-		for word in details['tags']:
+		for word in details['keywords']:
 			self.tags.add(Tag.objects.get_or_create_from_label(label=word))
 
 		self.save()
