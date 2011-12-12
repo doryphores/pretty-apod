@@ -89,7 +89,7 @@ def get_apod_details(apod_date, force=False):
 	
 	html = html.strip()
 
-	old_keywords = ''
+	old_keywords = u''
 
 	# Handle weird keywords comment
 	if '<!- ' in html:
@@ -97,7 +97,7 @@ def get_apod_details(apod_date, force=False):
 		pat = re.compile('<!- KEYWORDS: (.+?)>', re.I)
 		keyword_search = re.search(pat, html)
 		if keyword_search:
-			old_keywords = keyword_search.group(1)
+			old_keywords = unicode(keyword_search.group(1))
 
 		# Remove the 'tag' because it breaks parsing
 		html = re.sub(pat, '', html)
@@ -123,7 +123,8 @@ def get_apod_details(apod_date, force=False):
 		details['keywords'] = old_keywords.split(',')
 
 	# Parse into a list (strip and remove empty items)
-	details['keywords'] = filter(len, map(unicode.strip, details['keywords']))
+	if details['keywords']:
+		details['keywords'] = filter(len, map(unicode.strip, details['keywords']))
 
 	# Get info from HTML if we can read B tags at all
 	# If we can't, the page is too screwed even for Beautiful Soup
