@@ -125,11 +125,11 @@ def tags(request):
 		'max_count': min_max['num_pictures__max'],
 	})
 
-def tag(request, tag, page=1):
+def tag(request, slug, page=1):
 	page = int(page)
 
 	try:
-		tag = Tag.objects.get_by_slug(tag)
+		tag = Tag.objects.get_by_slug(slug)
 	except Tag.DoesNotExist:
 		raise Http404
 

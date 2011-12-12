@@ -6,8 +6,8 @@ urlpatterns = patterns('apod.views',
 	url(r'^(?P<year>\d{4})/(?P<month>\d{1,2})/$', 'month', name='month'),
 	url(r'^(?P<year>\d{4})/$', 'year', name='year'),
 	url(r'^tags/$', 'tags', name='tags'),
-	url(r'^tags/(?P<tag>[\w\-]+)$', 'tag', name='tag'),
-	url(r'^tags/(?P<tag>[\w\-]+)/(?P<page>\d+)/$', 'tag', name='tag_page'),
+	url(r'^tags/(?P<slug>[\w\-]+)/$', 'tag', name='tag'),
+	url(r'^tags/(?P<slug>[\w\-]+)/(?P<page>\d+)/$', 'tag', name='tag_page'),
 
 	url(r'^ajax/picture/(?P<picture_id>\d+)/$', 'image_json', name='image_json'),
 )

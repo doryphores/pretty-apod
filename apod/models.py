@@ -109,7 +109,8 @@ class TagManager(models.Manager):
 		return (obsolete_count, formatted_count)
 
 	def get_by_slug(self, slug):
-		return self.extra(where=["regexp_replace(lower(label), '\\\\W+', '-', 'g')=%s"], params=[slug]).get()
+		q = self.extra(where=["regexp_replace(lower(label), '\\W+', '-', 'g')=%s"], params=[slug])
+		return q.get()
 
 
 # Clear formatter cache when formatters are updated
@@ -132,7 +133,7 @@ class Tag(models.Model):
 	@models.permalink
 	def get_absolute_url(self):
 		return ('tag', (), {
-			'tag': self.slug,
+			'slug': self.slug,
 		}) 
 
 	def __unicode__(self):
