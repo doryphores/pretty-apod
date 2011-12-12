@@ -1,13 +1,13 @@
-<table class="calendar">
+<table class="archive">
 	<thead>
 		<tr>
-			<th>Monday</th>
-			<th>Tuesday</th>
-			<th>Wednesday</th>
-			<th>Thursday</th>
-			<th>Friday</th>
-			<th>Saturday</th>
-			<th>Sunday</th>
+			<th scope="col">Monday</th>
+			<th scope="col">Tuesday</th>
+			<th scope="col">Wednesday</th>
+			<th scope="col">Thursday</th>
+			<th scope="col">Friday</th>
+			<th scope="col">Saturday</th>
+			<th scope="col">Sunday</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -16,15 +16,17 @@
 		{% for d in week %}{% with d.picture as picture %}
 			{% if d.day %}
 				{% if picture %}
-				<td><div>
+				<td><div class="item">
+					<span class="day">{{ d.day }}</span>
 					{% if picture.thumb %}
 					<img src="{{ picture.thumb }}" width="120" height="90">
 					{% endif %}
-					<span class="day">{{ d.day }}</span>
-					<a href="{{ picture.get_absolute_url }}"><span>{{ picture.title }}</span></a>
+					<a href="{{ picture.get_absolute_url }}">
+						<span>{{ picture.title }}</span>
+					</a>
 				</div></td>
 				{% else %}
-				<td class="empty"><div>
+				<td class="empty"><div class="item">
 					<span class="day">{{ d.day }}</span>
 				</div></td>
 				{% endif %}

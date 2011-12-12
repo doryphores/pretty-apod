@@ -1,8 +1,23 @@
 {% extends "apod/page.html" %}
 
-{% block page_title %}{{ month|date:'F Y' }} Archive{% endblock page_title %}
+{% block page_title %}{{ archive_label }}{% endblock page_title %}
 
 {% block page %}
+
+<div class="pagination months">
+	<h3>{{ year }} Archive:</h3>
+	<ul>
+	{% for m in month_range %}
+	<li>
+		{% if m.month == month %}
+		<strong>{{ m|date:'b' }}</strong>
+		{% else %}
+		<a href="{% url month year m.month %}">{{ m|date:'b' }}</a>
+		{% endif %}
+	</li>
+	{% endfor %}
+	</ul>
+</div>
 
 {% include 'apod/calendar.html' %}
 

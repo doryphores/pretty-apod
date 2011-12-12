@@ -1,0 +1,59 @@
+.pagination {
+	overflow: hidden;
+	margin: 0 0 20px 0;
+	background: rgba(0,0,0,0.4);
+	@include border-radius(4px);
+	text-transform: uppercase;
+	
+	h3 {
+		float: left;
+		margin: 0;
+		padding: 0 10px;
+		font-size: 10px;
+		line-height: 30px;
+		font-weight: bold;
+		color: white;
+	}
+
+	ul {
+		float: left;
+		margin: 0;
+		padding: 0;
+
+		li {
+			float: left;
+			margin: 0 0 0 1px;
+			padding: 0;
+			overflow: hidden;
+			font-size: 10px;
+
+			strong,
+			a {
+				display: block;
+				width: 30px;
+				line-height: 30px;
+				color: white;
+				text-decoration: none;
+				background: rgba(255,255,255,0.1);
+				@include transition(all 0.5s);
+			}
+
+			strong {
+				font-weight: bold;
+				background: rgba(255,255,255,0.5);
+				color: #000;
+			}
+
+			a:hover {
+				background: rgba(0,0,0,0.2);
+				@include transition-duration(0.2s);
+			}
+		}
+	}
+
+	&.months a,
+	&.months strong {
+		width: auto;
+		padding: 0 6px;
+	}
+}
