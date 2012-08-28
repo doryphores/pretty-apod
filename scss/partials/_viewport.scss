@@ -1,24 +1,23 @@
-// APOD
-
 .viewport {
 	position: absolute;
-	top: $titlebar-height + $titlebar-border;
-	left: $toolbar-width + $toolbar-border;
-	right: 0;
+	top: $layout_header_height;
 	bottom: 0;
+	left: $layout_nav_width;
+	right: 0;
 	z-index: 1;
 	overflow: auto;
-	padding: $viewport-padding;
+	padding: 20px;
 	text-align: center;
 
 	// Viewport setup when js is on
 	.js & {
 		overflow: visible;
-		@include transition(left 0.8s);
+		@include transition(left 0.2s);
 	}
 
-	[class|=open-panel] & {
-		left: $toolbar-width + $toolbar-border + $panel-width;
+	.push-panel & {
+		left: $layout_nav_width + $layout_panel_width;
+		@include transition-duration(0.4s);
 	}
 
 	.outer-viewport {
@@ -49,16 +48,15 @@
 	// Image
 
 	img {
-		@include box-shadow(#000 0 0 5px);
-		border: 1px solid #fff;
 		display: inline;
 		width: 100%;
 		height: auto;
 		-ms-interpolation-mode: bicubic;
+		border: 1px solid rgba(255,255,255,.5);
+		@include box-shadow(0 0 3px rgba(0,0,0,.8));
 
 		// Hide initially if js is on (for nice fade effect)
 		.js & {
-			// position: absolute;
 			opacity: 0;
 			@include transition(opacity 1s);
 			&.loaded {

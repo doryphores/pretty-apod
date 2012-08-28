@@ -1,0 +1,91 @@
+{% extends "layouts/base.html" %}
+
+{% block main %}
+<div class="viewport" data-module="Viewport">
+	<div class="outer-viewport">
+		<div class="inner-viewport">
+			{% block image %}
+			{% endblock %}
+		</div>
+	</div>
+</div>
+<div class="panel" data-module="Panel" id="details">
+	<div class="inner-panel">
+		<p><a href="http://apod.nasa.gov/apod/ap120116.html" target="_blank"><i class="icon-eye-open"></i> View original on APOD</a></p>
+
+		<h2>&copy; Credits</h2>
+		<p><a href="https://picasaweb.google.com/113638702638202116204">Nilesh Vayada</a> &amp; <a href="http://www.twanight.org/newTWAN/photographers_about.asp?photographer=Ajay%20Talwar">Ajay Talwar</a>
+		(<a href="http://www.twanight.org/">TWAN</a>)</p>
+
+		<h2><i class="icon-question-sign"></i> Explanation</h2>
+		<p>Is it dawn or false dawn?
+
+		During certain times of the year, the horizon near the
+		<a href="/2011/10/10/">rising Sun</a> will begin to glow unusually early.
+
+		This early glow does not originate directly from the Sun,
+		but rather from sunlight reflected by
+		<a href="/2001/8/13/">interplanetary dust</a>.
+
+		Called
+		<a href="http://en.wikipedia.org/wiki/Zodiacal_light">zodiacal light</a>,
+		the
+		<a href="/2007/9/25/">glowing triangle</a> of light may be mistaken, for a while, for a sunrise, and so may be called a false dawn.
+
+		<a href="http://www.youtube.com/watch?v=TLJiXAnHkGg">Pictured above</a>, two false dawns were recorded in time lapse movies each spanning about five hours from the perch of the
+		<a href="http://en.wikipedia.org/wiki/Indian_Astronomical_Observatory">highest observatory</a> in the world: <a href="http://www.webcamgalore.com/EN/webcam/India/Mount-Saraswati/1904.html">Mount Saraswati</a> near
+		<a href="http://en.wikipedia.org/wiki/Hanle_%28village%29">Hanle</a>,
+		<a href="http://en.wikipedia.org/wiki/India">India</a>.
+
+		At its brightest, the rising
+		<a href="/2010/9/13/">zodiacal triangle</a> on the left glows brighter than even the central disk of our Milky Way Galaxy --
+		<a href="/2011/7/30/">visible</a> as the diagonal
+		<a href="/2011/7/10/">band</a> moving left to right across the frame.</p>
+
+		<h2><i class="icon-tags"></i> Tags</h2>
+		<p class="tags">
+			<a href="/tags/false-dawn/"><i class="icon-tag"></i> false dawn</a>
+			<a href="/tags/sunrise/"><i class="icon-tag"></i> sunrise</a>
+			<a href="/tags/zodiacal-light/"><i class="icon-tag"></i> Zodiacal Light</a>
+		</p>
+
+	</div>
+</div>
+{% endblock %}
+
+{% block extra_nav %}
+<p class="date">
+	<span class="day">{% now "j" %}</span>
+	<span class="month"><a href="month.html">{% now "b" %}</a></span>
+	<span class="year"><a href="year.html">{% now "Y" %}</a></span>
+</p>
+
+<div class="nav"><p>
+	<a class="prev" href="high_image.html">
+		<i class="icon-chevron-left"></i>
+
+		<span class="preview"><span>
+			<i class="icon-camera"></i> The M81 Galaxy Group Through the Integrated Flux Nebula
+
+			<img width="120" height="90" src="{% dummyimage 120 90 %}">
+		</span></span>
+	</a>
+
+	<a class="next" href="missing_image.html">
+		<i class="icon-chevron-right"></i>
+
+		<span class="preview"><span>
+			<i class="icon-facetime-video"></i> Solar Flare in the Gamma-ray Sky
+
+			<img width="120" height="90" src="{% dummyimage 120 90 %}">
+		</span></span>
+	</a>
+</p></div>
+
+<ul>
+	<li data-toggle="details"><a href="">
+		<i class="icon-list"></i>
+		Details
+	</a></li>
+</ul>
+{% endblock %}

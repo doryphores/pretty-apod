@@ -1,0 +1,7 @@
+{% extends "layouts/image.html" %}
+
+{% block page_title %}{% block page_heading %}Image{% endblock %}{% endblock %}
+
+{% block image %}
+<img src="{% dummyimage 1200 600 abstract %}" width="1200" height="600" style="max-width:1200px;max-height:600px" class="picture">
+{% endblock %}

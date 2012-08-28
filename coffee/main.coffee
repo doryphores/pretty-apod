@@ -1,0 +1,366 @@
+# Add support for namespaces
+
+namespace = (target, name, block) ->
+	[target, name, block] = [(if typeof exports isnt 'undefined' then exports else window), arguments...] if arguments.length < 3
+	top    = target
+	target = target[item] or= {} for item in name.split '.'
+	block target, top
+
+
+# Timer functions
+
+class Timer
+	@immediate: (func) ->
+		setTimeout func, 0
+
+	constructor: ->
+		@timer = null
+
+	delay: (ms, func) ->
+		@timer = setTimeout func, ms
+
+	repeat: (ms, func) ->
+		@timer = setInterval func, ms
+
+	clear: ->
+		if @timer
+			clearTimeout @timer
+			clearInterval @timer
+
+
+# Transition helper
+
+class Transition
+	@support: (->
+		transitionEnd = (->
+			el = document.createElement 'bootstrap'
+			transEndEventNames =
+				'WebkitTransition' : 'webkitTransitionEnd'
+				'MozTransition'    : 'transitionend'
+				'OTransition'      : 'oTransitionEnd'
+				'msTransition'     : 'MSTransitionEnd'
+				'transition'       : 'transitionend'
+
+			for name of transEndEventNames
+				if el.style[name] isnt undefined
+					return transEndEventNames[name]
+		)()
+
+		return transitionEnd and
+			end: transitionEnd
+	)()
+
+	constructor: (@element, @timeout = 500) ->
+		@deferred = $.Deferred()
+		@timer = new Timer()
+
+	start: (func) ->
+		# Force reflow as we may have changed display property at this stage
+		@element.offset()
+
+		if func
+			if Transition.support
+				Timer.immediate func
+			else
+				func()
+
+		@element.addClass "animated"
+		@deferred.always => @element.removeClass "animated"
+
+		if Transition.support
+			@element.off Transition.support.end
+			@element.on Transition.support.end, (e) =>
+				unless e.target is e.currentTarget
+					@element.off Transition.support.end
+					@timer.clear()
+					@deferred.resolve();
+
+			@timer.delay @timeout, =>
+				@element.off Transition.support.end
+				@deferred.resolve()
+		else
+			@deferred.resolve()
+
+		@deferred
+
+	end: (func) ->
+		@deferred.done func
+
+namespace "APOD.utils", (exports) ->
+	exports.Timer = Timer
+	exports.Transition = Transition
+
+
+# Base module class
+
+class Module
+	constructor: (element = {}, options = {}) ->
+		@element = $ element
+
+		# Parse data attribute options
+		dataOptions = {}
+		for key, value of @element.data() when typeof value isnt 'object'
+			dataOptions[key] = value
+
+		# Set module options
+		@options = $.extend {}, @defaults, dataOptions, options
+
+		# Treat 'onSomething' options as event handlers
+		for key, value of @options when key.indexOf('on') is 0 and typeof value is 'function'
+			eventType = key.replace /on(.)(.*)/g, (s, first, rest) -> first.toLowerCase() + rest
+			@element.on eventType, value
+
+		@init()
+
+	init: (options) ->
+		@options = options or {}
+
+		for key, value of @element.data()
+			@options[key] = value unless typeof value is "object"
+
+	# Event handling
+
+	trigger: (evt, data) ->
+		@element.trigger evt, data
+
+	on: (evt, handler) ->
+		if typeof evt is "string"
+			# Single event
+			@element.on evt, handler
+		else
+			# Multiple event
+			events = evt
+			for evt, handler of events
+				@element.on evt, handler
+
+
+# Modules
+
+class Viewport extends Module
+	init: ->
+		# Do nothing if the element doesn't exist
+		if @element.length is 0
+			return
+
+		@image = @element.find ".picture"
+
+		if @image.length is 0
+			return
+
+		@window = $ window
+
+		imageTag = @image.get(0).tagName.toLowerCase()
+
+		if imageTag is "img"
+			# Image is ready
+			@window.load => @initImage()
+		else
+			# Call server to process image
+			@trigger "image_loading"
+
+			timer = new Timer()
+			timer.delay 1000, => $.getJSON @image.data("url") , (data) => @processImage(data)
+
+	initImage: ->
+		# Measure the image
+		@imageWidth = parseInt @image.attr "width"
+		@imageHeight = parseInt @image.attr "height"
+		@imageAspectRatio = @imageWidth / @imageHeight
+
+		@redraw()
+
+		@window.resize => @redraw()
+
+		timer = new Timer()
+		timer.delay 500, => @image.addClass("loaded")
+
+		@trigger "image_loaded"
+
+	processImage: (image_data) ->
+		# Replace with empty IMG tag
+		imgTag = $('<img />').attr
+			width: image_data.width
+			height: image_data.height
+		.css
+			maxWidth: image_data.width
+			maxHeight: image_data.height
+
+		@image.replaceWith imgTag
+		@image = imgTag
+
+		# Load image
+		image = new Image image_data.width, image_data.height
+		image.onload = =>
+			# Image is now fully downloaded
+			@image.attr "src", image_data.url
+			@initImage()
+
+		image.src = image_data.url
+
+	redraw: ->
+		# Measure viewport
+		viewportWidth = @element.width()
+		viewportHeight = @element.height()
+		viewportAspectRatio = viewportWidth / viewportHeight
+
+		# Do we need to downscale the image?
+		downscale = @imageWidth > viewportWidth || @imageHeight > viewportHeight
+
+		# Add portrait class if we have to downscale and
+		if downscale and viewportAspectRatio > @imageAspectRatio
+			@element.addClass "maximise-height"
+		else
+			@element.removeClass "maximise-height"
+
+
+class Panel extends Module
+	@panels: {}
+	@currentPanel: null
+
+	@getCurrentPanel: ->
+		return Panel.panels[Panel.currentPanel]
+
+	defaults:
+		overlapping: false
+		load: false
+
+	timer: new Timer()
+
+	init: ->
+		@element.attr "tabindex", -1
+		@id = @element.attr "id"
+
+		@toggles = $("body").find "[data-toggle=#{@id}]"
+
+		$("body").on "click.panel", "[data-toggle=#{@id}]", (e) =>
+			e.preventDefault()
+			@toggle()
+
+		Panel.panels[@id] = @
+
+		@on
+			"hide.panel": => @toggles.removeClass("active")
+			"show.panel": => @toggles.addClass("active")
+
+	show: ->
+		if cp = Panel.getCurrentPanel()
+			cp.hide().done => @_show()
+		else
+			@_show()
+
+	_show: ->
+		@element.show()
+
+		tran = new Transition @element
+
+		tran.start =>
+			$("body").addClass "open-panel"
+			unless @options.overlapping
+				$("body").addClass "push-panel"
+				@startResize()
+
+		tran.end =>
+			@stopResize() unless @options.overlapping
+			if $("body").hasClass "open-panel"
+				if @options.load then @element.find(".inner-panel").load @options.load, => @options.load = false
+				@element.focus()
+				@trigger "shown"
+
+		@trigger "show"
+		Panel.currentPanel = @id
+
+	hide: ->
+		tran = new Transition @element
+
+		promise = tran.start =>
+			$("body").removeClass "open-panel"
+			unless @options.overlapping
+				$("body").removeClass "push-panel"
+				@startResize()
+
+		tran.end =>
+			@stopResize() unless @options.overlapping
+			unless $("body").hasClass "open-panel"
+				@element.hide()
+				Panel.currentPanel = null
+				@trigger "hidden"
+
+		@trigger "hide"
+
+		promise
+
+	toggle: ->
+		cp = Panel.getCurrentPanel()
+		if cp is @ then @hide() else @show()
+		# this.toggleLink.parent().toggleClass("active");
+
+	startResize: ->
+		$(window).triggerHandler "resize"
+		# Start triggering resize events
+		if Transition.support
+			@timer.repeat 10, -> $(window).triggerHandler "resize"
+
+	stopResize: ->
+		$(window).triggerHandler "resize"
+		# Stop timer
+		@timer.clear()
+
+
+class Growler extends Module
+
+	@build: ->
+		unless Growler.box
+			# Create and inject message box element
+			Growler.box = $('<div class="growler"><p><i class="icon-time"></i> <span></span></p></div>').appendTo "body"
+			Growler.msgContainer = Growler.box.find("span").first()
+
+	show: ->
+		@trigger "show"
+
+		Growler.box.appendTo "body"
+		Growler.box.offset()
+
+		# Add Transition
+		tran = new Transition Growler.box
+		tran.start ->
+			Growler.box.addClass "open"
+		tran.end =>
+			@trigger "shown" if Growler.box.hasClass "open"
+
+	info: (msg) ->
+		Growler.build()
+
+		Growler.msgContainer.text msg
+
+		@show()
+
+	hide: ->
+		if Growler.box
+			@trigger "hide"
+
+			tran = new Transition Growler.box, 200
+			tran.start ->
+				Growler.box.removeClass "open"
+			tran.end ->
+				Growler.box.remove() unless Growler.box.hasClass "open"
+
+
+namespace "APOD.modules", (exports) ->
+	exports.Viewport = Viewport
+	exports.Panel = Panel
+	exports.Growler = Growler
+
+
+$ ->
+	growler = new Growler
+
+	$(document).on
+		"image_loaded": -> growler.hide()
+		"image_loading": -> growler.info "Please wait will the picture is downloaded and processed"
+
+	for el in $("[data-module]")
+		new APOD.modules[$(el).data("module")](el)
+
+	# viewport = new Viewport ".viewport",
+	# 	"loading": -> growler.info "Loading",
+	# 	"loaded": -> growler.hide()

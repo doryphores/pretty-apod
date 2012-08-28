@@ -9,7 +9,7 @@
 	width: 0;
 	overflow: auto;
 	overflow-x: hidden; // Disable horizontal scrolling
-	background: rgba(0,0,0,0.2);
+	background: rgba(red($panel-bg),green($panel-bg),blue($panel-bg),0.6);
 	@include transition(width 0.8s);
 	
 	.open-panel-details &#details {

@@ -1,0 +1,46 @@
+html {
+	overflow-y: hidden;
+}
+
+body {
+	background: $color_page_bg;
+	color: $color_page_text;
+}
+
+.site-header {
+	position: fixed;
+	z-index: 3;
+	top: 0;
+	left: $layout_nav_width;
+	right: 0;
+	height: $layout_header_height;
+	background: $color_header_bg;
+	text-align: center;
+	font-weight: bold;
+
+	p,h1 {
+		font-size: 20px;
+		line-height: $layout_header_height;
+		display: inline;
+	}
+}
+
+.site-nav {
+	position: fixed;
+	z-index: 5;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	width: $layout_nav_width;
+	background: $color_nav_bg image-url("noise.png") repeat;
+	@include box-shadow(0 0 10px rgba(0,0,0,.5));
+}
+
+.site-body {
+	position: absolute;
+	z-index: 1;
+	top: $layout_header_height;
+	bottom: 0;
+	left: $layout_nav_width;
+	right: 0;
+}
