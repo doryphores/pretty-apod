@@ -8,26 +8,36 @@
 	</script>
 </head>
 <body>
-	<header role="banner" class="titlebar">
-		<span class="branding">PRETTY APOD</span>
-		<h1>{% block page_title %}{% endblock %}</h1>
-	</header>
-	
-	<nav role="navigation" class="toolbar">
-		<ul>
-			<li><a href="{% url home %}">Today</a></li>
-			<li><a href="{% url tags %}">Tags</a></li>
-			<li><a href="#">About</a></li>
-		</ul>
-		{% block extra_nav %}
-		{% endblock extra_nav %}
-	</nav>
 
-	{% block main %}
-	{% endblock main %}
-	
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
-	<script src="{{ STATIC_URL }}js/jquery.class.js"></script>
-	<script src="{{ STATIC_URL }}js/papod.js"></script>
+<header class="site-header">
+	<p class="branding">Pretty APOD &mdash; </p>
+	<h1>{% block page_title %}{% endblock %}</h1>
+</header>
+
+<nav class="site-nav">
+	<ul>
+		<li><a href="{% url home %}">
+			<i class="icon-home"></i>
+			Today
+		</a></li>
+		<li data-toggle="tags"><a href="{% url tags %}">
+			<i class="icon-tags"></i>
+			Tags
+		</a></li>
+		<li data-toggle="about"><a href="#">
+			<i class="icon-info-sign"></i>
+			About
+		</a></li>
+	</ul>
+	{% block extra_nav %}
+	{% endblock extra_nav %}
+</nav>
+
+{% block main %}
+{% endblock main %}
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="{{ STATIC_URL }}js/main.js"></script>
+
 </body>
 </html>

@@ -9,98 +9,104 @@
 {# Extra navigation options #}
 
 {% block extra_nav %}
-<p class="date">
-	<span class="day">{{ picture.publish_date.day }}</span>
-	<span class="month"><a href="{% url month picture.publish_date.year picture.publish_date.month %}">{{ picture.publish_date|date:'b' }}</a></span>
-	<span class="year"><a href="{% url year picture.publish_date.year %}">{{ picture.publish_date.year }}</a></span>
-</p>
+	<p class="date">
+		<span class="day">{{ picture.publish_date.day }}</span>
+		<span class="month"><a href="{% url month picture.publish_date.year picture.publish_date.month %}">{{ picture.publish_date|date:'b' }}</a></span>
+		<span class="year"><a href="{% url year picture.publish_date.year %}">{{ picture.publish_date.year }}</a></span>
+	</p>
 
-<div class="nav"><p>
-	{% with picture.previous as previous %}{% if previous %}
-	<a href="{{ previous.get_absolute_url }}" class="prev">
-		<span class="preview"><span>
-			{{ previous.title }}
-			{% if previous.thumb %}
-			<img src="{{ previous.thumb }}" width="120" height="90">
-			{% endif %}
-		</span></span>
-	</a>
-	{% else %}
-	<span class="disabled"></span>
-	{% endif %}{% endwith %}
-	{% with picture.next as next %}{% if next %}
-	<a href="{{ next.get_absolute_url }}" class="next">
-		<span class="preview"><span>
-			{{ next.title }}
-			{% if next.thumb %}
-			<img src="{{ next.thumb }}" width="120" height="90">
-			{% endif %}
-		</span></span>
-	</a>
-	{% else %}
-	<span class="disabled"></span>
-	{% endif %}{% endwith %}
-</p></div>
+	<div class="nav"><p>
+		{% with picture.previous as previous %}{% if previous %}
+		<a href="{{ previous.get_absolute_url }}" class="prev">
+			<i class="icon-chevron-left"></i>
+			<span class="preview"><span>
+				<i class="icon-{% if previous.is_video %}facetime-video{% else %}camera{% endif %}"></i> {{ previous.title }}
+				{% if previous.thumb %}
+				<img src="{{ previous.thumb }}" width="120" height="90">
+				{% endif %}
+			</span></span>
+		</a>
+		{% else %}
+		<span class="disabled"></span>
+		{% endif %}{% endwith %}
+		{% with picture.next as next %}{% if next %}
+		<a href="{{ next.get_absolute_url }}" class="next">
+			<i class="icon-chevron-right"></i>
+			<span class="preview"><span>
+				<i class="icon-{% if previous.is_video %}facetime-video{% else %}camera{% endif %}"></i> {{ next.title }}
+				{% if next.thumb %}
+				<img src="{{ next.thumb }}" width="120" height="90">
+				{% endif %}
+			</span></span>
+		</a>
+		{% else %}
+		<span class="disabled"></span>
+		{% endif %}{% endwith %}
+	</p></div>
 
-<ul>
-	<li class="icon details"><a href="#details">Details</a></li>
-</ul>
+	<ul>
+		<li data-toggle="details"><a href="#details">
+			<i class="icon-info-sign"></i>
+			Details
+		</a></li>
+	</ul>
 {% endblock extra_nav %}
 
 {# Main block #}
 
 {% block main %}
 
-{# Viewport #}
+	{# Viewport #}
 
-<div class="viewport">
-	{# Image #}
-	
-	{% if picture.media_type == "IM" %}
-	<div class="outer-viewport">
-		<div class="inner-viewport">
-		{% if picture.image %}
-			<img src="{{ picture.image.url }}" width="{{ picture.image.width }}" height="{{ picture.image.height }}" style="max-width:{{ picture.image.width }}px;max-height:{{ picture.image.height }}px" class="picture">
-		{% else %}
-			<p data-url="{% url image_json picture.pk %}" class="picture">
-				I am downloading and processing this picture from APOD. Please trying again in a minute...
-			</p>
+	<div class="viewport" data-module="Viewport">
+		{# Image #}
+
+		{% if picture.media_type == "IM" %}
+		<div class="outer-viewport">
+			<div class="inner-viewport">
+			{% if picture.image %}
+				<img src="{{ picture.image.url }}" width="{{ picture.image.width }}" height="{{ picture.image.height }}" style="max-width:{{ picture.image.width }}px;max-height:{{ picture.image.height }}px" class="picture">
+			{% else %}
+				<p data-url="{% url image_json picture.pk %}" class="picture">
+					I am downloading and processing this picture from APOD. Please trying again in a minute...
+				</p>
+			{% endif %}
+			</div>
+		</div>
 		{% endif %}
+
+		{# Videos #}
+
+		{% if picture.media_type == "YT" %}
+			<iframe class="youtube" type="text/html" src="http://www.youtube.com/embed/{{ picture.video_id }}?rel=0&amp;showinfo=0&amp;modestbranding=1&amp;autohide=1&amp;wmode=opaque&amp;origin=apod.dev&amp;enablejsapi=1" frameborder="0"></iframe>
+		{% endif %}
+
+		{% if picture.media_type == "VI" %}
+			<iframe class="vimeo" src="http://player.vimeo.com/video/{{ picture.video_id }}?title=0&amp;byline=0&amp;portrait=0" frameborder="0"></iframe>
+		{% endif %}
+	</div>
+
+	{# Details panel #}
+
+	<div class="panel" data-module="Panel" id="details">
+		<div class="inner-panel">
+			<p><a href="{{ picture.get_apod_url }}" target="_blank"> <i class="icon-eye-open"></i> View on APOD</a></p>
+
+			<h2>&copy; Credits</h2>
+			<p>{{ picture.credits|safe }}</p>
+
+			<h2><i class="icon-question-sign"></i> Explanation</h2>
+			<p>{{ picture.explanation|apod_html|safe }}</p>
+
+			<h2><i class="icon-tags"></i> Tags</h2>
+			<p class="tags">
+				{% for tag in  picture.tags.all %}
+				<a href="{{ tag.get_absolute_url }}"><i class="icon-tag"></i> {{ tag }}</a>
+				{% empty %}
+				<p>No tags set for this image</p>
+				{% endfor %}
+			</p>
 		</div>
 	</div>
-	{% endif %}
-		
-	{# Videos #}
-	
-	{% if picture.media_type == "YT" %}
-		<iframe class="youtube" type="text/html" src="http://www.youtube.com/embed/{{ picture.video_id }}?rel=0&amp;showinfo=0&amp;modestbranding=1&amp;autohide=1&amp;wmode=opaque&amp;origin=apod.dev&amp;enablejsapi=1" frameborder="0"></iframe>
-	{% endif %}
-	
-	{% if picture.media_type == "VI" %}
-		<iframe class="vimeo" src="http://player.vimeo.com/video/{{ picture.video_id }}?title=0&amp;byline=0&amp;portrait=0" frameborder="0"></iframe>
-	{% endif %}
-</div>
 
-{# Details panel #}
-
-<div class="panel" id="details">
-	<div class="inner-panel">
-		<p><a href="{{ picture.get_apod_url }}" target="_blank">View on APOD</a></p>
-
-		<h2>Credits</h2>
-		<p>{{ picture.credits|safe }}</p>
-
-		<h2>Explanation</h2>
-		<p>{{ picture.explanation|apod_html|safe }}</p>
-
-		<h2>Tags</h2>
-		<p class="tags">
-			{% for tag in  picture.tags.all %}
-			<a href="{{ tag.get_absolute_url }}">{{ tag }}</a>
-			{% empty %}
-			<p>No tags set for this image</p>
-			{% endfor %}
-		</p>
-	</div>
-</div>
 {% endblock main %}
