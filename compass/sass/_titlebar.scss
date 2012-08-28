@@ -6,7 +6,7 @@
 	z-index: 5;
 	height: $titlebar-height;
 	padding-left: $toolbar-width + $toolbar-border;
-	background: $page-bg;
+	background: $panel-bg;
 	border-bottom: $titlebar-border solid black;
 	@include box-shadow(black 0 0 5px);
 	@include adjust-font-size-to(16px);

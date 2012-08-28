@@ -8,7 +8,15 @@ html {
 
 body {
 	font-family: Ubuntu, sans-serif;
-	background: $page-bg url(../images/black_denim.png);
+	background-color: $page-bg;
+	@include background-image(
+		radial-gradient(white, rgba(255,255,255,.2) 2px, rgba(0,0,0,0) 40px),
+		radial-gradient(white, rgba(255,255,255,.15) 1px, rgba(0,0,0,0) 30px),
+		radial-gradient(white, rgba(255,255,255,.1) 2px, rgba(0,0,0,0) 40px),
+		radial-gradient(rgba(255,255,255,.4), rgba(255,255,255,.1) 2px, rgba(0,0,0,0) 30px)
+	);
+	@include background-size(550px 550px, 350px 350px, 250px 250px, 150px 150px);
+	background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;
 	color: $text-color;
 	min-width: 900px;
 	min-height: 100%;

@@ -1,0 +1,21 @@
+@import url("http://fonts.googleapis.com/css?family=Ubuntu:400,bold,400italic,bolditalic");
+
+body {
+	font-family: Ubuntu;
+	font-size: 12px;
+	line-height: 18px;
+}
+
+a {
+	color: $color_page_link;
+	text-decoration: none;
+
+	&:hover,
+	&:active {
+		color: $color_page_link_active;
+
+		p & {
+			text-decoration: underline;
+		}
+	}
+}

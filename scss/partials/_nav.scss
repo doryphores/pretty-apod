@@ -1,0 +1,121 @@
+.site-nav {
+	ul {
+		margin-bottom: 5px;
+		clear: both;
+	}
+
+	li {
+		margin-bottom: 1px;
+		font-size: 14px;
+
+		a {
+			display: block;
+			padding: 10px;
+			background: rgba(0,0,0,.2);
+			text-decoration: none;
+			outline: none;
+
+			&:hover,
+			&:active {
+				background: rgba(0,0,0,.4);
+			}
+		}
+
+		&.active {
+			a {
+				background: rgba(0,0,0,.8);
+			}
+		}
+	}
+
+	.date {
+		clear: both;
+		margin: 0 5px 5px 5px;
+		padding: 5px 5px 10px 5px;
+		@include border-radius(5px);
+		@include box-shadow(0 0 3px rgba(0,0,0,.4) inset, 0 1px 0 rgba(255,255,255,.1));
+		text-align: center;
+		text-transform: uppercase;
+		font-weight: bold;
+
+		.day {
+			font-size: 54px;
+			line-height: 1;
+			color: white;
+			text-shadow: -1px -1px rgba(0,0,0,.4);
+			display: block;
+		}
+
+		a {
+			text-decoration: none;
+			font-size: 13px;
+		}
+	}
+
+	.nav {
+		margin-bottom: 5px;
+		width: 100%;
+		float: left;
+		position: relative;
+
+		a {
+			float: left;
+			width: 50%;
+			height: 60px;
+			text-align: center;
+			text-decoration: none;
+			outline: none;
+
+			> i {
+				font-size: 40px;
+				line-height: 60px;
+			}
+
+			&:hover {
+				.preview {
+					width: 130px;
+					@include transition-delay(.8s);
+					span {
+						@include transition-delay(.8s);
+						margin-left: 0;
+					}
+
+					&:hover,
+					&:active {
+						background: rgba(255,255,255,.8);
+					}
+				}
+			}
+		}
+
+		.preview {
+			background: rgba(255,255,255,.5);
+			@include box-shadow(10px 0 10px -10px rgba(0,0,0,.8) inset);
+			@include border-radius(0 4px 4px 0);
+			position: absolute;
+			top: 0;
+			left: 100%;
+			width: 0;
+			overflow: hidden;
+			@include transition(width .2s linear .2s);
+			text-align: left;
+			font-size: 11px;
+			line-height: 15px;
+			color: black;
+
+			span {
+				display: block;
+				padding: 5px;
+				width: 120px;
+				margin-left: -130px;
+				@include transition(margin .2s linear .2s);
+			}
+
+			img {
+				margin: 4px 0 0 0;
+				display: block;
+				@include box-shadow(0 0 2px rgba(0,0,0,.8));
+			}
+		}
+	}
+}

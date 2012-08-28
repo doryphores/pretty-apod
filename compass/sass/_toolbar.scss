@@ -11,8 +11,8 @@ $menu-hover: darken($bg, 20%);
 	bottom: 0;
 	z-index: 3;
 	width: $toolbar-width;
-	border-right: $toolbar-border solid $border;
-	background: $page-bg;
+	border-right: $toolbar-border solid $border-color;
+	background: $panel-bg;
 	@include box-shadow(black 0 0 5px);
 	
 	// Main navigation menu
@@ -113,18 +113,18 @@ $menu-hover: darken($bg, 20%);
 			float: left;
 			width: $toolbar-width / 2;
 			height: 40px;
-			background: rgba(red($page-bg),green($page-bg),blue($page-bg),0.9);
+			background: rgba(red($panel-bg),green($panel-bg),blue($panel-bg),0.9);
 		}
 		a {
 			float: left;
 			width: $toolbar-width / 2;
 			height: 40px;
 			text-decoration: none;
-			background: rgba(red($page-bg),green($page-bg),blue($page-bg),0.5);
+			background: rgba(red($panel-bg),green($panel-bg),blue($panel-bg),0.5);
 			@include transition(background 0.5s);
 
 			&:hover {
-				background: rgba(red($page-bg),green($page-bg),blue($page-bg),0);
+				background: rgba(red($panel-bg),green($panel-bg),blue($panel-bg),0);
 			}
 
 			&.next {
@@ -146,10 +146,10 @@ $menu-hover: darken($bg, 20%);
 					padding: 5px;
 					width: 120px;
 					margin-left: -136px;
-					background: rgba(0,0,0,0.8);
-					border: 1px solid $border;
+					background: rgba(red($panel-bg),green($panel-bg),blue($panel-bg),0.9);
+					border: 1px solid $border-color;
 					border-left: 0;
-					@include border-radius(0 3px 3px 0);
+					@include border-radius(0 2px 2px 0);
 					text-align: center;
 					color: $menu-text;
 					@include transition(margin 0.4s);

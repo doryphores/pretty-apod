@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html class="js">
+
+<head>
+	<meta charset="utf-8">
+	<title>{% block page_title %}{% endblock %} - Pretty APOD Prototype</title>
+
+	<link rel="stylesheet" href="/assets/css/screen.css">
+</head>
+
+<body>
+
+<header class="site-header">
+	<p class="branding">Pretty APOD &mdash; </p>
+	<h1>{% block page_heading %}{% endblock %}</h1>
+</header>
+
+<nav class="site-nav">
+	<ul>
+		<li><a href="wide_image.html">
+			<i class="icon-home"></i>
+			Today
+		</a></li>
+		<li data-toggle="tags"><a href="data/tags.html">
+			<i class="icon-tags"></i>
+			Tags
+		</a></li>
+		<li data-toggle="about"><a href="#">
+			<i class="icon-info-sign"></i>
+			About
+		</a></li>
+	</ul>
+	{% block extra_nav %}
+	{% endblock %}
+</nav>
+
+{% block main %}
+{% endblock main %}
+
+<div class="panel" data-module="Panel" id="tags" data-overlapping="true" data-load="data/tags.html">
+	<div class="inner-panel">
+
+	</div>
+</div>
+
+<div class="panel" data-module="Panel" id="about" data-overlapping="true">
+	<div class="inner-panel">
+		<h2>About</h2>
+		<p>
+			Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+			quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+			consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+			cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+			proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		</p>
+		<p>
+			Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+			quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+			consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+			cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+			proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		</p>
+		<p>
+			Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+			quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+			consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+			cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+			proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		</p>
+		<p>
+			Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+			quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+			consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+			cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+			proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		</p>
+	</div>
+</div>
+
+{% jquery "1.7.2" %}
+<script src="/assets/js/main.js"></script>
+
+</body>
+
+</html>

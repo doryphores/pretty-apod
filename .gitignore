@@ -5,5 +5,4 @@ logs
 public/assets/media
 public/assets/admin
 .sass-cache
-public/assets/images/icons
 .DS_Store
