@@ -45,7 +45,7 @@ class TagManager(models.Manager):
 		else:
 			formatters = TagFormatter.objects.all()
 			cache.set(self.FORMATTERS_CACHE_KEY, formatters)
-		
+
 		return formatters
 
 	@classmethod
@@ -55,7 +55,7 @@ class TagManager(models.Manager):
 		Called via post_save and post_delete signals
 		"""
 		cache.delete(cls.FORMATTERS_CACHE_KEY)
-	
+
 	def get_or_create_from_label(self, label):
 		"""
 		Runs label through tag formatters first
@@ -65,7 +65,7 @@ class TagManager(models.Manager):
 
 		for f in self.formatters:
 			label = f.run(label)
-		
+
 		try:
 			return self.get(label__iexact=label)
 		except Tag.DoesNotExist:
@@ -77,7 +77,7 @@ class TagManager(models.Manager):
 
 		for f in self.formatters:
 			tags = self.filter(label__iregex=f.pattern)
-			
+
 			# Build groups of duplicate tags
 			groups = {}
 			for k in tags:
@@ -86,7 +86,7 @@ class TagManager(models.Manager):
 					groups[formatted_label].append(k)
 				else:
 					groups[formatted_label] = [k]
-			
+
 			# Iterate over groups
 			for label in groups:
 				# Select one as primary
@@ -105,7 +105,7 @@ class TagManager(models.Manager):
 					formatted_count = formatted_count + 1
 					primary.label = label
 					primary.save()
-		
+
 		return (obsolete_count, formatted_count)
 
 	def get_by_slug(self, slug):
@@ -134,7 +134,7 @@ class Tag(models.Model):
 	def get_absolute_url(self):
 		return ('tag', (), {
 			'slug': self.slug,
-		}) 
+		})
 
 	def __unicode__(self):
 		return u'%s' % self.label
@@ -172,7 +172,7 @@ class Picture(models.Model):
 	credits = models.TextField(max_length=4000, blank=True)
 
 	media_type = models.CharField(max_length=2, choices=TYPES, default='UN')
-	
+
 	# Image data
 	original_image_url = models.URLField(blank=True)
 	original_file_size = models.PositiveIntegerField(default=0)
@@ -201,13 +201,13 @@ class Picture(models.Model):
 
 	def __unicode__(self):
 		return u'%s' % self.title
-	
+
 	def get_apod_url(self):
 		return apodapi.get_apod_url(self.publish_date)
 
 	def load_from_apod(self, force=False):
 		details = apodapi.get_apod_details(self.publish_date, force)
-		
+
 		if details['title']:
 			self.title = details['title']
 		self.explanation = details['explanation']
@@ -222,16 +222,16 @@ class Picture(models.Model):
 		if details['vimeo_id']:
 			self.video_id = details['vimeo_id']
 			self.media_type = 'VI'
-		
+
 		self.loaded = True
-		
+
 		self.tags.clear()
-		
+
 		for word in details['keywords']:
 			self.tags.add(Tag.objects.get_or_create_from_label(label=word))
 
 		self.save()
-	
+
 	def get_image(self, force=False):
 		if self.original_image_url and (force or not self.image):
 			# Download the image
@@ -276,18 +276,18 @@ class Picture(models.Model):
 
 					# Delete original image
 					self.image.delete(save=False)
-					
+
 					# Make jpg filename if needed
 					if extension != 'jpg':
 						filename = re.sub('\.[^\.]+$', '.jpg', filename)
 					# Save the resized version
 					self.image.save(filename, ContentFile(resized.read()))
-				
+
 			except urllib2.HTTPError as error:
 				if error.code == 404:
 					# Reset image URL if not found
 					self.original_image_url = ''
-			
+
 			self.save()
 
 	@property
@@ -295,10 +295,10 @@ class Picture(models.Model):
 		if self.image:
 			im = get_thumbnail(self.image, '120x90', crop='center', quality=85)
 			return im.url
-		
+
 		if self.media_type == 'YT':
 			return u'http://img.youtube.com/vi/%s/2.jpg' % self.video_id
-		
+
 		if self.media_type == 'VI':
 			cache_key = 'vimeo_thumb_%s' % self.video_id
 			thumb_url = cache.get(cache_key)
@@ -310,7 +310,7 @@ class Picture(models.Model):
 					f = urllib2.urlopen('http://vimeo.com/api/v2/video/%s.json' % self.video_id)
 				except urllib2.HTTPError:
 					return None
-				
+
 				# Decode received JSON packet
 				data = json.load(f)
 
@@ -319,13 +319,16 @@ class Picture(models.Model):
 
 				# Store in cache for later
 				cache.set(cache_key, thumb_url)
-			
+
 			return thumb_url
 
 		return
-	
+
 	def has_image(self):
 		return len(self.original_image_url) > 0
+
+	def is_video(self):
+		return self.media_type in ['YT','VI']
 
 	@property
 	def next(self):
@@ -333,14 +336,14 @@ class Picture(models.Model):
 			return self.get_next_by_publish_date()
 		except Picture.DoesNotExist:
 			return None
-	
+
 	@property
 	def previous(self):
 		try:
 			return self.get_previous_by_publish_date()
 		except Picture.DoesNotExist:
 			return None
-	
+
 	class Meta:
 		ordering = ['-publish_date']
 		get_latest_by = 'publish_date'
