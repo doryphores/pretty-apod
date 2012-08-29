@@ -11,7 +11,7 @@
 	overflow-x: hidden; // Disable horizontal scrolling
 	background: rgba(red($panel-bg),green($panel-bg),blue($panel-bg),0.6);
 	@include transition(width 0.8s);
-	
+
 	.open-panel-details &#details {
 		width: $panel-width;
 
@@ -19,7 +19,7 @@
 			margin-left: 0;
 		}
 	}
-	
+
 	.inner-panel {
 		padding: 20px;
 		width: $panel-width - 40;

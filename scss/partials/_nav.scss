@@ -10,10 +10,16 @@
 
 		a {
 			display: block;
-			padding: 10px;
 			background: rgba(0,0,0,.2);
 			text-decoration: none;
 			outline: none;
+			line-height: $layout_header_height;
+			padding: 0 10px;
+			vertical-align: middle;
+
+			i {
+				line-height: 1;
+			}
 
 			&:hover,
 			&:active {

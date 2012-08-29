@@ -1,10 +1,13 @@
-{% extends "apod/page.html" %}
+{% extends request.is_ajax|yesno:"apod/ajax.html,apod/page.html" %}
 
 {% load apod_tags %}
 
 {% block page_title %}Tags{% endblock page_title %}
 
 {% block page %}
+{% if request.is_ajax %}
+<h2><i class="icon-tags"></i> Top tags</h2>
+{% endif %}
 <p class="tags">
 {% for tag in tags %}
 	<a href="{{ tag.get_absolute_url }}" class="{% cloud_class tag.num_pictures min_count max_count %}">{{ tag.label }}</a>
