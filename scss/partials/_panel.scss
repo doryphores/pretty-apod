@@ -13,8 +13,9 @@
 	outline: none;
 
 	.inner-panel {
-		padding: 20px;
-		width: $layout_panel_width - 40px;
+		padding: 25px 30px 20px 20px;
+		@include box-sizing(border-box);
+		width: $layout_panel_width;
 		margin-left: -$layout_panel_width;
 		@include transition(margin 0.2s);
 	}

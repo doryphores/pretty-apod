@@ -1253,7 +1253,7 @@ body {
   left: 100px;
   right: 0;
   height: 50px;
-  background: #212121;
+  background: rgba(0, 0, 0, 0.2);
   text-align: center;
   font-weight: bold;
 }
@@ -1302,20 +1302,26 @@ body {
 /* line 11, ../../../scss/partials/_nav.scss */
 .site-nav li a {
   display: block;
-  padding: 10px;
   background: rgba(0, 0, 0, 0.2);
   text-decoration: none;
   outline: none;
+  line-height: 50px;
+  padding: 0 10px;
+  vertical-align: middle;
 }
-/* line 19, ../../../scss/partials/_nav.scss */
+/* line 20, ../../../scss/partials/_nav.scss */
+.site-nav li a i {
+  line-height: 1;
+}
+/* line 25, ../../../scss/partials/_nav.scss */
 .site-nav li a:hover, .site-nav li a:active {
   background: rgba(0, 0, 0, 0.4);
 }
-/* line 25, ../../../scss/partials/_nav.scss */
+/* line 31, ../../../scss/partials/_nav.scss */
 .site-nav li.active a {
   background: rgba(0, 0, 0, 0.8);
 }
-/* line 31, ../../../scss/partials/_nav.scss */
+/* line 37, ../../../scss/partials/_nav.scss */
 .site-nav .date {
   clear: both;
   margin: 0 5px 5px 5px;
@@ -1332,7 +1338,7 @@ body {
   text-transform: uppercase;
   font-weight: bold;
 }
-/* line 41, ../../../scss/partials/_nav.scss */
+/* line 47, ../../../scss/partials/_nav.scss */
 .site-nav .date span:first-child {
   font-size: 54px;
   line-height: 1;
@@ -1340,29 +1346,29 @@ body {
   text-shadow: -1px -1px rgba(0, 0, 0, 0.4);
   display: block;
 }
-/* line 48, ../../../scss/partials/_nav.scss */
+/* line 54, ../../../scss/partials/_nav.scss */
 .site-nav .date span:first-child.month {
   font-size: 30px;
   line-height: 1.5;
 }
-/* line 52, ../../../scss/partials/_nav.scss */
+/* line 58, ../../../scss/partials/_nav.scss */
 .site-nav .date span:first-child.month + .year {
   font-size: 24px;
   line-height: 30px;
 }
-/* line 59, ../../../scss/partials/_nav.scss */
+/* line 65, ../../../scss/partials/_nav.scss */
 .site-nav .date span {
   text-decoration: none;
   font-size: 13px;
 }
-/* line 65, ../../../scss/partials/_nav.scss */
+/* line 71, ../../../scss/partials/_nav.scss */
 .site-nav .nav {
   margin-bottom: 5px;
   width: 100%;
   float: left;
   position: relative;
 }
-/* line 72, ../../../scss/partials/_nav.scss */
+/* line 78, ../../../scss/partials/_nav.scss */
 .site-nav .nav a,
 .site-nav .nav span.disabled {
   float: left;
@@ -1372,13 +1378,13 @@ body {
   text-decoration: none;
   outline: none;
 }
-/* line 80, ../../../scss/partials/_nav.scss */
+/* line 86, ../../../scss/partials/_nav.scss */
 .site-nav .nav a > i,
 .site-nav .nav span.disabled > i {
   font-size: 40px;
   line-height: 60px;
 }
-/* line 87, ../../../scss/partials/_nav.scss */
+/* line 93, ../../../scss/partials/_nav.scss */
 .site-nav .nav a:hover .preview, .site-nav .nav a.active .preview,
 .site-nav .nav span.disabled:hover .preview,
 .site-nav .nav span.disabled.active .preview {
@@ -1388,7 +1394,7 @@ body {
   -o-transition-delay: 0.8s;
   transition-delay: 0.8s;
 }
-/* line 90, ../../../scss/partials/_nav.scss */
+/* line 96, ../../../scss/partials/_nav.scss */
 .site-nav .nav a:hover .preview span, .site-nav .nav a.active .preview span,
 .site-nav .nav span.disabled:hover .preview span,
 .site-nav .nav span.disabled.active .preview span {
@@ -1398,7 +1404,7 @@ body {
   transition-delay: 0.8s;
   margin-left: 0;
 }
-/* line 96, ../../../scss/partials/_nav.scss */
+/* line 102, ../../../scss/partials/_nav.scss */
 .site-nav .nav a:hover .preview:hover, .site-nav .nav a:hover .preview:active, .site-nav .nav a.active .preview:hover, .site-nav .nav a.active .preview:active,
 .site-nav .nav span.disabled:hover .preview:hover,
 .site-nav .nav span.disabled:hover .preview:active,
@@ -1406,12 +1412,12 @@ body {
 .site-nav .nav span.disabled.active .preview:active {
   background: rgba(255, 255, 255, 0.8);
 }
-/* line 103, ../../../scss/partials/_nav.scss */
+/* line 109, ../../../scss/partials/_nav.scss */
 .site-nav .nav .disabled {
   color: #6b7f86;
   opacity: 0.5;
 }
-/* line 108, ../../../scss/partials/_nav.scss */
+/* line 114, ../../../scss/partials/_nav.scss */
 .site-nav .nav .preview {
   background: rgba(255, 255, 255, 0.7);
   -webkit-box-shadow: 10px 0 10px -10px rgba(0, 0, 0, 0.8) inset;
@@ -1437,7 +1443,7 @@ body {
   line-height: 15px;
   color: black;
 }
-/* line 123, ../../../scss/partials/_nav.scss */
+/* line 129, ../../../scss/partials/_nav.scss */
 .site-nav .nav .preview span {
   display: block;
   padding: 5px;
@@ -1449,11 +1455,11 @@ body {
   -o-transition: margin 0.2s ease-out 0.2s;
   transition: margin 0.2s ease-out 0.2s;
 }
-/* line 130, ../../../scss/partials/_nav.scss */
+/* line 136, ../../../scss/partials/_nav.scss */
 .site-nav .nav .preview span i {
   font-size: 13px;
 }
-/* line 135, ../../../scss/partials/_nav.scss */
+/* line 141, ../../../scss/partials/_nav.scss */
 .site-nav .nav .preview .calendar {
   font-size: 19px;
   font-weight: bold;
@@ -1463,7 +1469,7 @@ body {
   text-align: center;
   text-transform: uppercase;
 }
-/* line 144, ../../../scss/partials/_nav.scss */
+/* line 150, ../../../scss/partials/_nav.scss */
 .site-nav .nav .preview .calendar i {
   float: left;
   font-size: 45px;
@@ -1471,7 +1477,7 @@ body {
   margin-left: 10px;
   margin-right: 0;
 }
-/* line 153, ../../../scss/partials/_nav.scss */
+/* line 159, ../../../scss/partials/_nav.scss */
 .site-nav .nav .preview img {
   margin: 4px 0 0 0;
   display: block;
@@ -1500,15 +1506,18 @@ body {
 }
 /* line 15, ../../../scss/partials/_panel.scss */
 .panel .inner-panel {
-  padding: 20px;
-  width: 360px;
+  padding: 25px 30px 20px 20px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 400px;
   margin-left: -400px;
   -webkit-transition: margin 0.2s;
   -moz-transition: margin 0.2s;
   -o-transition: margin 0.2s;
   transition: margin 0.2s;
 }
-/* line 22, ../../../scss/partials/_panel.scss */
+/* line 23, ../../../scss/partials/_panel.scss */
 .open-panel .panel {
   width: 400px;
   -webkit-transition-duration: 0.4s;
@@ -1516,7 +1525,7 @@ body {
   -o-transition-duration: 0.4s;
   transition-duration: 0.4s;
 }
-/* line 26, ../../../scss/partials/_panel.scss */
+/* line 27, ../../../scss/partials/_panel.scss */
 .open-panel .panel .inner-panel {
   -webkit-transition-duration: 0.4s;
   -moz-transition-duration: 0.4s;
@@ -1524,7 +1533,7 @@ body {
   transition-duration: 0.4s;
   margin-left: 0;
 }
-/* line 32, ../../../scss/partials/_panel.scss */
+/* line 33, ../../../scss/partials/_panel.scss */
 .panel h2 {
   font-size: 16px;
   line-height: 20px;
@@ -1532,45 +1541,45 @@ body {
   border-bottom: 1px solid rgba(255, 255, 255, 0.5);
   margin: 1em 0 0.5em 0;
 }
-/* line 39, ../../../scss/partials/_panel.scss */
+/* line 40, ../../../scss/partials/_panel.scss */
 .panel h2:first-child {
   margin-top: 0;
 }
-/* line 44, ../../../scss/partials/_panel.scss */
+/* line 45, ../../../scss/partials/_panel.scss */
 .panel p {
   margin-bottom: 1em;
 }
-/* line 49, ../../../scss/partials/_panel.scss */
+/* line 50, ../../../scss/partials/_panel.scss */
 .panel .tags a {
   margin-right: 6px;
   line-height: 18px;
   white-space: nowrap;
 }
-/* line 54, ../../../scss/partials/_panel.scss */
+/* line 55, ../../../scss/partials/_panel.scss */
 .panel .tags a.xxs {
   font-size: 10px;
 }
-/* line 55, ../../../scss/partials/_panel.scss */
+/* line 56, ../../../scss/partials/_panel.scss */
 .panel .tags a.xs {
   font-size: 12px;
 }
-/* line 56, ../../../scss/partials/_panel.scss */
+/* line 57, ../../../scss/partials/_panel.scss */
 .panel .tags a.s {
   font-size: 14px;
 }
-/* line 57, ../../../scss/partials/_panel.scss */
+/* line 58, ../../../scss/partials/_panel.scss */
 .panel .tags a.l {
   font-size: 16px;
 }
-/* line 58, ../../../scss/partials/_panel.scss */
+/* line 59, ../../../scss/partials/_panel.scss */
 .panel .tags a.xl {
   font-size: 18px;
 }
-/* line 59, ../../../scss/partials/_panel.scss */
+/* line 60, ../../../scss/partials/_panel.scss */
 .panel .tags a.xxl {
   font-size: 20px;
 }
-/* line 62, ../../../scss/partials/_panel.scss */
+/* line 63, ../../../scss/partials/_panel.scss */
 .panel .tags a:hover, .panel .tags a:active {
   background: #6b7f86;
   color: #dedede;
@@ -1583,7 +1592,7 @@ body {
   margin: 0 2px 0 -4px;
   text-decoration: none;
 }
-/* line 73, ../../../scss/partials/_panel.scss */
+/* line 74, ../../../scss/partials/_panel.scss */
 .panel .cloud {
   text-align: center;
 }
