@@ -38,15 +38,25 @@
 		text-transform: uppercase;
 		font-weight: bold;
 
-		.day {
+		span:first-child {
 			font-size: 54px;
 			line-height: 1;
 			color: white;
 			text-shadow: -1px -1px rgba(0,0,0,.4);
 			display: block;
+
+			&.month {
+				font-size: 30px;
+				line-height: 1.5;
+
+				& + .year {
+					font-size: 24px;
+					line-height: 30px;
+				}
+			}
 		}
 
-		a {
+		span {
 			text-decoration: none;
 			font-size: 13px;
 		}
@@ -71,7 +81,8 @@
 				line-height: 60px;
 			}
 
-			&:hover {
+			&:hover,
+			&.active {
 				.preview {
 					width: 130px;
 					@include transition-delay(.8s);
@@ -89,7 +100,7 @@
 		}
 
 		.preview {
-			background: rgba(255,255,255,.5);
+			background: rgba(255,255,255,.7);
 			@include box-shadow(10px 0 10px -10px rgba(0,0,0,.8) inset);
 			@include border-radius(0 4px 4px 0);
 			position: absolute;
@@ -97,7 +108,7 @@
 			left: 100%;
 			width: 0;
 			overflow: hidden;
-			@include transition(width .2s linear .2s);
+			@include transition(width .2s ease-out .2s);
 			text-align: left;
 			font-size: 11px;
 			line-height: 15px;
@@ -108,7 +119,29 @@
 				padding: 5px;
 				width: 120px;
 				margin-left: -130px;
-				@include transition(margin .2s linear .2s);
+				@include transition(margin .2s ease-out .2s);
+
+				i {
+					font-size: 13px;
+				}
+			}
+
+			.calendar {
+				font-size: 19px;
+				font-weight: bold;
+				height: 46px;
+				line-height: 20px;
+				padding-top: 9px;
+				text-align: center;
+				text-transform: uppercase;
+
+				i {
+					float: left;
+					font-size: 45px;
+					line-height: 42px;
+					margin-left: 10px;
+					margin-right: 0;
+				}
 			}
 
 			img {
