@@ -3,7 +3,7 @@ html {
 }
 
 body {
-	background: $color_page_bg;
+	background: $color_page_bg image-url("page-noise.png");
 	color: $color_page_text;
 }
 

@@ -68,7 +68,8 @@
 		float: left;
 		position: relative;
 
-		a {
+		a,
+		span.disabled {
 			float: left;
 			width: 50%;
 			height: 60px;
@@ -97,6 +98,11 @@
 					}
 				}
 			}
+		}
+
+		.disabled {
+			color: $color_page_link;
+			opacity: 0.5;
 		}
 
 		.preview {

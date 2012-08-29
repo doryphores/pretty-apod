@@ -27,7 +27,7 @@
 			</span></span>
 		</a>
 		{% else %}
-		<span class="disabled"></span>
+		<span class="disabled"><i class="icon-chevron-left"></i></span>
 		{% endif %}{% endwith %}
 		{% with picture.next as next %}{% if next %}
 		<a href="{{ next.get_absolute_url }}" class="next">
@@ -40,7 +40,7 @@
 			</span></span>
 		</a>
 		{% else %}
-		<span class="disabled"></span>
+		<span class="disabled"><i class="icon-chevron-right"></i></span>
 		{% endif %}{% endwith %}
 	</p></div>
 

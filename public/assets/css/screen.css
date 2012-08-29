@@ -1241,7 +1241,7 @@ html {
 
 /* line 5, ../../../scss/partials/_layout.scss */
 body {
-  background: #313131;
+  background: #313131 url('../images/page-noise.png?1346278585');
   color: #dedede;
 }
 
@@ -1362,8 +1362,9 @@ body {
   float: left;
   position: relative;
 }
-/* line 71, ../../../scss/partials/_nav.scss */
-.site-nav .nav a {
+/* line 72, ../../../scss/partials/_nav.scss */
+.site-nav .nav a,
+.site-nav .nav span.disabled {
   float: left;
   width: 50%;
   height: 60px;
@@ -1371,32 +1372,46 @@ body {
   text-decoration: none;
   outline: none;
 }
-/* line 79, ../../../scss/partials/_nav.scss */
-.site-nav .nav a > i {
+/* line 80, ../../../scss/partials/_nav.scss */
+.site-nav .nav a > i,
+.site-nav .nav span.disabled > i {
   font-size: 40px;
   line-height: 60px;
 }
-/* line 86, ../../../scss/partials/_nav.scss */
-.site-nav .nav a:hover .preview, .site-nav .nav a.active .preview {
+/* line 87, ../../../scss/partials/_nav.scss */
+.site-nav .nav a:hover .preview, .site-nav .nav a.active .preview,
+.site-nav .nav span.disabled:hover .preview,
+.site-nav .nav span.disabled.active .preview {
   width: 130px;
   -webkit-transition-delay: 0.8s;
   -moz-transition-delay: 0.8s;
   -o-transition-delay: 0.8s;
   transition-delay: 0.8s;
 }
-/* line 89, ../../../scss/partials/_nav.scss */
-.site-nav .nav a:hover .preview span, .site-nav .nav a.active .preview span {
+/* line 90, ../../../scss/partials/_nav.scss */
+.site-nav .nav a:hover .preview span, .site-nav .nav a.active .preview span,
+.site-nav .nav span.disabled:hover .preview span,
+.site-nav .nav span.disabled.active .preview span {
   -webkit-transition-delay: 0.8s;
   -moz-transition-delay: 0.8s;
   -o-transition-delay: 0.8s;
   transition-delay: 0.8s;
   margin-left: 0;
 }
-/* line 95, ../../../scss/partials/_nav.scss */
-.site-nav .nav a:hover .preview:hover, .site-nav .nav a:hover .preview:active, .site-nav .nav a.active .preview:hover, .site-nav .nav a.active .preview:active {
+/* line 96, ../../../scss/partials/_nav.scss */
+.site-nav .nav a:hover .preview:hover, .site-nav .nav a:hover .preview:active, .site-nav .nav a.active .preview:hover, .site-nav .nav a.active .preview:active,
+.site-nav .nav span.disabled:hover .preview:hover,
+.site-nav .nav span.disabled:hover .preview:active,
+.site-nav .nav span.disabled.active .preview:hover,
+.site-nav .nav span.disabled.active .preview:active {
   background: rgba(255, 255, 255, 0.8);
 }
-/* line 102, ../../../scss/partials/_nav.scss */
+/* line 103, ../../../scss/partials/_nav.scss */
+.site-nav .nav .disabled {
+  color: #6b7f86;
+  opacity: 0.5;
+}
+/* line 108, ../../../scss/partials/_nav.scss */
 .site-nav .nav .preview {
   background: rgba(255, 255, 255, 0.7);
   -webkit-box-shadow: 10px 0 10px -10px rgba(0, 0, 0, 0.8) inset;
@@ -1422,7 +1437,7 @@ body {
   line-height: 15px;
   color: black;
 }
-/* line 117, ../../../scss/partials/_nav.scss */
+/* line 123, ../../../scss/partials/_nav.scss */
 .site-nav .nav .preview span {
   display: block;
   padding: 5px;
@@ -1434,11 +1449,11 @@ body {
   -o-transition: margin 0.2s ease-out 0.2s;
   transition: margin 0.2s ease-out 0.2s;
 }
-/* line 124, ../../../scss/partials/_nav.scss */
+/* line 130, ../../../scss/partials/_nav.scss */
 .site-nav .nav .preview span i {
   font-size: 13px;
 }
-/* line 129, ../../../scss/partials/_nav.scss */
+/* line 135, ../../../scss/partials/_nav.scss */
 .site-nav .nav .preview .calendar {
   font-size: 19px;
   font-weight: bold;
@@ -1448,7 +1463,7 @@ body {
   text-align: center;
   text-transform: uppercase;
 }
-/* line 138, ../../../scss/partials/_nav.scss */
+/* line 144, ../../../scss/partials/_nav.scss */
 .site-nav .nav .preview .calendar i {
   float: left;
   font-size: 45px;
@@ -1456,7 +1471,7 @@ body {
   margin-left: 10px;
   margin-right: 0;
 }
-/* line 147, ../../../scss/partials/_nav.scss */
+/* line 153, ../../../scss/partials/_nav.scss */
 .site-nav .nav .preview img {
   margin: 4px 0 0 0;
   display: block;
