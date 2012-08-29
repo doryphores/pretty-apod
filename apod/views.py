@@ -21,7 +21,7 @@ def image(request, year=None, month=None, day=None):
 	else:
 		# Home page, so get the latest
 		picture = Picture.objects.latest()
-	
+
 	return render(request, 'apod/image.html', { 'picture': picture })
 
 
@@ -56,24 +56,28 @@ def month(request, year, month):
 	picture_calendar = [[dict(day=d, picture=pics.get(d, None)) for d in w] for w in cal]
 
 	today = datetime.date.today()
-	last_month = 12
 
-	# Set last month to current month if looking at current year
-	if today.year == year:
-		last_month = today.month
-	
-	first_month = Picture.objects.filter(publish_date__year=year).reverse()[0].publish_date.month
+	next_month = datetime.date(year, month, 1) + datetime.timedelta(days=32)
 
-	# month_range = [(calendar.month_abbr[m], m) for m in ]
+	if not Picture.objects.filter(publish_date__year=next_month.year, publish_date__month=next_month.month).exists():
+		next_month = False
+
+	previous_month = datetime.date(year, month, 1) - datetime.timedelta(days=1)
+
+	if not Picture.objects.filter(publish_date__year=previous_month.year, publish_date__month=previous_month.month).exists():
+		previous_month = False
 
 	# tags = Tag.objects.filter(pictures__publish_date__month=month, pictures__publish_date__year=year).annotate(num_pictures=Count('pictures')).order_by('label')
 
 	view_data = {
 		'year': year,
 		'month': month,
+		'current_month': datetime.date(year, month, 1),
+		'previous_month': previous_month,
+		'next_month': next_month,
 		'archive_label': '%s %s Archive' % (calendar.month_name[month], year),
 		'calendar': picture_calendar,
-		'month_range': Picture.objects.filter(publish_date__year=year).dates('publish_date', 'month'),
+		# 'month_range': Picture.objects.filter(publish_date__year=year).dates('publish_date', 'month'),
 		# 'tags': tags,
 	}
 
@@ -118,7 +122,7 @@ def tags(request):
 	tags = Tag.objects.annotate(num_pictures=Count('pictures')).filter(num_pictures__gt=20)
 
 	min_max = tags.aggregate(Min('num_pictures'), Max('num_pictures'))
-	
+
 	return render(request, 'apod/tags.html', {
 		'tags': tags,
 		'min_count': min_max['num_pictures__min'],

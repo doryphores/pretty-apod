@@ -4,21 +4,57 @@
 
 {% block page %}
 
-<div class="pagination months">
-	<h3>{{ year }} Archive:</h3>
-	<ul>
-	{% for m in month_range %}
-	<li>
-		{% if m.month == month %}
-		<strong>{{ m|date:'b' }}</strong>
-		{% else %}
-		<a href="{% url month year m.month %}">{{ m|date:'b' }}</a>
-		{% endif %}
-	</li>
-	{% endfor %}
-	</ul>
-</div>
+	{% comment %}
+	<div class="pagination months">
+		<h3>{{ year }} Archive:</h3>
+		<ul>
+		{% for m in month_range %}
+		<li>
+			{% if m.month == month %}
+			<strong>{{ m|date:'b' }}</strong>
+			{% else %}
+			<a href="{% url month year m.month %}">{{ m|date:'b' }}</a>
+			{% endif %}
+		</li>
+		{% endfor %}
+		</ul>
+	</div>
+	{% endcomment %}
 
-{% include 'apod/calendar.html' %}
+
+	{% include 'apod/calendar.html' %}
 
 {% endblock page %}
+
+{% block extra_nav %}
+	<p class="date">
+		<span class="month">{{ current_month|date:'b' }}</span>
+		<span class="year"><a href="{% url year current_month.year %}">{{ current_month.year }}</a></span>
+	</p>
+
+	<div class="nav"><p>
+		{% if previous_month %}
+		<a class="prev" href="{% url month previous_month.year previous_month.month %}">
+			<i class="icon-chevron-left"></i>
+
+			<span class="preview"><span class="calendar">
+				<i class="icon-calendar"></i> {{ previous_month|date:'b Y' }}
+			</span></span>
+		</a>
+		{% else %}
+		<span class="disabled"><i class="icon-chevron-left"></i></span>
+		{% endif %}
+
+		{% if next_month %}
+		<a class="next" href="{% url month next_month.year next_month.month %}">
+			<i class="icon-chevron-right"></i>
+
+			<span class="preview"><span class="calendar">
+				<i class="icon-calendar"></i> {{ next_month|date:'b Y' }}
+			</span></span>
+		</a>
+		{% else %}
+		<span class="disabled"><i class="icon-chevron-right"></i></span>
+		{% endif %}
+	</p></div>
+{% endblock extra_nav %}
