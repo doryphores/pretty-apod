@@ -31,6 +31,8 @@ class Timer
 # Transition helper
 
 class Transition
+	@timeout: 500
+
 	@support: (->
 		transitionEnd = (->
 			el = document.createElement 'bootstrap'
@@ -50,21 +52,20 @@ class Transition
 			end: transitionEnd
 	)()
 
-	constructor: (@element, @timeout = 500) ->
+	constructor: (@element, @timeout = Transition.timeout) ->
 		@deferred = $.Deferred()
 		@timer = new Timer()
 
 	start: (func) ->
-		# Force reflow as we may have changed display property at this stage
-		@element.offset()
-
-		if func
-			if Transition.support
-				Timer.immediate func
-			else
-				func()
-
+		@reflow()
 		@element.addClass "animated"
+		@reflow()
+
+		if Transition.support
+			Timer.immediate func
+		else
+			func()
+
 		@deferred.always => @element.removeClass "animated"
 
 		if Transition.support
@@ -85,6 +86,10 @@ class Transition
 
 	end: (func) ->
 		@deferred.done func
+
+	reflow: ->
+		@element.offset()
+
 
 namespace "APOD.utils", (exports) ->
 	exports.Timer = Timer
@@ -120,18 +125,17 @@ class Module
 
 	# Event handling
 
-	trigger: (evt, data) ->
-		@element.trigger evt, data
+	trigger: (args...) ->
+		@element.trigger args...
 
-	on: (evt, handler) ->
-		if typeof evt is "string"
-			# Single event
-			@element.on evt, handler
-		else
-			# Multiple event
-			events = evt
-			for evt, handler of events
-				@element.on evt, handler
+	on: (args...) ->
+		@element.on args...
+
+	off: (args...) ->
+		@element.off args...
+
+	one: (args...) ->
+		@element.one args...
 
 
 # Modules
@@ -244,11 +248,16 @@ class Panel extends Module
 
 	show: ->
 		if cp = Panel.getCurrentPanel()
-			cp.hide().done => @_show()
+			cp.one 'hidden', => @_show()
+			cp.hide()
 		else
 			@_show()
 
 	_show: ->
+		evt = new $.Event 'show'
+		@trigger evt
+		if evt.isDefaultPrevented() then return
+
 		@element.show()
 
 		tran = new Transition @element
@@ -266,13 +275,16 @@ class Panel extends Module
 				@element.focus()
 				@trigger "shown"
 
-		@trigger "show"
 		Panel.currentPanel = @id
 
 	hide: ->
+		evt = new $.Event 'hide'
+		@trigger evt
+		if evt.isDefaultPrevented() then return
+
 		tran = new Transition @element
 
-		promise = tran.start =>
+		tran.start =>
 			$("body").removeClass "open-panel"
 			unless @options.overlapping
 				$("body").removeClass "push-panel"
@@ -285,14 +297,9 @@ class Panel extends Module
 				Panel.currentPanel = null
 				@trigger "hidden"
 
-		@trigger "hide"
-
-		promise
-
 	toggle: ->
 		cp = Panel.getCurrentPanel()
 		if cp is @ then @hide() else @show()
-		# this.toggleLink.parent().toggleClass("active");
 
 	startResize: ->
 		$(window).triggerHandler "resize"

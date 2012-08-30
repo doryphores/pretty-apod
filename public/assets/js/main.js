@@ -50,6 +50,8 @@
 
   Transition = (function() {
 
+    Transition.timeout = 500;
+
     Transition.support = (function() {
       var transitionEnd;
       transitionEnd = (function() {
@@ -75,22 +77,21 @@
 
     function Transition(element, timeout) {
       this.element = element;
-      this.timeout = timeout != null ? timeout : 500;
+      this.timeout = timeout != null ? timeout : Transition.timeout;
       this.deferred = $.Deferred();
       this.timer = new Timer();
     }
 
     Transition.prototype.start = function(func) {
       var _this = this;
-      this.element.offset();
-      if (func) {
-        if (Transition.support) {
-          Timer.immediate(func);
-        } else {
-          func();
-        }
-      }
+      this.reflow();
       this.element.addClass("animated");
+      this.reflow();
+      if (Transition.support) {
+        Timer.immediate(func);
+      } else {
+        func();
+      }
       this.deferred.always(function() {
         return _this.element.removeClass("animated");
       });
@@ -115,6 +116,10 @@
 
     Transition.prototype.end = function(func) {
       return this.deferred.done(func);
+    };
+
+    Transition.prototype.reflow = function() {
+      return this.element.offset();
     };
 
     return Transition;
@@ -176,23 +181,28 @@
       return _results;
     };
 
-    Module.prototype.trigger = function(evt, data) {
-      return this.element.trigger(evt, data);
+    Module.prototype.trigger = function() {
+      var args, _ref;
+      args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+      return (_ref = this.element).trigger.apply(_ref, args);
     };
 
-    Module.prototype.on = function(evt, handler) {
-      var events, _results;
-      if (typeof evt === "string") {
-        return this.element.on(evt, handler);
-      } else {
-        events = evt;
-        _results = [];
-        for (evt in events) {
-          handler = events[evt];
-          _results.push(this.element.on(evt, handler));
-        }
-        return _results;
-      }
+    Module.prototype.on = function() {
+      var args, _ref;
+      args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+      return (_ref = this.element).on.apply(_ref, args);
+    };
+
+    Module.prototype.off = function() {
+      var args, _ref;
+      args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+      return (_ref = this.element).off.apply(_ref, args);
+    };
+
+    Module.prototype.one = function() {
+      var args, _ref;
+      args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+      return (_ref = this.element).one.apply(_ref, args);
     };
 
     return Module;
@@ -335,17 +345,23 @@
       var cp,
         _this = this;
       if (cp = Panel.getCurrentPanel()) {
-        return cp.hide().done(function() {
+        cp.one('hidden', function() {
           return _this._show();
         });
+        return cp.hide();
       } else {
         return this._show();
       }
     };
 
     Panel.prototype._show = function() {
-      var tran,
+      var evt, tran,
         _this = this;
+      evt = new $.Event('show');
+      this.trigger(evt);
+      if (evt.isDefaultPrevented()) {
+        return;
+      }
       this.element.show();
       tran = new Transition(this.element);
       tran.start(function() {
@@ -369,22 +385,26 @@
           return _this.trigger("shown");
         }
       });
-      this.trigger("show");
       return Panel.currentPanel = this.id;
     };
 
     Panel.prototype.hide = function() {
-      var promise, tran,
+      var evt, tran,
         _this = this;
+      evt = new $.Event('hide');
+      this.trigger(evt);
+      if (evt.isDefaultPrevented()) {
+        return;
+      }
       tran = new Transition(this.element);
-      promise = tran.start(function() {
+      tran.start(function() {
         $("body").removeClass("open-panel");
         if (!_this.options.overlapping) {
           $("body").removeClass("push-panel");
           return _this.startResize();
         }
       });
-      tran.end(function() {
+      return tran.end(function() {
         if (!_this.options.overlapping) {
           _this.stopResize();
         }
@@ -394,8 +414,6 @@
           return _this.trigger("hidden");
         }
       });
-      this.trigger("hide");
-      return promise;
     };
 
     Panel.prototype.toggle = function() {

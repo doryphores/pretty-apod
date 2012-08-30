@@ -17,6 +17,7 @@ from apod import apodapi
 
 # Models
 
+
 class TagFormatter(models.Model):
 	label = models.CharField(max_length=400)
 	pattern = models.CharField(max_length=400)
@@ -30,6 +31,7 @@ class TagFormatter(models.Model):
 
 	def __unicode__(self):
 		return u'%s' % self.label
+
 
 class TagManager(models.Manager):
 	FORMATTERS_CACHE_KEY = 'TAG_FORMATTERS'
@@ -109,7 +111,9 @@ class TagManager(models.Manager):
 		return (obsolete_count, formatted_count)
 
 	def get_by_slug(self, slug):
-		q = self.extra(where=["regexp_replace(lower(label), '\\W+', '-', 'g')=%s"], params=[slug])
+		q = self.extra(
+			where=["regexp_replace(lower(label), '\\W+', '-', 'g')=%s"],
+			params=[slug])
 		return q.get()
 
 
@@ -155,8 +159,12 @@ class PictureManager(models.Manager):
 
 		return self.get(publish_date=date)
 
+
 def get_image_path(instance, filename):
-	return os.path.join('pictures', str(instance.publish_date.year), str(instance.publish_date.month), filename)
+	return os.path.join('pictures',
+						str(instance.publish_date.year),
+						str(instance.publish_date.month),
+						filename)
 
 TYPES = (
 	('IM', 'Image'),
@@ -164,6 +172,7 @@ TYPES = (
 	('VI', 'Vimeo'),
 	('UN', 'Unknown'),
 )
+
 
 class Picture(models.Model):
 	publish_date = models.DateField(unique=True)
@@ -178,7 +187,12 @@ class Picture(models.Model):
 	original_file_size = models.PositiveIntegerField(default=0)
 	original_width = models.PositiveSmallIntegerField(null=True, blank=True)
 	original_height = models.PositiveSmallIntegerField(null=True, blank=True)
-	image = models.ImageField(upload_to=get_image_path, width_field='image_width', height_field='image_height', blank=True, null=True)
+	image = models.ImageField(
+		upload_to=get_image_path,
+		width_field='image_width',
+		height_field='image_height',
+		blank=True,
+		null=True)
 	image_width = models.PositiveSmallIntegerField(editable=False, null=True)
 	image_height = models.PositiveSmallIntegerField(editable=False, null=True)
 
@@ -272,7 +286,10 @@ class Picture(models.Model):
 				# Check size and resize if bigger than 1Mb
 				if resize and self.original_file_size > 1024 * 1024:
 					# Create a resized version
-					resized = get_thumbnail(self.image, '2000x2000', progressive=False, quality=90)
+					resized = get_thumbnail(self.image,
+											'2000x2000',
+											progressive=False,
+											quality=90)
 
 					# Delete original image
 					self.image.delete(save=False)
@@ -307,7 +324,8 @@ class Picture(models.Model):
 			if not thumb_url:
 				try:
 					# Call Vimeo API to get video info
-					f = urllib2.urlopen('http://vimeo.com/api/v2/video/%s.json' % self.video_id)
+					f = urllib2.urlopen('http://vimeo.com/api/v2/video/%s.json'
+										% self.video_id)
 				except urllib2.HTTPError:
 					return None
 
@@ -328,7 +346,7 @@ class Picture(models.Model):
 		return len(self.original_image_url) > 0
 
 	def is_video(self):
-		return self.media_type in ['YT','VI']
+		return self.media_type in ['YT', 'VI']
 
 	@property
 	def next(self):
@@ -356,6 +374,7 @@ def post_delete_picture(sender, **kwargs):
 	instance = kwargs['instance']
 	if instance.image:
 		delete_image(instance.image)
+
 
 @receiver(pre_save, sender=Picture)
 def pre_save_picture(sender, **kwargs):
