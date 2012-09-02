@@ -1897,7 +1897,7 @@ table.archive td.empty span.day {
 }
 /* line 34, ../../../scss/partials/_pagination.scss */
 .pagination span {
-  opacity: 0.3;
+  opacity: 0.5;
   cursor: default;
 }
 

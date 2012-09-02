@@ -102,6 +102,9 @@ def get_apod_details(apod_date, force=False):
 		# Remove the 'tag' because it breaks parsing
 		html = re.sub(pat, '', html)
 
+	# Replace erroneous closing anchor tags
+	html = html.replace('<a/>', '</a>')
+
 	# Parse it with Beautiful Soup
 	soup = BSoup(html)
 
