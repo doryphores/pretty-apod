@@ -208,6 +208,31 @@ class Picture(models.Model):
 
 		return (url, (), params)
 
+	@models.permalink
+	def get_month_url(self):
+		params = {
+			'year': str(self.publish_date.year),
+			'month': str(self.publish_date.month),
+		}
+		url = 'month'
+		if self.current_tag:
+			params['tag'] = self.current_tag.slug
+			url = 'tag_month'
+
+		return (url, (), params)
+
+	@models.permalink
+	def get_year_url(self):
+		params = {
+			'year': str(self.publish_date.year),
+		}
+		url = 'year'
+		if self.current_tag:
+			params['tag'] = self.current_tag.slug
+			url = 'tag_year'
+
+		return (url, (), params)
+
 	def __unicode__(self):
 		return u'%s' % self.title
 
@@ -338,6 +363,10 @@ class Picture(models.Model):
 
 	def is_video(self):
 		return self.media_type in ['YT','VI']
+
+	@property
+	def month(self):
+		return self.publish_date.replace(day=1)
 
 	@property
 	def next(self):

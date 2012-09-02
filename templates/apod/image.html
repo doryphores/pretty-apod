@@ -11,8 +11,8 @@
 {% block extra_nav %}
 	<p class="date">
 		<span class="day">{{ picture.publish_date.day }}</span>
-		<span class="month"><a href="{% url month picture.publish_date.year picture.publish_date.month %}">{{ picture.publish_date|date:'b' }}</a></span>
-		<span class="year"><a href="{% url year picture.publish_date.year %}">{{ picture.publish_date.year }}</a></span>
+		<span class="month"><a href="{{ picture.get_month_url }}">{{ picture.publish_date|date:'b' }}</a></span>
+		<span class="year"><a href="{{ picture.get_year_url }}">{{ picture.publish_date.year }}</a></span>
 	</p>
 
 	<div class="nav"><p>
@@ -20,7 +20,7 @@
 		<a href="{{ previous.get_absolute_url }}" class="prev">
 			<i class="icon-chevron-left"></i>
 			<span class="preview"><span>
-				<i class="icon-{% if previous.is_video %}facetime-video{% else %}camera{% endif %}"></i> {{ previous.title }}
+				<i class="icon-{{ previous.is_video|yesno:"facetime-video,camera" }}"></i> {{ previous.title }}
 				{% if previous.thumb %}
 				<img src="{{ previous.thumb }}" width="120" height="90">
 				{% endif %}
@@ -33,7 +33,7 @@
 		<a href="{{ next.get_absolute_url }}" class="next">
 			<i class="icon-chevron-right"></i>
 			<span class="preview"><span>
-				<i class="icon-{% if previous.is_video %}facetime-video{% else %}camera{% endif %}"></i> {{ next.title }}
+				<i class="icon-{{ next.is_video|yesno:"facetime-video,camera" }}"></i> {{ next.title }}
 				{% if next.thumb %}
 				<img src="{{ next.thumb }}" width="120" height="90">
 				{% endif %}

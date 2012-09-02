@@ -2,7 +2,13 @@
 
 {% load apod_tags %}
 
-{% block page_title %}&ldquo;{{ tag }}&rdquo; archive ({{ paginator.count }} picture{{ paginator.count|pluralize }}){% endblock page_title %}
+{% block page_title %}
+	&ldquo;{{ tag }}&rdquo; archive
+	{% if archive_date %}
+	for {{ archive_date }}
+	{% endif %}
+	({{ paginator.count }} picture{{ paginator.count|pluralize }})
+{% endblock page_title %}
 
 {% block page %}
 {% if paginator.num_pages > 1 %}
@@ -36,7 +42,7 @@
 		<a href="{{ picture.get_absolute_url }}" class="item">
 			<span>{{ picture.title }}</span>
 		</a>
-		<span class="date">{{ picture.publish_date|date:"d b Y" }}</span>
+		<span class="date"><i class="icon-{{ picture.is_video|yesno:"facetime-video,camera" }}"></i> {{ picture.publish_date|date:"d b Y" }}</span>
 	</li>
 	{% endfor %}
 </ul>

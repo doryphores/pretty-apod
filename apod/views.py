@@ -151,7 +151,7 @@ def tags(request):
 		'max_count': min_max['num_pictures__max'],
 	})
 
-def tag(request, tag, page=1):
+def tag(request, tag, month=None, year=None, page=1):
 	page = int(page)
 
 	try:
@@ -160,6 +160,19 @@ def tag(request, tag, page=1):
 		raise Http404
 
 	all_pictures = Picture.objects.filter(tags=tag)
+
+	archive_date = None
+
+	if year:
+		archive_date = year
+		year = int(year)
+
+		all_pictures = all_pictures.filter(publish_date__year=year)
+
+		if month:
+			month = int(month)
+			archive_date = datetime.date(year, month, 1).strftime('%B %Y')
+			all_pictures = all_pictures.filter(publish_date__month=month)
 
 	if all_pictures.count() == 0:
 		raise Http404
@@ -175,6 +188,7 @@ def tag(request, tag, page=1):
 		p.current_tag = tag
 
 	return render(request, 'apod/tag.html', {
+		'archive_date': archive_date,
 		'page': page,
 		'paginator': paginator,
 		'tag': tag,
