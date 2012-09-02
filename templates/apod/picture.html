@@ -67,7 +67,7 @@
 			{% if picture.image %}
 				<img src="{{ picture.image.url }}" width="{{ picture.image.width }}" height="{{ picture.image.height }}" style="max-width:{{ picture.image.width }}px;max-height:{{ picture.image.height }}px" class="picture">
 			{% else %}
-				<p data-url="{% url image_json picture.pk %}" class="picture">
+				<p data-url="{{ picture.get_json_url }}" class="picture">
 					I am downloading and processing this picture from APOD. Please trying again in a minute...
 				</p>
 			{% endif %}

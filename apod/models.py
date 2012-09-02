@@ -2,6 +2,7 @@ from django.db import models
 from django.core.cache import cache
 from django.core.files.base import ContentFile
 from django.db.models.signals import post_delete, pre_save, post_save
+from django.db.models import Count, Min, Max
 from django.dispatch import receiver
 
 from sorl.thumbnail import get_thumbnail, delete as delete_image
@@ -113,6 +114,16 @@ class TagManager(models.Manager):
 		print q.query
 		return q.get()
 
+	def get_top_tags(self, threshold):
+		tags = self.annotate(num_pictures=Count('pictures')).filter(num_pictures__gt = threshold)
+
+		min_max = tags.aggregate(Min('num_pictures'), Max('num_pictures'))
+
+		return {
+			'tags': tags,
+			'min': min_max['num_pictures__min'],
+			'max': min_max['num_pictures__max']
+		}
 
 # Clear formatter cache when formatters are updated
 
@@ -201,12 +212,16 @@ class Picture(models.Model):
 			'month': str(self.publish_date.month),
 			'day': str(self.publish_date.day),
 		}
-		url = 'image'
+		url = 'picture'
 		if self.current_tag:
 			params['tag'] = self.current_tag.slug
-			url = 'tag_image'
+			url = 'tag_picture'
 
 		return (url, (), params)
+
+	@models.permalink
+	def get_json_url(self):
+		return ('picture_json', (), { 'picture_id': self.pk })
 
 	@models.permalink
 	def get_month_url(self):

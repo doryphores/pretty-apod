@@ -2,6 +2,8 @@ from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Count, Min, Max
 
+from django.views.generic import ListView
+
 from django.http import Http404, HttpResponse
 
 from apod.models import Picture, Tag
@@ -11,7 +13,7 @@ import json
 import datetime
 import calendar
 
-def image(request, year=None, month=None, day=None, tag=None):
+def picture(request, year=None, month=None, day=None, tag=None):
 	if tag:
 		try:
 			tag = Tag.objects.get_by_slug(tag)
@@ -31,13 +33,13 @@ def image(request, year=None, month=None, day=None, tag=None):
 	if tag:
 		picture.current_tag = tag
 
-	return render(request, 'apod/image.html', {
+	return render(request, 'apod/picture.html', {
 		'picture': picture,
 		'tag': tag
 	})
 
 
-def image_json(request, picture_id):
+def picture_json(request, picture_id):
 	picture = get_object_or_404(Picture, pk=picture_id)
 
 	picture.get_image()
@@ -141,14 +143,12 @@ def year(request, year):
 	return render(request, 'apod/year.html', view_data)
 
 def tags(request):
-	tags = Tag.objects.annotate(num_pictures=Count('pictures')).filter(num_pictures__gt = 30 if request.is_ajax() else 20)
-
-	min_max = tags.aggregate(Min('num_pictures'), Max('num_pictures'))
+	top_tags = Tag.objects.get_top_tags(30 if request.is_ajax() else 20)
 
 	return render(request, 'apod/tags.html', {
-		'tags': tags,
-		'min_count': min_max['num_pictures__min'],
-		'max_count': min_max['num_pictures__max'],
+		'tags': top_tags['tags'],
+		'min_count': top_tags['min'],
+		'max_count': top_tags['max'],
 	})
 
 def tag(request, tag, month=None, year=None, page=1):
