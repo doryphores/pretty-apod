@@ -1241,7 +1241,7 @@ html {
 
 /* line 5, ../../../scss/partials/_layout.scss */
 body {
-  background: #313131 url('../images/page-noise.png?1346278585');
+  background: #313131 url('../images/page-noise.png?1346547361');
   color: #dedede;
 }
 
@@ -1272,7 +1272,7 @@ body {
   top: 0;
   bottom: 0;
   width: 100px;
-  background: #444444 url('../images/noise.png?1346192058') repeat;
+  background: #444444 url('../images/noise.png?1346547361') repeat;
   -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   -moz-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
