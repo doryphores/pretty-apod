@@ -9,10 +9,55 @@ $color_header_bg: #212121;
 
 $color_nav_bg: #444;
 
-$layout_header_height: 50px;
+$layout_header_height: 40px;
 $layout_nav_width: 100px;
 
 $layout_panel_width: 400px;
 
 
 $fontAwesomePath: "fontawesome-webfont";
+
+
+// ========================================================
+// Triangle notches
+
+@mixin triangle($width, $height) {
+	$w: floor($width / sqrt(2));
+	$s: $height / ($width / 2);
+
+	overflow: hidden;
+	display: block;
+	width: $w;
+	height: $w;
+	padding: floor(($width - $w) / 2);
+	position: absolute;
+	@if $s != 1 { @include transform(scaleY($s)); }
+
+	.oldie & {
+		display: none;
+	}
+
+	> b {
+		position: relative;
+		display: block;
+		width: 100%;
+		height: 100%;
+		@include box-sizing(border-box);
+		@include transform(rotate(45deg));
+	}
+}
+
+@mixin triangle-right($width) {
+	@include triangle($width, $width / 2);
+
+	left: auto;
+	right: -($width);
+	top: 50%;
+	margin-top: floor(-$width / 2);
+
+	> b {
+		right: auto;
+		left: floor(-$width / 2);
+		margin-top: - floor($width / sqrt(2) / 2);
+	}
+}

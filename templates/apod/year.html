@@ -2,7 +2,9 @@
 
 {% load apod_tags %}
 
-{% block page_title %}{{ archive_label }}{% endblock page_title %}
+{% block page_title %}
+	<i class="icon-calendar"></i> {{ year }} ({{ picture_count }} picture{{ picture_count|pluralize }})
+{% endblock page_title %}
 
 {% block page %}
 

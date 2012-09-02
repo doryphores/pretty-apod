@@ -53,14 +53,16 @@ def picture_json(request, picture_id):
 
 	return HttpResponse(json.dumps(data), mimetype='application/json')
 
+
 def month(request, year, month):
 	year = int(year)
 	month = int(month)
 
 	pictures = Picture.objects.filter(publish_date__month=month, publish_date__year=year)
+	picture_count = pictures.count()
 
 	# If month has no pics, raise 404
-	if pictures.count() == 0:
+	if picture_count == 0:
 		raise Http404
 
 	pics = dict([(p.publish_date.day, p) for p in pictures])
@@ -87,21 +89,22 @@ def month(request, year, month):
 		'current_month': datetime.date(year, month, 1),
 		'previous_month': previous_month,
 		'next_month': next_month,
-		'archive_label': '%s %s Archive' % (calendar.month_name[month], year),
+		'picture_count': picture_count,
 		'calendar': picture_calendar,
-		# 'month_range': Picture.objects.filter(publish_date__year=year).dates('publish_date', 'month'),
-		# 'tags': tags,
 	}
 
 	return render(request, 'apod/month.html', view_data)
+
 
 def year(request, year):
 	year = int(year)
 
 	pictures = Picture.objects.filter(publish_date__year=year).reverse()
 
+	picture_count = pictures.count()
+
 	# If year has no pics, raise 404
-	if pictures.count() == 0:
+	if picture_count == 0:
 		raise Http404
 
 	# Build dict indexed by date
@@ -133,7 +136,7 @@ def year(request, year):
 
 	view_data = {
 		'year': year,
-		'archive_label': '%s Archive' % year,
+		'picture_count': picture_count,
 		'calendars': calendars,
 		'previous_year': previous_year,
 		'next_year': next_year,
@@ -141,6 +144,7 @@ def year(request, year):
 	}
 
 	return render(request, 'apod/year.html', view_data)
+
 
 def tags(request):
 	top_tags = Tag.objects.get_top_tags(30 if request.is_ajax() else 20)
@@ -151,7 +155,8 @@ def tags(request):
 		'max_count': top_tags['max'],
 	})
 
-def tag(request, tag, month=None, year=None, page=1):
+
+def archive(request, tag, month=None, year=None, page=1):
 	page = int(page)
 
 	try:
@@ -162,16 +167,19 @@ def tag(request, tag, month=None, year=None, page=1):
 	all_pictures = Picture.objects.filter(tags=tag)
 
 	archive_date = None
+	archive_type = 'tag'
 
 	if year:
-		archive_date = year
 		year = int(year)
+		archive_date = datetime.date(year, 1, 1)
+		archive_type = 'year'
 
 		all_pictures = all_pictures.filter(publish_date__year=year)
 
 		if month:
 			month = int(month)
-			archive_date = datetime.date(year, month, 1).strftime('%B %Y')
+			archive_date = archive_date.replace(month=month)
+			archive_type = 'month'
 			all_pictures = all_pictures.filter(publish_date__month=month)
 
 	if all_pictures.count() == 0:
@@ -187,8 +195,9 @@ def tag(request, tag, month=None, year=None, page=1):
 	for p in pictures.object_list:
 		p.current_tag = tag
 
-	return render(request, 'apod/tag.html', {
+	return render(request, 'apod/archive.html', {
 		'archive_date': archive_date,
+		'archive_type': archive_type,
 		'page': page,
 		'paginator': paginator,
 		'tag': tag,

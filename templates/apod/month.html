@@ -1,6 +1,9 @@
 {% extends "apod/page.html" %}
 
-{% block page_title %}{{ archive_label }}{% endblock page_title %}
+{% block page_title %}
+	<a href="{% url year current_month.year %}"><i class="icon-calendar"></i> {{ current_month|date:'Y'}} <b><b></b></b></a>
+	<i class="icon-calendar"></i> {{ current_month|date:'F' }} ({{ picture_count }} picture{{ picture_count|pluralize }})
+{% endblock page_title %}
 
 {% block page %}
 

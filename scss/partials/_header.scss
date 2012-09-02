@@ -1,0 +1,68 @@
+.site-header {
+	background: darken($color_page_bg, 5%) image-url("page-noise.png");
+	@include box-shadow(0 1px 0 darken($color_page_bg, 8%));
+
+	h1 {
+		font-size: 18px;
+		line-height: $layout_header_height;
+		display: inline;
+		overflow: hidden;
+
+		a {
+			font-size: 14px;
+			float: left;
+			padding: 0 5px 0 30px;
+			position: relative;
+			z-index: 4;
+			color: $color_page_text;
+			background: lighten($color_page_bg, 20%) image-url("page-noise.png");
+
+			&:first-child {
+				padding: 0 0 0 10px;
+				width: $layout_nav_width - 10px;
+			}
+
+			&:last-of-type {
+				margin-right: 30px;
+			}
+
+			&:hover,
+			&:focus {
+				background: lighten($color_page_bg, 25%) image-url("page-noise.png") !important;
+				b b {
+					background: lighten($color_page_bg, 25%) image-url("page-noise.png") !important;
+				}
+			}
+
+			+a, +a b b {
+				background: lighten($color_page_bg, 15%) image-url("page-noise.png");
+				z-index: 3;
+			}
+
+			+a+a, +a+a b b {
+				background: lighten($color_page_bg, 10%) image-url("page-noise.png");
+				z-index: 2;
+			}
+
+			+a+a+a, +a+a+a b b {
+				background: lighten($color_page_bg, 5%) image-url("page-noise.png");
+				z-index: 1;
+			}
+		}
+
+		i {
+			font-size: 14px;
+			line-height: 14px;
+			margin-right: 5px;
+		}
+
+		b {
+			@include triangle-right($layout_header_height);
+
+			b {
+				background: lighten($color_page_bg, 20%) image-url("page-noise.png");
+				@include box-shadow(0 0 0 1px rgba(0,0,0,.5));
+			}
+		}
+	}
+}

@@ -9,23 +9,23 @@
 <body>
 
 <header class="site-header">
-	<p class="branding">Pretty APOD &mdash; </p>
-	<h1>{% block page_title %}{% endblock %}</h1>
+	<h1>
+		<a href="{% url home %}">Pretty APOD <b><b></b></b></a>
+		{% block page_title %}{% endblock %}
+	</h1>
 </header>
 
 <nav class="site-nav">
 	<ul>
-		<li><a href="{% url home %}">
-			<i class="icon-home"></i>
-			Today
-		</a></li>
 		<li data-toggle="tags"><a href="{% url tags %}">
 			<i class="icon-tags"></i>
 			Tags
+			<b><b></b></b>
 		</a></li>
 		<li data-toggle="about"><a href="#">
 			<i class="icon-info-sign"></i>
 			About
+			<b><b></b></b>
 		</a></li>
 	</ul>
 	{% block extra_nav %}

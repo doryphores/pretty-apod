@@ -3,9 +3,16 @@
 {% load apod_tags %}
 
 {% block page_title %}
-	&ldquo;{{ tag }}&rdquo; archive
 	{% if archive_date %}
-	for {{ archive_date }}
+	<a href="{{ tag.get_absolute_url }}"><i class="icon-tag"></i> {{ tag }} <b><b></b></b></a>
+		{% if archive_type == 'year' %}
+		<i class="icon-calendar"></i> {{ archive_date|date:'Y' }}
+		{% else %}
+		<a href="{% url tag_year tag.slug archive_date.year %}"><i class="icon-calendar"></i> {{ archive_date|date:'Y' }} <b><b></b></b></a>
+		{{ archive_date|date:'F' }}
+		{% endif %}
+	{% else %}
+	<i class="icon-tag"></i> {{ tag }}
 	{% endif %}
 	({{ paginator.count }} picture{{ paginator.count|pluralize }})
 {% endblock page_title %}

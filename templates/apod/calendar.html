@@ -24,6 +24,10 @@
 					<a href="{{ picture.get_absolute_url }}">
 						<span>{{ picture.title }}</span>
 					</a>
+
+					{% if picture.is_video %}
+					<span class="date"><i class="icon-facetime-video"></i></span>
+					{% endif %}
 				</div></td>
 				{% else %}
 				<td class="empty"><div class="item">

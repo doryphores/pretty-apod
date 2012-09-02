@@ -1,12 +1,14 @@
 .site-nav {
+	background: $color_nav_bg image-url("noise.png") repeat;
+
 	ul {
 		margin-bottom: 5px;
 		clear: both;
 	}
 
 	li {
-		margin-bottom: 1px;
 		font-size: 14px;
+		margin-top: 1px;
 
 		a {
 			display: block;
@@ -16,6 +18,8 @@
 			line-height: $layout_header_height;
 			padding: 0 10px;
 			vertical-align: middle;
+			position: relative;
+			@include transition(background .2s);
 
 			i {
 				line-height: 1;
@@ -24,6 +28,21 @@
 			&:hover,
 			&:active {
 				background: rgba(0,0,0,.4);
+
+				b b {
+					left: - ($layout_header_height / 2);
+					background: rgba(0,0,0,.4);
+				}
+			}
+		}
+
+		b {
+			@include triangle-right($layout_header_height);
+
+			b {
+				background: rgba(0,0,0,.2);
+				left: - $layout_header_height;
+				@include transition(all .2s);
 			}
 		}
 

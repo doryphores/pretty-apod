@@ -1,10 +1,4 @@
 .viewport {
-	position: absolute;
-	top: $layout_header_height;
-	bottom: 0;
-	left: $layout_nav_width;
-	right: 0;
-	z-index: 1;
 	overflow: auto;
 	padding: 20px;
 	text-align: center;

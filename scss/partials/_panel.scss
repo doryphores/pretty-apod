@@ -1,12 +1,6 @@
 .panel {
 	overflow: auto;
 	overflow-x: hidden; // Disable horizontal scrolling
-	position: fixed;
-	z-index: 4;
-	top: 0;
-	bottom: 0;
-	left: $layout_nav_width;
-	width: 0;
 	background: rgba(0,0,0,.8);
 	display: none;
 	@include transition(width 0.2s);
