@@ -334,8 +334,10 @@
           return _this.toggles.addClass('active');
         }
       });
-      return $(document).on('click.panel', function() {
-        return _this.hide();
+      return $(document).on('click.panel', function(e) {
+        if (e.button === 0) {
+          return _this.hide();
+        }
       });
     };
 

@@ -2,7 +2,7 @@
 
 {% load apod_tags %}
 
-{% block page_title %}Archive for tag "<em>{{ tag }}</em>" ({{ paginator.count }} picture{{ paginator.count|pluralize }}){% endblock page_title %}
+{% block page_title %}&ldquo;{{ tag }}&rdquo; archive ({{ paginator.count }} picture{{ paginator.count|pluralize }}){% endblock page_title %}
 
 {% block page %}
 {% if paginator.num_pages > 1 %}

@@ -85,7 +85,12 @@ p a:hover, p a:active {
   text-decoration: underline;
 }
 
-/* line 24, ../../../scss/partials/_type.scss */
+/* line 23, ../../../scss/partials/_type.scss */
+em {
+  font-style: italic;
+}
+
+/* line 28, ../../../scss/partials/_type.scss */
 .site-page h2 {
   text-align: center;
   font-size: 16px;
@@ -100,11 +105,11 @@ p a:hover, p a:active {
   background: -o-radial-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0) 70%) no-repeat center -10px;
   background: radial-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0) 70%) no-repeat center -10px;
 }
-/* line 34, ../../../scss/partials/_type.scss */
+/* line 38, ../../../scss/partials/_type.scss */
 .site-page h2:first-child {
   margin-top: 30px;
 }
-/* line 38, ../../../scss/partials/_type.scss */
+/* line 42, ../../../scss/partials/_type.scss */
 .site-page h2 span {
   display: inline-block;
   line-height: 30px;
@@ -1583,9 +1588,35 @@ body {
 .panel h2:first-child {
   margin-top: 0;
 }
-/* line 45, ../../../scss/partials/_panel.scss */
+/* line 44, ../../../scss/partials/_panel.scss */
+.panel h2 .action {
+  float: right;
+  font-size: 12px;
+  line-height: 16px;
+  color: #dedede;
+  background: rgba(255, 255, 255, 0.5);
+  padding: 2px 4px;
+  margin-top: 2px;
+  -webkit-border-radius: 2px 2px 0 0;
+  -moz-border-radius: 2px 2px 0 0;
+  -ms-border-radius: 2px 2px 0 0;
+  -o-border-radius: 2px 2px 0 0;
+  border-radius: 2px 2px 0 0;
+}
+/* line 55, ../../../scss/partials/_panel.scss */
+.panel h2 .action:hover, .panel h2 .action:focus {
+  background: #6b7f86;
+}
+/* line 61, ../../../scss/partials/_panel.scss */
 .panel p {
   margin-bottom: 1em;
+  text-align: justify;
+}
+/* line 66, ../../../scss/partials/_panel.scss */
+.panel p.loading {
+  text-align: center;
+  font-size: 16px;
+  margin-top: 50px;
 }
 
 /* line 1, ../../../scss/partials/_viewport.scss */
@@ -1816,37 +1847,39 @@ table.archive td.empty span.day {
 /* line 1, ../../../scss/partials/_tags.scss */
 .tags {
   line-height: 20px;
+  max-width: 888px;
+  margin: 0 auto;
 }
-/* line 4, ../../../scss/partials/_tags.scss */
+/* line 6, ../../../scss/partials/_tags.scss */
 .tags a {
   margin-right: 10px;
   white-space: nowrap;
 }
-/* line 8, ../../../scss/partials/_tags.scss */
+/* line 10, ../../../scss/partials/_tags.scss */
 .tags a.xxs {
   font-size: 10px;
 }
-/* line 9, ../../../scss/partials/_tags.scss */
+/* line 11, ../../../scss/partials/_tags.scss */
 .tags a.xs {
   font-size: 12px;
 }
-/* line 10, ../../../scss/partials/_tags.scss */
+/* line 12, ../../../scss/partials/_tags.scss */
 .tags a.s {
   font-size: 14px;
 }
-/* line 11, ../../../scss/partials/_tags.scss */
+/* line 13, ../../../scss/partials/_tags.scss */
 .tags a.l {
   font-size: 16px;
 }
-/* line 12, ../../../scss/partials/_tags.scss */
+/* line 14, ../../../scss/partials/_tags.scss */
 .tags a.xl {
   font-size: 18px;
 }
-/* line 13, ../../../scss/partials/_tags.scss */
+/* line 15, ../../../scss/partials/_tags.scss */
 .tags a.xxl {
   font-size: 20px;
 }
-/* line 16, ../../../scss/partials/_tags.scss */
+/* line 18, ../../../scss/partials/_tags.scss */
 .tags a:hover, .tags a:active {
   background: #6b7f86;
   color: #dedede;
@@ -1859,37 +1892,40 @@ table.archive td.empty span.day {
   margin: 0 6px 0 -4px;
   text-decoration: none;
 }
-/* line 26, ../../../scss/partials/_tags.scss */
+/* line 28, ../../../scss/partials/_tags.scss */
 .tags.cloud {
   text-align: center;
-  line-height: 30px;
-}
-/* line 30, ../../../scss/partials/_tags.scss */
-.tags.cloud a.xxs {
-  font-size: 12px;
-}
-/* line 31, ../../../scss/partials/_tags.scss */
-.tags.cloud a.xs {
-  font-size: 16px;
 }
 /* line 32, ../../../scss/partials/_tags.scss */
-.tags.cloud a.s {
-  font-size: 20px;
-}
-/* line 33, ../../../scss/partials/_tags.scss */
-.tags.cloud a.l {
-  font-size: 24px;
-}
-/* line 34, ../../../scss/partials/_tags.scss */
-.tags.cloud a.xl {
-  font-size: 26px;
+.site-page .tags {
+  line-height: 30px;
 }
 /* line 35, ../../../scss/partials/_tags.scss */
-.tags.cloud a.xxl {
-  font-size: 30px;
+.site-page .tags a.xxs {
+  font-size: 12px;
+}
+/* line 36, ../../../scss/partials/_tags.scss */
+.site-page .tags a.xs {
+  font-size: 16px;
 }
 /* line 37, ../../../scss/partials/_tags.scss */
-.tags.cloud span {
+.site-page .tags a.s {
+  font-size: 20px;
+}
+/* line 38, ../../../scss/partials/_tags.scss */
+.site-page .tags a.l {
+  font-size: 24px;
+}
+/* line 39, ../../../scss/partials/_tags.scss */
+.site-page .tags a.xl {
+  font-size: 26px;
+}
+/* line 40, ../../../scss/partials/_tags.scss */
+.site-page .tags a.xxl {
+  font-size: 30px;
+}
+/* line 42, ../../../scss/partials/_tags.scss */
+.site-page .tags span {
   font-size: 10px;
   vertical-align: middle;
   background: rgba(0, 0, 0, 0.2);

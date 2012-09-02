@@ -4,7 +4,7 @@
 
 {# Page title #}
 
-{% block page_title %}{{ picture.title }}{% endblock %}
+{% block page_title %}{% if picture.current_tag %}&ldquo;{{ picture.current_tag }}&rdquo; archive &mdash; {% endif %}{{ picture.title }}{% endblock %}
 
 {# Extra navigation options #}
 
@@ -90,13 +90,14 @@
 
 	<div class="panel" data-module="Panel" id="details">
 		<div class="inner-panel">
-			<p><a href="{{ picture.get_apod_url }}" target="_blank"> <i class="icon-eye-open"></i> View on APOD</a></p>
+			<h2>
+				<i class="icon-question-sign"></i> Explanation
+				<a href="{{ picture.get_apod_url }}" target="_blank" class="action"> <i class="icon-eye-open"></i> View on APOD</a>
+			</h2>
+			<p>{{ picture.explanation|apod_html|safe }}</p>
 
 			<h2>&copy; Credits</h2>
 			<p>{{ picture.credits|safe }}</p>
-
-			<h2><i class="icon-question-sign"></i> Explanation</h2>
-			<p>{{ picture.explanation|apod_html|safe }}</p>
 
 			<h2><i class="icon-tags"></i> Tags</h2>
 			<p class="tags">

@@ -21,7 +21,7 @@
 			<i class="icon-home"></i>
 			Today
 		</a></li>
-		<li data-toggle="tags"><a href="data/tags.html">
+		<li data-toggle="tags"><a href="tag_cloud.html">
 			<i class="icon-tags"></i>
 			Tags
 		</a></li>
@@ -37,9 +37,9 @@
 {% block main %}
 {% endblock main %}
 
-<div class="panel" data-module="Panel" id="tags" data-overlapping="true" data-load="data/tags.html">
+<div class="panel" data-module="Panel" id="tags" data-overlapping="true" data-load="ajax_tags.html">
 	<div class="inner-panel">
-
+		<p class="loading"><i class="icon-time"></i> Loading tags&hellip;</p>
 	</div>
 </div>
 

@@ -242,7 +242,8 @@ class Panel extends Module
 			'show.panel': => @toggles.addClass('active')
 
 		# Close when click outside
-		$(document).on 'click.panel', => @hide()
+		$(document).on 'click.panel', (e) =>
+			@hide() if e.button is 0
 
 	show: ->
 		evt = new $.Event 'show'
