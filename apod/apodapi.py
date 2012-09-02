@@ -20,22 +20,22 @@ def get_archive_list(force=False, from_date=None):
 	Returns a list of dicts with publish_date and title keys
 	"""
 	cache_file = '%s/archive.html' % CACHE_FOLDER
-	
+
 	if storage.exists(cache_file) and (force or storage.modified_time(cache_file).date() < datetime.date.today()):
 		storage.delete(cache_file)
-	
+
 	# Download archive HTML if needed
 	if not storage.exists(cache_file):
 		f = urllib2.urlopen(settings.APOD_ARCHIVE_URL)
 		html = f.read()
-		
+
 		# Write it to disk
 		storage.save(cache_file, ContentFile(html))
-	
+
 	# Read HTML
 	with storage.open(cache_file) as f:
 		html = f.read()
-	
+
 	# Parse HTML
 	html_soup = BSoup(html)
 	archive_links = html_soup.b.findAll("a")
@@ -44,7 +44,7 @@ def get_archive_list(force=False, from_date=None):
 		publish_date = dateparser.parse(link.previous.strip().strip(':')).date()
 		if from_date and publish_date <= from_date:
 			return
-		
+
 		yield {
 			'publish_date': publish_date,
 			'title': unicode(link.next),
@@ -74,19 +74,19 @@ def get_apod_details(apod_date, force=False):
 
 	if force and storage.exists(cache_file):
 		storage.delete(cache_file)
-	
+
 	# Download archive HTML if needed
 	if not storage.exists(cache_file):
 		f = urllib2.urlopen(apod_url)
 		html = f.read()
-		
+
 		# Write it to disk
 		storage.save(cache_file, ContentFile(html))
-	
+
 	# Read HTML
 	with storage.open(cache_file) as f:
 		html = f.read()
-	
+
 	html = html.strip()
 
 	old_keywords = u''
@@ -139,22 +139,22 @@ def get_apod_details(apod_date, force=False):
 		# Make sure URL is to a valid image type
 		if href and href.split('/')[-1].split('.')[-1].lower() in ['jpg', 'jpeg', 'gif', 'png']:
 			details['image_url'] = settings.APOD_URL + "/" + href
-	
+
 	# Get video ID if present
 	if soup.iframe:
 		src = soup.iframe['src'].strip()
 		if 'youtube' in src:
-			s = re.search('embed/(.+?)(\?|$)', src)
+			s = re.search('embed/(.+?)(\?|&|$)', src)
 			if s:
 				details['youtube_id'] = s.groups()[0]
 		if 'vimeo' in src:
-			s = re.search('video/([0-9]+?)(\?|$)', src)
+			s = re.search('video/([0-9]+?)(\?|&|$)', src)
 			if s:
 				details['vimeo_id'] = s.groups()[0]
 	if soup.embed:
 		src = soup.embed['src'].strip()
 		if 'youtube' in src:
-			s = re.search('/v/(.+?)(\?|$)', src)
+			s = re.search('/v/(.+?)(\?|&|$)', src)
 			if s:
 				details['youtube_id'] = s.groups()[0]
 
@@ -175,5 +175,5 @@ def get_section(soup, heading):
 				container.append(unicode(n))
 				n = n.nextSibling
 			return ''.join(container).strip()
-	
+
 	return ''

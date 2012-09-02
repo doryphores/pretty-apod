@@ -8,9 +8,9 @@
 {% if request.is_ajax %}
 <h2><i class="icon-tags"></i> Top tags</h2>
 {% endif %}
-<p class="tags">
+<p class="tags {{ request.is_ajax|yesno:',cloud' }}">
 {% for tag in tags %}
-	<a href="{{ tag.get_absolute_url }}" class="{% cloud_class tag.num_pictures min_count max_count %}">{{ tag.label }}</a>
+	<a href="{{ tag.get_absolute_url }}" class="{% cloud_class tag.num_pictures min_count max_count %}">{{ tag.label }} ({{ tag.num_pictures }})</a>
 {% endfor %}
 </p>
 {% endblock page %}

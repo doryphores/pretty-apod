@@ -1549,53 +1549,6 @@ body {
 .panel p {
   margin-bottom: 1em;
 }
-/* line 50, ../../../scss/partials/_panel.scss */
-.panel .tags a {
-  margin-right: 6px;
-  line-height: 18px;
-  white-space: nowrap;
-}
-/* line 55, ../../../scss/partials/_panel.scss */
-.panel .tags a.xxs {
-  font-size: 10px;
-}
-/* line 56, ../../../scss/partials/_panel.scss */
-.panel .tags a.xs {
-  font-size: 12px;
-}
-/* line 57, ../../../scss/partials/_panel.scss */
-.panel .tags a.s {
-  font-size: 14px;
-}
-/* line 58, ../../../scss/partials/_panel.scss */
-.panel .tags a.l {
-  font-size: 16px;
-}
-/* line 59, ../../../scss/partials/_panel.scss */
-.panel .tags a.xl {
-  font-size: 18px;
-}
-/* line 60, ../../../scss/partials/_panel.scss */
-.panel .tags a.xxl {
-  font-size: 20px;
-}
-/* line 63, ../../../scss/partials/_panel.scss */
-.panel .tags a:hover, .panel .tags a:active {
-  background: #6b7f86;
-  color: #dedede;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  -ms-border-radius: 2px;
-  -o-border-radius: 2px;
-  border-radius: 2px;
-  padding: 1px 4px;
-  margin: 0 2px 0 -4px;
-  text-decoration: none;
-}
-/* line 74, ../../../scss/partials/_panel.scss */
-.panel .cloud {
-  text-align: center;
-}
 
 /* line 1, ../../../scss/partials/_viewport.scss */
 .viewport {
@@ -1816,6 +1769,122 @@ table.archive td.empty {
 table.archive td.empty span.day {
   color: #666;
   text-shadow: none;
+}
+
+/* line 1, ../../../scss/partials/_tags.scss */
+.tags {
+  line-height: 20px;
+}
+/* line 4, ../../../scss/partials/_tags.scss */
+.tags a {
+  margin-right: 10px;
+  white-space: nowrap;
+}
+/* line 8, ../../../scss/partials/_tags.scss */
+.tags a.xxs {
+  font-size: 10px;
+}
+/* line 9, ../../../scss/partials/_tags.scss */
+.tags a.xs {
+  font-size: 12px;
+}
+/* line 10, ../../../scss/partials/_tags.scss */
+.tags a.s {
+  font-size: 14px;
+}
+/* line 11, ../../../scss/partials/_tags.scss */
+.tags a.l {
+  font-size: 16px;
+}
+/* line 12, ../../../scss/partials/_tags.scss */
+.tags a.xl {
+  font-size: 18px;
+}
+/* line 13, ../../../scss/partials/_tags.scss */
+.tags a.xxl {
+  font-size: 20px;
+}
+/* line 16, ../../../scss/partials/_tags.scss */
+.tags a:hover, .tags a:active {
+  background: #6b7f86;
+  color: #dedede;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  border-radius: 2px;
+  padding: 1px 4px;
+  margin: 0 6px 0 -4px;
+  text-decoration: none;
+}
+/* line 26, ../../../scss/partials/_tags.scss */
+.tags.cloud {
+  text-align: center;
+  line-height: 24px;
+}
+/* line 30, ../../../scss/partials/_tags.scss */
+.tags.cloud a.xxs {
+  font-size: 12px;
+}
+/* line 31, ../../../scss/partials/_tags.scss */
+.tags.cloud a.xs {
+  font-size: 14px;
+}
+/* line 32, ../../../scss/partials/_tags.scss */
+.tags.cloud a.s {
+  font-size: 16px;
+}
+/* line 33, ../../../scss/partials/_tags.scss */
+.tags.cloud a.l {
+  font-size: 18px;
+}
+/* line 34, ../../../scss/partials/_tags.scss */
+.tags.cloud a.xl {
+  font-size: 20px;
+}
+/* line 35, ../../../scss/partials/_tags.scss */
+.tags.cloud a.xxl {
+  font-size: 24px;
+}
+
+/* line 1, ../../../scss/partials/_pagination.scss */
+.pagination {
+  text-align: center;
+  font-size: 0;
+  line-height: 0;
+  margin: 0;
+  padding: 0 0 20px 0;
+}
+/* line 10, ../../../scss/partials/_pagination.scss */
+.pagination a,
+.pagination strong,
+.pagination span {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  font-size: 14px;
+  line-height: 28px;
+  font-weight: bold;
+  margin: 0 1px;
+  background: rgba(0, 0, 0, 0.2);
+  color: #dedede;
+}
+/* line 23, ../../../scss/partials/_pagination.scss */
+.pagination a:hover,
+.pagination a:focus {
+  background: rgba(0, 0, 0, 0.8);
+  color: #dedede;
+  text-decoration: none;
+}
+/* line 29, ../../../scss/partials/_pagination.scss */
+.pagination strong {
+  background: #6b7f86;
+  cursor: default;
+}
+/* line 34, ../../../scss/partials/_pagination.scss */
+.pagination span {
+  opacity: 0.3;
+  cursor: default;
 }
 
 /* line 1, ../../../scss/partials/_growler.scss */
