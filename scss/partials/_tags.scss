@@ -25,13 +25,23 @@
 
 	&.cloud {
 		text-align: center;
-		line-height: 24px;
+		line-height: 30px;
 
 		a.xxs { font-size: 12px; }
-		a.xs { font-size: 14px; }
-		a.s { font-size: 16px; }
-		a.l { font-size: 18px; }
-		a.xl { font-size: 20px; }
-		a.xxl { font-size: 24px; }
+		a.xs { font-size: 16px; }
+		a.s { font-size: 20px; }
+		a.l { font-size: 24px; }
+		a.xl { font-size: 26px; }
+		a.xxl { font-size: 30px; }
+
+		span {
+			font-size: 10px;
+			vertical-align: middle;
+			background: rgba(0,0,0,.2);
+			padding: 1px 4px 2px 4px;
+			@include border-radius(2px);
+			top: -1px;
+			position: relative;
+		}
 	}
 }

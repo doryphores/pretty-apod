@@ -90,9 +90,9 @@
           func();
         }
       }
-      this.element.addClass("animated");
+      this.element.addClass('animated');
       this.deferred.always(function() {
-        return _this.element.removeClass("animated");
+        return _this.element.removeClass('animated');
       });
       if (Transition.support) {
         this.element.off(Transition.support.end);
@@ -121,7 +121,7 @@
 
   })();
 
-  namespace("APOD.utils", function(exports) {
+  namespace('APOD.utils', function(exports) {
     exports.Timer = Timer;
     return exports.Transition = Transition;
   });
@@ -167,7 +167,7 @@
       _results = [];
       for (key in _ref) {
         value = _ref[key];
-        if (typeof value !== "object") {
+        if (typeof value !== 'object') {
           _results.push(this.options[key] = value);
         } else {
           _results.push(void 0);
@@ -182,7 +182,7 @@
 
     Module.prototype.on = function(evt, handler) {
       var events, _results;
-      if (typeof evt === "string") {
+      if (typeof evt === 'string') {
         return this.element.on(evt, handler);
       } else {
         events = evt;
@@ -213,21 +213,21 @@
       if (this.element.length === 0) {
         return;
       }
-      this.image = this.element.find(".picture");
+      this.image = this.element.find('.picture');
       if (this.image.length === 0) {
         return;
       }
       this.window = $(window);
       imageTag = this.image.get(0).tagName.toLowerCase();
-      if (imageTag === "img") {
+      if (imageTag === 'img') {
         return this.window.load(function() {
           return _this.initImage();
         });
       } else {
-        this.trigger("image_loading");
+        this.trigger('image_loading');
         timer = new Timer();
         return timer.delay(1000, function() {
-          return $.getJSON(_this.image.data("url"), function(data) {
+          return $.getJSON(_this.image.data('url'), function(data) {
             return _this.processImage(data);
           });
         });
@@ -237,8 +237,8 @@
     Viewport.prototype.initImage = function() {
       var timer,
         _this = this;
-      this.imageWidth = parseInt(this.image.attr("width"));
-      this.imageHeight = parseInt(this.image.attr("height"));
+      this.imageWidth = parseInt(this.image.attr('width'));
+      this.imageHeight = parseInt(this.image.attr('height'));
       this.imageAspectRatio = this.imageWidth / this.imageHeight;
       this.redraw();
       this.window.resize(function() {
@@ -246,9 +246,9 @@
       });
       timer = new Timer();
       timer.delay(500, function() {
-        return _this.image.addClass("loaded");
+        return _this.image.addClass('loaded');
       });
-      return this.trigger("image_loaded");
+      return this.trigger('image_loaded');
     };
 
     Viewport.prototype.processImage = function(image_data) {
@@ -265,7 +265,7 @@
       this.image = imgTag;
       image = new Image(image_data.width, image_data.height);
       image.onload = function() {
-        _this.image.attr("src", image_data.url);
+        _this.image.attr('Loading', image_data.url);
         return _this.initImage();
       };
       return image.src = image_data.url;
@@ -278,9 +278,9 @@
       viewportAspectRatio = viewportWidth / viewportHeight;
       downscale = this.imageWidth > viewportWidth || this.imageHeight > viewportHeight;
       if (downscale && viewportAspectRatio > this.imageAspectRatio) {
-        return this.element.addClass("maximise-height");
+        return this.element.addClass('maximise-height');
       } else {
-        return this.element.removeClass("maximise-height");
+        return this.element.removeClass('maximise-height');
       }
     };
 
@@ -313,21 +313,28 @@
 
     Panel.prototype.init = function() {
       var _this = this;
-      this.element.attr("tabindex", -1);
-      this.id = this.element.attr("id");
-      this.toggles = $("body").find("[data-toggle=" + this.id + "]");
-      $("body").on("click.panel", "[data-toggle=" + this.id + "]", function(e) {
+      this.element.attr('tabindex', -1);
+      this.id = this.element.attr('id');
+      this.toggles = $('body').find("[data-toggle=" + this.id + "]");
+      $('body').on('click.panel', "[data-toggle=" + this.id + "]", function(e) {
         e.preventDefault();
+        e.stopImmediatePropagation();
         return _this.toggle();
       });
       Panel.panels[this.id] = this;
-      return this.on({
-        "hide.panel": function() {
-          return _this.toggles.removeClass("active");
+      this.on({
+        'click.panel': function(e) {
+          return e.stopPropagation();
         },
-        "show.panel": function() {
-          return _this.toggles.addClass("active");
+        'hide.panel': function() {
+          return _this.toggles.removeClass('active');
+        },
+        'show.panel': function() {
+          return _this.toggles.addClass('active');
         }
+      });
+      return $(document).on('click.panel', function() {
+        return _this.hide();
       });
     };
 
@@ -349,9 +356,9 @@
       this.element.show();
       tran = new Transition(this.element);
       tran.start(function() {
-        $("body").addClass("open-panel");
+        $('body').addClass('open-panel');
         if (!_this.options.overlapping) {
-          $("body").addClass("push-panel");
+          $('body').addClass('push-panel');
           return _this.startResize();
         }
       });
@@ -359,17 +366,17 @@
         if (!_this.options.overlapping) {
           _this.stopResize();
         }
-        if ($("body").hasClass("open-panel")) {
+        if ($('body').hasClass('open-panel')) {
           if (_this.options.load) {
-            _this.element.find(".inner-panel").load(_this.options.load, function() {
+            _this.element.find('.inner-panel').load(_this.options.load, function() {
               return _this.options.load = false;
             });
           }
           _this.element.focus();
-          return _this.trigger("shown");
+          return _this.trigger('shown');
         }
       });
-      this.trigger("show");
+      this.trigger('show');
       return Panel.currentPanel = this.id;
     };
 
@@ -378,9 +385,9 @@
         _this = this;
       tran = new Transition(this.element);
       promise = tran.start(function() {
-        $("body").removeClass("open-panel");
+        $('body').removeClass('open-panel');
         if (!_this.options.overlapping) {
-          $("body").removeClass("push-panel");
+          $('body').removeClass('push-panel');
           return _this.startResize();
         }
       });
@@ -388,13 +395,13 @@
         if (!_this.options.overlapping) {
           _this.stopResize();
         }
-        if (!$("body").hasClass("open-panel")) {
+        if (!$('body').hasClass('open-panel')) {
           _this.element.hide();
           Panel.currentPanel = null;
-          return _this.trigger("hidden");
+          return _this.trigger('hidden');
         }
       });
-      this.trigger("hide");
+      this.trigger('hide');
       return promise;
     };
 
@@ -409,16 +416,16 @@
     };
 
     Panel.prototype.startResize = function() {
-      $(window).triggerHandler("resize");
+      $(window).triggerHandler('resize');
       if (Transition.support) {
         return this.timer.repeat(10, function() {
-          return $(window).triggerHandler("resize");
+          return $(window).triggerHandler('resize');
         });
       }
     };
 
     Panel.prototype.stopResize = function() {
-      $(window).triggerHandler("resize");
+      $(window).triggerHandler('resize');
       return this.timer.clear();
     };
 
@@ -436,24 +443,24 @@
 
     Growler.build = function() {
       if (!Growler.box) {
-        Growler.box = $('<div class="growler"><p><i class="icon-time"></i> <span></span></p></div>').appendTo("body");
-        return Growler.msgContainer = Growler.box.find("span").first();
+        Growler.box = $('<div class="growler"><p><i class="icon-time"></i> <span></span></p></div>').appendTo('body');
+        return Growler.msgContainer = Growler.box.find('span').first();
       }
     };
 
     Growler.prototype.show = function() {
       var tran,
         _this = this;
-      this.trigger("show");
-      Growler.box.appendTo("body");
+      this.trigger('show');
+      Growler.box.appendTo('body');
       Growler.box.offset();
       tran = new Transition(Growler.box);
       tran.start(function() {
-        return Growler.box.addClass("open");
+        return Growler.box.addClass('open');
       });
       return tran.end(function() {
-        if (Growler.box.hasClass("open")) {
-          return _this.trigger("shown");
+        if (Growler.box.hasClass('open')) {
+          return _this.trigger('shown');
         }
       });
     };
@@ -467,13 +474,13 @@
     Growler.prototype.hide = function() {
       var tran;
       if (Growler.box) {
-        this.trigger("hide");
+        this.trigger('hide');
         tran = new Transition(Growler.box, 200);
         tran.start(function() {
-          return Growler.box.removeClass("open");
+          return Growler.box.removeClass('open');
         });
         return tran.end(function() {
-          if (!Growler.box.hasClass("open")) {
+          if (!Growler.box.hasClass('open')) {
             return Growler.box.remove();
           }
         });
@@ -484,7 +491,7 @@
 
   })(Module);
 
-  namespace("APOD.modules", function(exports) {
+  namespace('APOD.modules', function(exports) {
     exports.Viewport = Viewport;
     exports.Panel = Panel;
     return exports.Growler = Growler;
@@ -494,18 +501,18 @@
     var el, growler, _i, _len, _ref, _results;
     growler = new Growler;
     $(document).on({
-      "image_loaded": function() {
+      'image_loaded': function() {
         return growler.hide();
       },
-      "image_loading": function() {
+      'image_loading': function() {
         return growler.info("Please wait will the picture is downloaded and processed");
       }
     });
-    _ref = $("[data-module]");
+    _ref = $('[data-module]');
     _results = [];
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       el = _ref[_i];
-      _results.push(new APOD.modules[$(el).data("module")](el));
+      _results.push(new APOD.modules[$(el).data('module')](el));
     }
     return _results;
   });

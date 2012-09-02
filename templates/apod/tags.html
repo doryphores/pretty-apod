@@ -10,7 +10,7 @@
 {% endif %}
 <p class="tags {{ request.is_ajax|yesno:',cloud' }}">
 {% for tag in tags %}
-	<a href="{{ tag.get_absolute_url }}" class="{% cloud_class tag.num_pictures min_count max_count %}">{{ tag.label }} ({{ tag.num_pictures }})</a>
+	<a href="{{ tag.get_absolute_url }}" class="{% cloud_class tag.num_pictures min_count max_count %}">{{ tag.label }}{% if not request.is_ajax %} <span>{{ tag.num_pictures }}</span>{% endif %}</a>
 {% endfor %}
 </p>
 {% endblock page %}
