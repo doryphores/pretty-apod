@@ -144,11 +144,11 @@ def get_apod_details(apod_date, force=False):
 	if soup.iframe:
 		src = soup.iframe['src'].strip()
 		if 'youtube' in src:
-			s = re.search('embed/(.+?)(\?|$)', src)
+			s = re.search('embed/(.+?)(\?|&|$)', src)
 			if s:
 				details['youtube_id'] = s.groups()[0]
 		if 'vimeo' in src:
-			s = re.search('video/([0-9]+?)(\?|$)', src)
+			s = re.search('video/([0-9]+?)(\?|&|$)', src)
 			if s:
 				details['vimeo_id'] = s.groups()[0]
 	if soup.embed:

@@ -1,0 +1,38 @@
+.pagination {
+	text-align: center;
+	font-size: 0;
+	line-height: 0;
+	margin: 0;
+	padding: 0 0 20px 0;
+
+	a,
+	strong,
+	span {
+		display: inline-block;
+		width: 30px;
+		height: 30px;
+		font-size: 14px;
+		line-height: 28px;
+		font-weight: bold;
+		margin: 0 1px;
+		background: rgba(0,0,0,.2);
+		color: $color_page_text;
+	}
+
+	a:hover,
+	a:focus {
+		background: rgba(0,0,0,.8);
+		color: $color_page_text;
+		text-decoration: none;
+	}
+
+	strong {
+		background: $color_page_link;
+		cursor: default;
+	}
+
+	span {
+		opacity: 0.3;
+		cursor: default;
+	}
+}

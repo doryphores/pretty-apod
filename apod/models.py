@@ -82,10 +82,10 @@ class TagManager(models.Manager):
 			groups = {}
 			for k in tags:
 				formatted_label = re.sub(re.compile(f.pattern, re.I), f.format, k.label)
-				if groups.has_key(formatted_label):
-					groups[formatted_label].append(k)
+				if groups.has_key(formatted_label.lower()):
+					groups[formatted_label.lower()].append(k)
 				else:
-					groups[formatted_label] = [k]
+					groups[formatted_label.lower()] = [k]
 
 			# Iterate over groups
 			for label in groups:
@@ -109,7 +109,8 @@ class TagManager(models.Manager):
 		return (obsolete_count, formatted_count)
 
 	def get_by_slug(self, slug):
-		q = self.extra(where=["regexp_replace(lower(label), '\\W+', '-', 'g')=%s"], params=[slug])
+		q = self.extra(where=["regexp_replace(lower(label), '\\\\W+', '-', 'g') = %s"], params=[slug])
+		print q.query
 		return q.get()
 
 
@@ -133,7 +134,7 @@ class Tag(models.Model):
 	@models.permalink
 	def get_absolute_url(self):
 		return ('tag', (), {
-			'slug': self.slug,
+			'tag': self.slug,
 		})
 
 	def __unicode__(self):
@@ -191,13 +192,21 @@ class Picture(models.Model):
 
 	objects = PictureManager()
 
+	_current_tag = None
+
 	@models.permalink
 	def get_absolute_url(self):
-		return ('image', (), {
+		params = {
 			'year': str(self.publish_date.year),
 			'month': str(self.publish_date.month),
 			'day': str(self.publish_date.day),
-		})
+		}
+		url = 'image'
+		if self.current_tag:
+			params['tag'] = self.current_tag.slug
+			url = 'tag_image'
+
+		return (url, (), params)
 
 	def __unicode__(self):
 		return u'%s' % self.title
@@ -333,16 +342,37 @@ class Picture(models.Model):
 	@property
 	def next(self):
 		try:
-			return self.get_next_by_publish_date()
+			if self.current_tag:
+				next = self.get_next_by_publish_date(tags=self.current_tag)
+				next.current_tag = self.current_tag
+				return next
+			else:
+				return self.get_next_by_publish_date()
 		except Picture.DoesNotExist:
 			return None
 
 	@property
 	def previous(self):
 		try:
-			return self.get_previous_by_publish_date()
+			if self.current_tag:
+				previous = self.get_previous_by_publish_date(tags=self.current_tag)
+				previous.current_tag = self.current_tag
+				return previous
+			else:
+				return self.get_previous_by_publish_date()
 		except Picture.DoesNotExist:
 			return None
+
+	def current_tag():
+		doc = "The current_tag property."
+		def fget(self):
+			return self._current_tag
+		def fset(self, value):
+			self._current_tag = value
+		def fdel(self):
+			del self._current_tag
+		return locals()
+	current_tag = property(**current_tag())
 
 	class Meta:
 		ordering = ['-publish_date']

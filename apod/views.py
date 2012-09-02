@@ -11,7 +11,13 @@ import json
 import datetime
 import calendar
 
-def image(request, year=None, month=None, day=None):
+def image(request, year=None, month=None, day=None, tag=None):
+	if tag:
+		try:
+			tag = Tag.objects.get_by_slug(tag)
+		except Tag.DoesNotExist:
+			raise Http404
+
 	if year and month and day:
 		try:
 			date = datetime.date(int(year), int(month), int(day))
@@ -22,7 +28,13 @@ def image(request, year=None, month=None, day=None):
 		# Home page, so get the latest
 		picture = Picture.objects.latest()
 
-	return render(request, 'apod/image.html', { 'picture': picture })
+	if tag:
+		picture.current_tag = tag
+
+	return render(request, 'apod/image.html', {
+		'picture': picture,
+		'tag': tag
+	})
 
 
 def image_json(request, picture_id):
@@ -129,11 +141,11 @@ def tags(request):
 		'max_count': min_max['num_pictures__max'],
 	})
 
-def tag(request, slug, page=1):
+def tag(request, tag, page=1):
 	page = int(page)
 
 	try:
-		tag = Tag.objects.get_by_slug(slug)
+		tag = Tag.objects.get_by_slug(tag)
 	except Tag.DoesNotExist:
 		raise Http404
 
@@ -148,6 +160,9 @@ def tag(request, slug, page=1):
 		pictures = paginator.page(page)
 	except (EmptyPage, InvalidPage):
 		pictures = paginator.page(1)
+
+	for p in pictures.object_list:
+		p.current_tag = tag
 
 	return render(request, 'apod/tag.html', {
 		'page': page,
