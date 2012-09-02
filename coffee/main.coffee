@@ -110,11 +110,7 @@ class Module
 
 		@init()
 
-	init: (options) ->
-		@options = options or {}
-
-		for key, value of @element.data()
-			@options[key] = value unless typeof value is 'object'
+	init: () ->
 
 	# Event handling (all return this instance)
 
@@ -358,10 +354,49 @@ class Growler extends Module
 				Growler.box.remove() unless Growler.box.hasClass 'open'
 
 
+class FullScreen extends Module
+	defaults:
+		class_name: 'full-screen'
+
+	init: ->
+		@state = 'off'
+		@root = $(document.documentElement)
+
+		$('body').on 'click.fullscreen', '[data-toggle=fullscreen]', (e) =>
+			e.preventDefault()
+			@toggle()
+
+	enable: ->
+		evt = new $.Event 'resize_full'
+		@trigger evt
+
+		if evt.isDefaultPrevented() then return
+
+		@state = 'on'
+
+		@root.addClass @options.class_name
+
+	disable: ->
+		evt = new $.Event 'resize_small'
+		@trigger evt
+
+		if evt.isDefaultPrevented() then return
+
+		@state = 'off'
+
+		tran = new Transition @element
+
+		@root.removeClass @options.class_name
+
+	toggle: ->
+		if @state is 'off' then @enable() else @disable()
+
+
 namespace 'APOD.modules', (exports) ->
 	exports.Viewport = Viewport
 	exports.Panel = Panel
 	exports.Growler = Growler
+	exports.FullScreen = FullScreen
 
 
 $ ->
@@ -370,6 +405,8 @@ $ ->
 	$(document).on
 		'image_loaded': -> growler.hide()
 		'image_loading': -> growler.info "Please wait will the picture is downloaded and processed"
+		# 'resize_full': ->
+		# 	$('[data-module=Panel]').data('Panel').hide()
 
 	for el in $('[data-module]')
 		new APOD.modules[$(el).data('module')](el)

@@ -65,4 +65,41 @@
 			}
 		}
 	}
+
+	.tools {
+		position: fixed;
+		top: 0;
+		right: 0;
+
+		a {
+			float: left;
+			width: $layout_header_height;
+			height: $layout_header_height;
+			font-size: 26px;
+			line-height: $layout_header_height;
+			text-align: center;
+			background: rgba(255,255,255,.2);
+			color: $color_page_text;
+			outline: none;
+
+			&:hover,
+			&:focus {
+				background: rgba(255,255,255,.4);
+				color: $color_page_bg;
+			}
+
+			i + i {
+				display: none;
+			}
+
+			.full-screen &.full-screen {
+				i {
+					display: none;
+					+ i {
+						display: block;
+					}
+				}
+			}
+		}
+	}
 }

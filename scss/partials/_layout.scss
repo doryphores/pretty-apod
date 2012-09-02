@@ -14,6 +14,7 @@ body {
 	left: 0;
 	right: 0;
 	height: $layout_header_height;
+	@include transition(top .4s);
 }
 
 .site-nav {
@@ -23,6 +24,7 @@ body {
 	top: $layout_header_height;
 	bottom: 0;
 	width: $layout_nav_width;
+	@include transition(all .4s);
 }
 
 .site-page {
@@ -35,6 +37,7 @@ body {
 	overflow: auto;
 	min-width: 888px;
 	@include box-shadow(10px 10px 10px -10px rgba(0,0,0,.5) inset);
+	@include transition(all .4s);
 }
 
 .panel {
@@ -44,4 +47,21 @@ body {
 	bottom: 0;
 	left: $layout_nav_width;
 	width: 0;
+}
+
+.full-screen {
+	.site-header {
+		top: - $layout_header_height;
+	}
+
+	.site-nav {
+		top: 0;
+		left: - $layout_nav-width;
+	}
+
+	.site-page {
+		top: 0;
+		left: 0;
+		@include box-shadow(none);
+	}
 }
