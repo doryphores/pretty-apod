@@ -1820,7 +1820,7 @@ table.archive td.empty span.day {
 /* line 26, ../../../scss/partials/_tags.scss */
 .tags.cloud {
   text-align: center;
-  line-height: 24px;
+  line-height: 30px;
 }
 /* line 30, ../../../scss/partials/_tags.scss */
 .tags.cloud a.xxs {
@@ -1828,23 +1828,37 @@ table.archive td.empty span.day {
 }
 /* line 31, ../../../scss/partials/_tags.scss */
 .tags.cloud a.xs {
-  font-size: 14px;
+  font-size: 16px;
 }
 /* line 32, ../../../scss/partials/_tags.scss */
 .tags.cloud a.s {
-  font-size: 16px;
+  font-size: 20px;
 }
 /* line 33, ../../../scss/partials/_tags.scss */
 .tags.cloud a.l {
-  font-size: 18px;
+  font-size: 24px;
 }
 /* line 34, ../../../scss/partials/_tags.scss */
 .tags.cloud a.xl {
-  font-size: 20px;
+  font-size: 26px;
 }
 /* line 35, ../../../scss/partials/_tags.scss */
 .tags.cloud a.xxl {
-  font-size: 24px;
+  font-size: 30px;
+}
+/* line 37, ../../../scss/partials/_tags.scss */
+.tags.cloud span {
+  font-size: 10px;
+  vertical-align: middle;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 1px 4px 2px 4px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  border-radius: 2px;
+  top: -1px;
+  position: relative;
 }
 
 /* line 1, ../../../scss/partials/_pagination.scss */

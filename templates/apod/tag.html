@@ -20,7 +20,7 @@
 	{% endif %}
 	{% endfor %}
 	{% if pictures.has_next %}
-	<a href="{% url tag_page tag.slug pictures.next_page_number %}">&gt;</a>
+	<a href="{% url tag_page tag.slug pictures.next_page_number %}"><i class="icon-chevron-right"></i></a>
 	{% else %}
 	<span><i class="icon-chevron-right"></i></span>
 	{% endif %}
