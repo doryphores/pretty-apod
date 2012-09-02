@@ -81,8 +81,6 @@ class Transition
 		else
 			@deferred.resolve()
 
-		@deferred
-
 	end: (func) ->
 		@deferred.done func
 
@@ -118,20 +116,19 @@ class Module
 		for key, value of @element.data()
 			@options[key] = value unless typeof value is 'object'
 
-	# Event handling
+	# Event handling (all return this instance)
 
-	trigger: (evt, data) ->
-		@element.trigger evt, data
+	trigger: (args...) ->
+		@element.trigger args...
+		return @
 
-	on: (evt, handler) ->
-		if typeof evt is 'string'
-			# Single event
-			@element.on evt, handler
-		else
-			# Multiple event
-			events = evt
-			for evt, handler of events
-				@element.on evt, handler
+	on: (args...) ->
+		@element.on args...
+		return @
+
+	one: (args...) ->
+		@element.one args...
+		return @
 
 
 # Modules
@@ -192,7 +189,7 @@ class Viewport extends Module
 		image = new Image image_data.width, image_data.height
 		image.onload = =>
 			# Image is now fully downloaded
-			@image.attr 'Loading', image_data.url
+			@image.attr 'src', image_data.url
 			@initImage()
 
 		image.src = image_data.url
@@ -248,10 +245,17 @@ class Panel extends Module
 		$(document).on 'click.panel', => @hide()
 
 	show: ->
+		evt = new $.Event 'show'
+		@trigger evt
+
+		if evt.isDefaultPrevented() then return
+
 		if cp = Panel.getCurrentPanel()
-			cp.hide().done => @_show()
+			cp.one('hidden', => @_show()).hide()
 		else
 			@_show()
+
+		return @
 
 	_show: ->
 		@element.show()
@@ -271,13 +275,17 @@ class Panel extends Module
 				@element.focus()
 				@trigger 'shown'
 
-		@trigger 'show'
 		Panel.currentPanel = @id
 
 	hide: ->
+		evt = new $.Event 'hide'
+		@trigger evt
+
+		if evt.isDefaultPrevented() then return
+
 		tran = new Transition @element
 
-		promise = tran.start =>
+		tran.start =>
 			$('body').removeClass 'open-panel'
 			unless @options.overlapping
 				$('body').removeClass 'push-panel'
@@ -290,13 +298,13 @@ class Panel extends Module
 				Panel.currentPanel = null
 				@trigger 'hidden'
 
-		@trigger 'hide'
-
-		promise
+		return @
 
 	toggle: ->
 		cp = Panel.getCurrentPanel()
 		if cp is @ then @hide() else @show()
+
+		@
 
 	startResize: ->
 		$(window).triggerHandler 'resize'

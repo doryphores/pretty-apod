@@ -103,14 +103,13 @@
             return _this.deferred.resolve();
           }
         });
-        this.timer.delay(this.timeout, function() {
+        return this.timer.delay(this.timeout, function() {
           _this.element.off(Transition.support.end);
           return _this.deferred.resolve();
         });
       } else {
-        this.deferred.resolve();
+        return this.deferred.resolve();
       }
-      return this.deferred;
     };
 
     Transition.prototype.end = function(func) {
@@ -176,23 +175,25 @@
       return _results;
     };
 
-    Module.prototype.trigger = function(evt, data) {
-      return this.element.trigger(evt, data);
+    Module.prototype.trigger = function() {
+      var args, _ref;
+      args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+      (_ref = this.element).trigger.apply(_ref, args);
+      return this;
     };
 
-    Module.prototype.on = function(evt, handler) {
-      var events, _results;
-      if (typeof evt === 'string') {
-        return this.element.on(evt, handler);
-      } else {
-        events = evt;
-        _results = [];
-        for (evt in events) {
-          handler = events[evt];
-          _results.push(this.element.on(evt, handler));
-        }
-        return _results;
-      }
+    Module.prototype.on = function() {
+      var args, _ref;
+      args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+      (_ref = this.element).on.apply(_ref, args);
+      return this;
+    };
+
+    Module.prototype.one = function() {
+      var args, _ref;
+      args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+      (_ref = this.element).one.apply(_ref, args);
+      return this;
     };
 
     return Module;
@@ -265,7 +266,7 @@
       this.image = imgTag;
       image = new Image(image_data.width, image_data.height);
       image.onload = function() {
-        _this.image.attr('Loading', image_data.url);
+        _this.image.attr('src', image_data.url);
         return _this.initImage();
       };
       return image.src = image_data.url;
@@ -339,15 +340,21 @@
     };
 
     Panel.prototype.show = function() {
-      var cp,
+      var cp, evt,
         _this = this;
-      if (cp = Panel.getCurrentPanel()) {
-        return cp.hide().done(function() {
-          return _this._show();
-        });
-      } else {
-        return this._show();
+      evt = new $.Event('show');
+      this.trigger(evt);
+      if (evt.isDefaultPrevented()) {
+        return;
       }
+      if (cp = Panel.getCurrentPanel()) {
+        cp.one('hidden', function() {
+          return _this._show();
+        }).hide();
+      } else {
+        this._show();
+      }
+      return this;
     };
 
     Panel.prototype._show = function() {
@@ -376,15 +383,19 @@
           return _this.trigger('shown');
         }
       });
-      this.trigger('show');
       return Panel.currentPanel = this.id;
     };
 
     Panel.prototype.hide = function() {
-      var promise, tran,
+      var evt, tran,
         _this = this;
+      evt = new $.Event('hide');
+      this.trigger(evt);
+      if (evt.isDefaultPrevented()) {
+        return;
+      }
       tran = new Transition(this.element);
-      promise = tran.start(function() {
+      tran.start(function() {
         $('body').removeClass('open-panel');
         if (!_this.options.overlapping) {
           $('body').removeClass('push-panel');
@@ -401,18 +412,18 @@
           return _this.trigger('hidden');
         }
       });
-      this.trigger('hide');
-      return promise;
+      return this;
     };
 
     Panel.prototype.toggle = function() {
       var cp;
       cp = Panel.getCurrentPanel();
       if (cp === this) {
-        return this.hide();
+        this.hide();
       } else {
-        return this.show();
+        this.show();
       }
+      return this;
     };
 
     Panel.prototype.startResize = function() {
