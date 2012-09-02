@@ -53,12 +53,17 @@
 
 			&.month {
 				font-size: 30px;
-				line-height: 1.5;
+				line-height: 45px;
 
 				& + .year {
 					font-size: 24px;
 					line-height: 28px;
 				}
+			}
+
+			&.year {
+				font-size: 30px;
+				line-height: 73px;
 			}
 		}
 
@@ -153,6 +158,11 @@
 					line-height: 42px;
 					margin-left: 10px;
 					margin-right: 0;
+				}
+
+				&.year {
+					font-size: 22px;
+					line-height: 38px;
 				}
 			}
 

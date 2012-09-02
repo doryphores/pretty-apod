@@ -85,6 +85,33 @@ p a:hover, p a:active {
   text-decoration: underline;
 }
 
+/* line 24, ../../../scss/partials/_type.scss */
+.site-page h2 {
+  text-align: center;
+  font-size: 16px;
+  line-height: 1;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin: 80px auto 10px auto;
+  height: 20px;
+  background: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 70, color-stop(0%, rgba(0, 0, 0, 0.3)), color-stop(70%, rgba(0, 0, 0, 0))) no-repeat center -10px;
+  background: -webkit-radial-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0) 70%) no-repeat center -10px;
+  background: -moz-radial-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0) 70%) no-repeat center -10px;
+  background: -o-radial-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0) 70%) no-repeat center -10px;
+  background: radial-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0) 70%) no-repeat center -10px;
+}
+/* line 34, ../../../scss/partials/_type.scss */
+.site-page h2:first-child {
+  margin-top: 30px;
+}
+/* line 38, ../../../scss/partials/_type.scss */
+.site-page h2 span {
+  display: inline-block;
+  line-height: 30px;
+  top: -30px;
+  position: relative;
+}
+
 /*  Font Awesome
     the iconic font designed for use with Twitter Bootstrap
     -------------------------------------------------------
@@ -1287,6 +1314,7 @@ body {
   right: 0;
   padding: 20px;
   overflow: auto;
+  min-width: 888px;
 }
 
 /* line 2, ../../../scss/partials/_nav.scss */
@@ -1349,26 +1377,31 @@ body {
 /* line 54, ../../../scss/partials/_nav.scss */
 .site-nav .date span:first-child.month {
   font-size: 30px;
-  line-height: 1.5;
+  line-height: 45px;
 }
 /* line 58, ../../../scss/partials/_nav.scss */
 .site-nav .date span:first-child.month + .year {
   font-size: 24px;
   line-height: 28px;
 }
-/* line 65, ../../../scss/partials/_nav.scss */
+/* line 64, ../../../scss/partials/_nav.scss */
+.site-nav .date span:first-child.year {
+  font-size: 30px;
+  line-height: 73px;
+}
+/* line 70, ../../../scss/partials/_nav.scss */
 .site-nav .date span {
   text-decoration: none;
   font-size: 13px;
 }
-/* line 71, ../../../scss/partials/_nav.scss */
+/* line 76, ../../../scss/partials/_nav.scss */
 .site-nav .nav {
   margin-bottom: 5px;
   width: 100%;
   float: left;
   position: relative;
 }
-/* line 78, ../../../scss/partials/_nav.scss */
+/* line 83, ../../../scss/partials/_nav.scss */
 .site-nav .nav a,
 .site-nav .nav span.disabled {
   float: left;
@@ -1378,13 +1411,13 @@ body {
   text-decoration: none;
   outline: none;
 }
-/* line 86, ../../../scss/partials/_nav.scss */
+/* line 91, ../../../scss/partials/_nav.scss */
 .site-nav .nav a > i,
 .site-nav .nav span.disabled > i {
   font-size: 40px;
   line-height: 60px;
 }
-/* line 93, ../../../scss/partials/_nav.scss */
+/* line 98, ../../../scss/partials/_nav.scss */
 .site-nav .nav a:hover .preview, .site-nav .nav a.active .preview,
 .site-nav .nav span.disabled:hover .preview,
 .site-nav .nav span.disabled.active .preview {
@@ -1394,7 +1427,7 @@ body {
   -o-transition-delay: 0.8s;
   transition-delay: 0.8s;
 }
-/* line 96, ../../../scss/partials/_nav.scss */
+/* line 101, ../../../scss/partials/_nav.scss */
 .site-nav .nav a:hover .preview span, .site-nav .nav a.active .preview span,
 .site-nav .nav span.disabled:hover .preview span,
 .site-nav .nav span.disabled.active .preview span {
@@ -1404,7 +1437,7 @@ body {
   transition-delay: 0.8s;
   margin-left: 0;
 }
-/* line 102, ../../../scss/partials/_nav.scss */
+/* line 107, ../../../scss/partials/_nav.scss */
 .site-nav .nav a:hover .preview:hover, .site-nav .nav a:hover .preview:active, .site-nav .nav a.active .preview:hover, .site-nav .nav a.active .preview:active,
 .site-nav .nav span.disabled:hover .preview:hover,
 .site-nav .nav span.disabled:hover .preview:active,
@@ -1412,12 +1445,12 @@ body {
 .site-nav .nav span.disabled.active .preview:active {
   background: rgba(255, 255, 255, 0.8);
 }
-/* line 109, ../../../scss/partials/_nav.scss */
+/* line 114, ../../../scss/partials/_nav.scss */
 .site-nav .nav .disabled {
   color: #6b7f86;
   opacity: 0.5;
 }
-/* line 114, ../../../scss/partials/_nav.scss */
+/* line 119, ../../../scss/partials/_nav.scss */
 .site-nav .nav .preview {
   background: rgba(255, 255, 255, 0.7);
   -webkit-box-shadow: 10px 0 10px -10px rgba(0, 0, 0, 0.8) inset;
@@ -1443,7 +1476,7 @@ body {
   line-height: 15px;
   color: black;
 }
-/* line 129, ../../../scss/partials/_nav.scss */
+/* line 134, ../../../scss/partials/_nav.scss */
 .site-nav .nav .preview span {
   display: block;
   padding: 5px;
@@ -1455,11 +1488,11 @@ body {
   -o-transition: margin 0.2s ease-out 0.2s;
   transition: margin 0.2s ease-out 0.2s;
 }
-/* line 136, ../../../scss/partials/_nav.scss */
+/* line 141, ../../../scss/partials/_nav.scss */
 .site-nav .nav .preview span i {
   font-size: 13px;
 }
-/* line 141, ../../../scss/partials/_nav.scss */
+/* line 146, ../../../scss/partials/_nav.scss */
 .site-nav .nav .preview .calendar {
   font-size: 19px;
   font-weight: bold;
@@ -1469,7 +1502,7 @@ body {
   text-align: center;
   text-transform: uppercase;
 }
-/* line 150, ../../../scss/partials/_nav.scss */
+/* line 155, ../../../scss/partials/_nav.scss */
 .site-nav .nav .preview .calendar i {
   float: left;
   font-size: 45px;
@@ -1477,7 +1510,12 @@ body {
   margin-left: 10px;
   margin-right: 0;
 }
-/* line 159, ../../../scss/partials/_nav.scss */
+/* line 163, ../../../scss/partials/_nav.scss */
+.site-nav .nav .preview .calendar.year {
+  font-size: 22px;
+  line-height: 38px;
+}
+/* line 169, ../../../scss/partials/_nav.scss */
 .site-nav .nav .preview img {
   margin: 4px 0 0 0;
   display: block;
@@ -1639,13 +1677,17 @@ body {
   max-height: 100%;
 }
 
-/* line 2, ../../../scss/partials/_archive.scss */
+/* line 1, ../../../scss/partials/_archive.scss */
+.archive {
+  margin-bottom: 40px;
+}
+/* line 4, ../../../scss/partials/_archive.scss */
 .archive .item {
   position: relative;
   width: 120px;
   height: 90px;
 }
-/* line 8, ../../../scss/partials/_archive.scss */
+/* line 10, ../../../scss/partials/_archive.scss */
 .archive img {
   z-index: 1;
   position: absolute;
@@ -1653,7 +1695,7 @@ body {
   top: 0;
   display: block;
 }
-/* line 16, ../../../scss/partials/_archive.scss */
+/* line 18, ../../../scss/partials/_archive.scss */
 .archive a {
   position: relative;
   display: block;
@@ -1669,7 +1711,7 @@ body {
   -o-transition: background 0.4s;
   transition: background 0.4s;
 }
-/* line 28, ../../../scss/partials/_archive.scss */
+/* line 30, ../../../scss/partials/_archive.scss */
 .archive a span {
   position: relative;
   z-index: 2;
@@ -1683,16 +1725,16 @@ body {
   -o-transition: all 0.2s;
   transition: all 0.2s;
 }
-/* line 39, ../../../scss/partials/_archive.scss */
+/* line 41, ../../../scss/partials/_archive.scss */
 .archive a:hover {
   background: rgba(0, 0, 0, 0.8);
 }
-/* line 41, ../../../scss/partials/_archive.scss */
+/* line 43, ../../../scss/partials/_archive.scss */
 .archive a:hover span {
   padding-top: 10px;
   opacity: 1;
 }
-/* line 48, ../../../scss/partials/_archive.scss */
+/* line 50, ../../../scss/partials/_archive.scss */
 .archive span.day {
   position: absolute;
   z-index: 2;
@@ -1706,7 +1748,7 @@ body {
   text-shadow: 0 0 3px black;
   cursor: default;
 }
-/* line 62, ../../../scss/partials/_archive.scss */
+/* line 64, ../../../scss/partials/_archive.scss */
 .archive span.date {
   position: absolute;
   z-index: 2;
@@ -1720,13 +1762,13 @@ body {
   text-shadow: 0 0 3px black;
 }
 
-/* line 76, ../../../scss/partials/_archive.scss */
+/* line 78, ../../../scss/partials/_archive.scss */
 ul.archive {
   width: 882px;
   margin: 0 auto;
   overflow: auto;
 }
-/* line 81, ../../../scss/partials/_archive.scss */
+/* line 83, ../../../scss/partials/_archive.scss */
 ul.archive li {
   font-size: 11px;
   float: left;
@@ -1736,15 +1778,15 @@ ul.archive li {
   background: rgba(0, 0, 0, 0.2);
 }
 
-/* line 91, ../../../scss/partials/_archive.scss */
+/* line 93, ../../../scss/partials/_archive.scss */
 table.archive {
   table-layout: fixed;
   border-collapse: separate;
   border-spacing: 6px;
   empty-cells: hide;
-  margin: 0 auto;
+  margin: 0 auto 40px auto;
 }
-/* line 98, ../../../scss/partials/_archive.scss */
+/* line 100, ../../../scss/partials/_archive.scss */
 table.archive th {
   text-align: center;
   font-weight: bold;
@@ -1752,7 +1794,7 @@ table.archive th {
   text-transform: uppercase;
   padding-bottom: 20px;
 }
-/* line 106, ../../../scss/partials/_archive.scss */
+/* line 108, ../../../scss/partials/_archive.scss */
 table.archive td {
   font-size: 11px;
   vertical-align: top;
@@ -1760,12 +1802,12 @@ table.archive td {
   height: 90px;
   background: rgba(0, 0, 0, 0.2);
 }
-/* line 113, ../../../scss/partials/_archive.scss */
+/* line 115, ../../../scss/partials/_archive.scss */
 table.archive td.empty {
   background: rgba(255, 255, 255, 0.05);
   border: none;
 }
-/* line 117, ../../../scss/partials/_archive.scss */
+/* line 119, ../../../scss/partials/_archive.scss */
 table.archive td.empty span.day {
   color: #666;
   text-shadow: none;

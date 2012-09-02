@@ -67,8 +67,6 @@ def month(request, year, month):
 
 	picture_calendar = [[dict(day=d, picture=pics.get(d, None)) for d in w] for w in cal]
 
-	today = datetime.date.today()
-
 	next_month = datetime.date(year, month, 1) + datetime.timedelta(days=32)
 
 	if not Picture.objects.filter(publish_date__year=next_month.year, publish_date__month=next_month.month).exists():
@@ -121,10 +119,22 @@ def year(request, year):
 		for m in pictures.reverse().dates('publish_date', 'month')
 	]
 
+	next_year = datetime.date(year, 1, 1) + datetime.timedelta(days=370)
+
+	if not Picture.objects.filter(publish_date__year=next_year.year).exists():
+		next_year = False
+
+	previous_year = datetime.date(year, 1, 1) - datetime.timedelta(days=1)
+
+	if not Picture.objects.filter(publish_date__year=previous_year.year).exists():
+		previous_year = False
+
 	view_data = {
 		'year': year,
 		'archive_label': '%s Archive' % year,
 		'calendars': calendars,
+		'previous_year': previous_year,
+		'next_year': next_year,
 		'year_range': Picture.objects.dates('publish_date', 'year'),
 	}
 
