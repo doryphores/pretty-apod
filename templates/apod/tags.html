@@ -6,11 +6,14 @@
 
 {% block page %}
 {% if request.is_ajax %}
-<h2><i class="icon-tags"></i> Top tags</h2>
+<h2>
+	<i class="icon-tags"></i> Top tags
+	<a href="{% url tags %}" class="action"><i class="icon-cloud"></i> More tags</a>
+</h2>
 {% endif %}
-<p class="tags">
+<p class="tags cloud">
 {% for tag in tags %}
-	<a href="{{ tag.get_absolute_url }}" class="{% cloud_class tag.num_pictures min_count max_count %}">{{ tag.label }}</a>
+	<a href="{{ tag.get_absolute_url }}" class="{% cloud_class tag.num_pictures min_count max_count %}">{{ tag.label }}{% if not request.is_ajax %} <span>{{ tag.num_pictures }}</span>{% endif %}</a>
 {% endfor %}
 </p>
 {% endblock page %}

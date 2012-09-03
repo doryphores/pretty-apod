@@ -7,28 +7,33 @@
 </head>
 <body>
 
-<header class="site-header">
-	<p class="branding">Pretty APOD &mdash; </p>
-	<h1>{% block page_title %}{% endblock %}</h1>
+<header class="site-header" data-module="FullScreen">
+	<h1>
+		<a href="{% url home %}">Pretty APOD <b><b></b></b></a>
+		{% block page_title %}{% endblock %}
+	</h1>
+
+	<div class="tools">
+		<a href="#" data-toggle="fullscreen" class="full-screen"><i class="icon-resize-full"></i><i class="icon-resize-small"></i></a>
+	</div>
 </header>
 
 <nav class="site-nav">
-	<ul>
-		<li><a href="{% url home %}">
-			<i class="icon-home"></i>
-			Today
-		</a></li>
+	{% block extra_nav %}
+	{% endblock extra_nav %}
+
+	<ul class="menu">
 		<li data-toggle="tags"><a href="{% url tags %}">
 			<i class="icon-tags"></i>
 			Tags
+			<b><b></b></b>
 		</a></li>
 		<li data-toggle="about"><a href="#">
 			<i class="icon-info-sign"></i>
 			About
+			<b><b></b></b>
 		</a></li>
 	</ul>
-	{% block extra_nav %}
-	{% endblock extra_nav %}
 </nav>
 
 {% block main %}
@@ -36,7 +41,7 @@
 
 <div class="panel" data-module="Panel" id="tags" data-overlapping="true" data-load="{% url tags %}">
 	<div class="inner-panel">
-
+		<p class="loading"><i class="icon-time"></i> Loading tags&hellip;</p>
 	</div>
 </div>
 

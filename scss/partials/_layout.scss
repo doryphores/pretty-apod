@@ -9,31 +9,22 @@ body {
 
 .site-header {
 	position: fixed;
-	z-index: 3;
+	z-index: 5;
 	top: 0;
-	left: $layout_nav_width;
+	left: 0;
 	right: 0;
 	height: $layout_header_height;
-	background: rgba(0,0,0,.2);
-	text-align: center;
-	font-weight: bold;
-
-	p,h1 {
-		font-size: 20px;
-		line-height: $layout_header_height;
-		display: inline;
-	}
+	@include transition(top .4s);
 }
 
 .site-nav {
 	position: fixed;
-	z-index: 5;
+	z-index: 4;
 	left: 0;
-	top: 0;
+	top: $layout_header_height;
 	bottom: 0;
 	width: $layout_nav_width;
-	background: $color_nav_bg image-url("noise.png") repeat;
-	@include box-shadow(0 0 10px rgba(0,0,0,.5));
+	@include transition(all .4s);
 }
 
 .site-page {
@@ -44,4 +35,33 @@ body {
 	right: 0;
 	padding: 20px;
 	overflow: auto;
+	min-width: 888px;
+	@include box-shadow(10px 10px 10px -10px rgba(0,0,0,.5) inset);
+	@include transition(all .4s);
+}
+
+.panel {
+	position: fixed;
+	z-index: 3;
+	top: $layout_header_height;
+	bottom: 0;
+	left: $layout_nav_width;
+	width: 0;
+}
+
+.full-screen {
+	.site-header {
+		top: - $layout_header_height;
+	}
+
+	.site-nav {
+		top: 0;
+		left: - $layout_nav-width;
+	}
+
+	.site-page {
+		top: 0;
+		left: 0;
+		@include box-shadow(none);
+	}
 }

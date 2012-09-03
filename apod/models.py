@@ -2,6 +2,7 @@ from django.db import models
 from django.core.cache import cache
 from django.core.files.base import ContentFile
 from django.db.models.signals import post_delete, pre_save, post_save
+from django.db.models import Count, Min, Max
 from django.dispatch import receiver
 
 from sorl.thumbnail import get_thumbnail, delete as delete_image
@@ -84,10 +85,10 @@ class TagManager(models.Manager):
 			groups = {}
 			for k in tags:
 				formatted_label = re.sub(re.compile(f.pattern, re.I), f.format, k.label)
-				if groups.has_key(formatted_label):
-					groups[formatted_label].append(k)
+				if formatted_label.lower() in groups:
+					groups[formatted_label.lower()].append(k)
 				else:
-					groups[formatted_label] = [k]
+					groups[formatted_label.lower()] = [k]
 
 			# Iterate over groups
 			for label in groups:
@@ -112,12 +113,23 @@ class TagManager(models.Manager):
 
 	def get_by_slug(self, slug):
 		q = self.extra(
-			where=["regexp_replace(lower(label), '\\W+', '-', 'g')=%s"],
+			where=["regexp_replace(lower(label), '\\\\W+', '-', 'g')=%s"],
 			params=[slug])
 		return q.get()
 
+	def get_top_tags(self, threshold):
+		tags = self.annotate(num_pictures=Count('pictures')).filter(num_pictures__gt=threshold)
+
+		min_max = tags.aggregate(Min('num_pictures'), Max('num_pictures'))
+
+		return {
+			'tags': tags,
+			'min': min_max['num_pictures__min'],
+			'max': min_max['num_pictures__max']
+		}
 
 # Clear formatter cache when formatters are updated
+
 
 @receiver(post_delete, sender=TagFormatter)
 @receiver(post_save, sender=TagFormatter)
@@ -137,7 +149,7 @@ class Tag(models.Model):
 	@models.permalink
 	def get_absolute_url(self):
 		return ('tag', (), {
-			'slug': self.slug,
+			'tag': self.slug,
 		})
 
 	def __unicode__(self):
@@ -205,13 +217,52 @@ class Picture(models.Model):
 
 	objects = PictureManager()
 
+	_current_tag = None
+
 	@models.permalink
 	def get_absolute_url(self):
-		return ('image', (), {
+		params = {
 			'year': str(self.publish_date.year),
 			'month': str(self.publish_date.month),
 			'day': str(self.publish_date.day),
+		}
+		url = 'picture'
+		if self.current_tag:
+			params['tag'] = self.current_tag.slug
+			url = 'tag_picture'
+
+		return (url, (), params)
+
+	@models.permalink
+	def get_json_url(self):
+		return ('picture_json', (), {
+			'picture_id': self.pk
 		})
+
+	@models.permalink
+	def get_month_url(self):
+		params = {
+			'year': str(self.publish_date.year),
+			'month': str(self.publish_date.month),
+		}
+		url = 'month'
+		if self.current_tag:
+			params['tag'] = self.current_tag.slug
+			url = 'tag_month'
+
+		return (url, (), params)
+
+	@models.permalink
+	def get_year_url(self):
+		params = {
+			'year': str(self.publish_date.year),
+		}
+		url = 'year'
+		if self.current_tag:
+			params['tag'] = self.current_tag.slug
+			url = 'tag_year'
+
+		return (url, (), params)
 
 	def __unicode__(self):
 		return u'%s' % self.title
@@ -349,18 +400,44 @@ class Picture(models.Model):
 		return self.media_type in ['YT', 'VI']
 
 	@property
+	def month(self):
+		return self.publish_date.replace(day=1)
+
+	@property
 	def next(self):
 		try:
-			return self.get_next_by_publish_date()
+			if self.current_tag:
+				next = self.get_next_by_publish_date(tags=self.current_tag)
+				next.current_tag = self.current_tag
+				return next
+			else:
+				return self.get_next_by_publish_date()
 		except Picture.DoesNotExist:
 			return None
 
 	@property
 	def previous(self):
 		try:
-			return self.get_previous_by_publish_date()
+			if self.current_tag:
+				previous = self.get_previous_by_publish_date(tags=self.current_tag)
+				previous.current_tag = self.current_tag
+				return previous
+			else:
+				return self.get_previous_by_publish_date()
 		except Picture.DoesNotExist:
 			return None
+
+	def current_tag():
+		def fget(self):
+			return self._current_tag
+
+		def fset(self, value):
+			self._current_tag = value
+
+		def fdel(self):
+			del self._current_tag
+		return locals()
+	current_tag = property(**current_tag())
 
 	class Meta:
 		ordering = ['-publish_date']

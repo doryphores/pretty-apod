@@ -1,4 +1,6 @@
 .archive {
+	margin-bottom: 40px;
+
 	.item {
 		position: relative;
 		width: 120px;
@@ -93,7 +95,7 @@ table.archive {
 	border-collapse: separate;
 	border-spacing: 6px;
 	empty-cells: hide;
-	margin: 0 auto;
+	margin: 0 auto 40px auto;
 
 	th {
 		text-align: center;
@@ -118,6 +120,11 @@ table.archive {
 				color: #666;
 				text-shadow: none;
 			}
+		}
+
+		.date {
+			padding: 0 4px;
+			font-size: 12px;
 		}
 	}
 }

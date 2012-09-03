@@ -82,8 +82,6 @@ class Transition
 		else
 			@deferred.resolve()
 
-		@deferred
-
 	end: (func) ->
 		@deferred.done func
 
@@ -117,13 +115,13 @@ class Module
 
 		@init()
 
-	init: (options) ->
-		@options = options or {}
+	init: () ->
 
-		for key, value of @element.data()
-			@options[key] = value unless typeof value is "object"
+	# Event handling (all return this instance)
 
-	# Event handling
+	trigger: (args...) ->
+		@element.trigger args...
+		return @
 
 	trigger: (args...) ->
 		@element.trigger args...
@@ -146,7 +144,7 @@ class Viewport extends Module
 		if @element.length is 0
 			return
 
-		@image = @element.find ".picture"
+		@image = @element.find '.picture'
 
 		if @image.length is 0
 			return
@@ -155,20 +153,20 @@ class Viewport extends Module
 
 		imageTag = @image.get(0).tagName.toLowerCase()
 
-		if imageTag is "img"
+		if imageTag is 'img'
 			# Image is ready
 			@window.load => @initImage()
 		else
 			# Call server to process image
-			@trigger "image_loading"
+			@trigger 'image_loading'
 
 			timer = new Timer()
-			timer.delay 1000, => $.getJSON @image.data("url") , (data) => @processImage(data)
+			timer.delay 1000, => $.getJSON @image.data('url') , (data) => @processImage(data)
 
 	initImage: ->
 		# Measure the image
-		@imageWidth = parseInt @image.attr "width"
-		@imageHeight = parseInt @image.attr "height"
+		@imageWidth = parseInt @image.attr 'width'
+		@imageHeight = parseInt @image.attr 'height'
 		@imageAspectRatio = @imageWidth / @imageHeight
 
 		@redraw()
@@ -176,9 +174,9 @@ class Viewport extends Module
 		@window.resize => @redraw()
 
 		timer = new Timer()
-		timer.delay 500, => @image.addClass("loaded")
+		timer.delay 500, => @image.addClass 'loaded'
 
-		@trigger "image_loaded"
+		@trigger 'image_loaded'
 
 	processImage: (image_data) ->
 		# Replace with empty IMG tag
@@ -196,7 +194,7 @@ class Viewport extends Module
 		image = new Image image_data.width, image_data.height
 		image.onload = =>
 			# Image is now fully downloaded
-			@image.attr "src", image_data.url
+			@image.attr 'src', image_data.url
 			@initImage()
 
 		image.src = image_data.url
@@ -212,9 +210,9 @@ class Viewport extends Module
 
 		# Add portrait class if we have to downscale and
 		if downscale and viewportAspectRatio > @imageAspectRatio
-			@element.addClass "maximise-height"
+			@element.addClass 'maximise-height'
 		else
-			@element.removeClass "maximise-height"
+			@element.removeClass 'maximise-height'
 
 
 class Panel extends Module
@@ -231,27 +229,40 @@ class Panel extends Module
 	timer: new Timer()
 
 	init: ->
-		@element.attr "tabindex", -1
-		@id = @element.attr "id"
+		@element.attr 'tabindex', -1
+		@id = @element.attr 'id'
 
-		@toggles = $("body").find "[data-toggle=#{@id}]"
+		@toggles = $('body').find "[data-toggle=#{@id}]"
 
-		$("body").on "click.panel", "[data-toggle=#{@id}]", (e) =>
+		$('body').on 'click.panel', "[data-toggle=#{@id}]", (e) =>
 			e.preventDefault()
+			e.stopImmediatePropagation()
 			@toggle()
 
 		Panel.panels[@id] = @
 
 		@on
-			"hide.panel": => @toggles.removeClass("active")
-			"show.panel": => @toggles.addClass("active")
+			'click.panel': (e) -> e.stopPropagation()
+			'hide.panel': => @toggles.removeClass('active')
+			'show.panel': => @toggles.addClass('active')
+
+		# Close when click outside
+		$(document).on 'click.panel', (e) =>
+			@hide() if e.button is 0
 
 	show: ->
+		evt = new $.Event 'show'
+		@trigger evt
+
+		if evt.isDefaultPrevented() then return
+
 		if cp = Panel.getCurrentPanel()
 			cp.one 'hidden', => @_show()
 			cp.hide()
 		else
 			@_show()
+
+		return @
 
 	_show: ->
 		evt = new $.Event 'show'
@@ -263,52 +274,57 @@ class Panel extends Module
 		tran = new Transition @element
 
 		tran.start =>
-			$("body").addClass "open-panel"
+			$('body').addClass 'open-panel'
 			unless @options.overlapping
-				$("body").addClass "push-panel"
+				$('body').addClass 'push-panel'
 				@startResize()
 
 		tran.end =>
 			@stopResize() unless @options.overlapping
-			if $("body").hasClass "open-panel"
-				if @options.load then @element.find(".inner-panel").load @options.load, => @options.load = false
+			if $('body').hasClass 'open-panel'
+				if @options.load then @element.find('.inner-panel').load @options.load, => @options.load = false
 				@element.focus()
-				@trigger "shown"
+				@trigger 'shown'
 
 		Panel.currentPanel = @id
 
 	hide: ->
 		evt = new $.Event 'hide'
 		@trigger evt
+
 		if evt.isDefaultPrevented() then return
 
 		tran = new Transition @element
 
 		tran.start =>
-			$("body").removeClass "open-panel"
+			$('body').removeClass 'open-panel'
 			unless @options.overlapping
-				$("body").removeClass "push-panel"
+				$('body').removeClass 'push-panel'
 				@startResize()
 
 		tran.end =>
 			@stopResize() unless @options.overlapping
-			unless $("body").hasClass "open-panel"
+			unless $('body').hasClass 'open-panel'
 				@element.hide()
 				Panel.currentPanel = null
-				@trigger "hidden"
+				@trigger 'hidden'
+
+		return @
 
 	toggle: ->
 		cp = Panel.getCurrentPanel()
 		if cp is @ then @hide() else @show()
 
+		return @
+
 	startResize: ->
-		$(window).triggerHandler "resize"
+		$(window).triggerHandler 'resize'
 		# Start triggering resize events
 		if Transition.support
-			@timer.repeat 10, -> $(window).triggerHandler "resize"
+			@timer.repeat 10, -> $(window).triggerHandler 'resize'
 
 	stopResize: ->
-		$(window).triggerHandler "resize"
+		$(window).triggerHandler 'resize'
 		# Stop timer
 		@timer.clear()
 
@@ -318,21 +334,21 @@ class Growler extends Module
 	@build: ->
 		unless Growler.box
 			# Create and inject message box element
-			Growler.box = $('<div class="growler"><p><i class="icon-time"></i> <span></span></p></div>').appendTo "body"
-			Growler.msgContainer = Growler.box.find("span").first()
+			Growler.box = $('<div class="growler"><p><i class="icon-time"></i> <span></span></p></div>').appendTo 'body'
+			Growler.msgContainer = Growler.box.find('span').first()
 
 	show: ->
-		@trigger "show"
+		@trigger 'show'
 
-		Growler.box.appendTo "body"
+		Growler.box.appendTo 'body'
 		Growler.box.offset()
 
 		# Add Transition
 		tran = new Transition Growler.box
 		tran.start ->
-			Growler.box.addClass "open"
+			Growler.box.addClass 'open'
 		tran.end =>
-			@trigger "shown" if Growler.box.hasClass "open"
+			@trigger 'shown' if Growler.box.hasClass 'open'
 
 	info: (msg) ->
 		Growler.build()
@@ -343,31 +359,68 @@ class Growler extends Module
 
 	hide: ->
 		if Growler.box
-			@trigger "hide"
+			@trigger 'hide'
 
 			tran = new Transition Growler.box, 200
 			tran.start ->
-				Growler.box.removeClass "open"
+				Growler.box.removeClass 'open'
 			tran.end ->
-				Growler.box.remove() unless Growler.box.hasClass "open"
+				Growler.box.remove() unless Growler.box.hasClass 'open'
 
 
-namespace "APOD.modules", (exports) ->
+class FullScreen extends Module
+	defaults:
+		class_name: 'full-screen'
+
+	init: ->
+		@state = 'off'
+		@root = $(document.documentElement)
+
+		$('body').on 'click.fullscreen', '[data-toggle=fullscreen]', (e) =>
+			e.preventDefault()
+			@toggle()
+
+	enable: ->
+		evt = new $.Event 'resize_full'
+		@trigger evt
+
+		if evt.isDefaultPrevented() then return
+
+		@state = 'on'
+
+		@root.addClass @options.class_name
+
+	disable: ->
+		evt = new $.Event 'resize_small'
+		@trigger evt
+
+		if evt.isDefaultPrevented() then return
+
+		@state = 'off'
+
+		tran = new Transition @element
+
+		@root.removeClass @options.class_name
+
+	toggle: ->
+		if @state is 'off' then @enable() else @disable()
+
+
+namespace 'APOD.modules', (exports) ->
 	exports.Viewport = Viewport
 	exports.Panel = Panel
 	exports.Growler = Growler
+	exports.FullScreen = FullScreen
 
 
 $ ->
 	growler = new Growler
 
 	$(document).on
-		"image_loaded": -> growler.hide()
-		"image_loading": -> growler.info "Please wait will the picture is downloaded and processed"
+		'image_loaded': -> growler.hide()
+		'image_loading': -> growler.info "Please wait will the picture is downloaded and processed"
+		# 'resize_full': ->
+		# 	$('[data-module=Panel]').data('Panel').hide()
 
-	for el in $("[data-module]")
-		new APOD.modules[$(el).data("module")](el)
-
-	# viewport = new Viewport ".viewport",
-	# 	"loading": -> growler.info "Loading",
-	# 	"loaded": -> growler.hide()
+	for el in $('[data-module]')
+		new APOD.modules[$(el).data('module')](el)

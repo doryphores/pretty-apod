@@ -11,23 +11,26 @@
 <body>
 
 <header class="site-header">
-	<p class="branding">Pretty APOD &mdash; </p>
-	<h1>{% block page_heading %}{% endblock %}</h1>
+	<h1>
+		<a href="wide_image.html" class="branding">Pretty APOD <b><b></b></b></a>
+		<a href="#"><i class="icon-tag"></i> Sun <b><b></b></b></a>
+		<a href="#"><i class="icon-calendar"></i> 2012 <b><b></b></b></a>
+		<a href="#"><i class="icon-calendar"></i> August <b><b></b></b></a>
+		Blue Moon Eclipse
+	</h1>
 </header>
 
 <nav class="site-nav">
 	<ul>
-		<li><a href="wide_image.html">
-			<i class="icon-home"></i>
-			Today
-		</a></li>
-		<li data-toggle="tags"><a href="data/tags.html">
+		<li data-toggle="tags"><a href="tag_cloud.html">
 			<i class="icon-tags"></i>
 			Tags
+			<b><b></b></b>
 		</a></li>
 		<li data-toggle="about"><a href="#">
 			<i class="icon-info-sign"></i>
 			About
+			<b><b></b></b>
 		</a></li>
 	</ul>
 	{% block extra_nav %}
@@ -37,9 +40,9 @@
 {% block main %}
 {% endblock main %}
 
-<div class="panel" data-module="Panel" id="tags" data-overlapping="true" data-load="data/tags.html">
+<div class="panel" data-module="Panel" id="tags" data-overlapping="true" data-load="ajax_tags.html">
 	<div class="inner-panel">
-
+		<p class="loading"><i class="icon-time"></i> Loading tags&hellip;</p>
 	</div>
 </div>
 

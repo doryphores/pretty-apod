@@ -1,0 +1,52 @@
+.tags {
+	line-height: 20px;
+	max-width: 888px;
+	margin: 0 auto;
+
+	a {
+		margin-right: 10px;
+		white-space: nowrap;
+
+		&.xxs { font-size: 10px; }
+		&.xs { font-size: 12px; }
+		&.s { font-size: 14px; }
+		&.l { font-size: 16px; }
+		&.xl { font-size: 18px; }
+		&.xxl { font-size: 20px; }
+
+		&:hover,
+		&:active {
+			background: $color_page_link;
+			color: $color_page_text;
+			@include border-radius(2px);
+			padding: 1px 4px;
+			margin: 0 6px 0 -4px;
+			text-decoration: none;
+		}
+	}
+
+	&.cloud {
+		text-align: center;
+	}
+
+	.site-page & {
+		line-height: 30px;
+
+		a.xxs { font-size: 12px; }
+		a.xs { font-size: 16px; }
+		a.s { font-size: 20px; }
+		a.l { font-size: 24px; }
+		a.xl { font-size: 26px; }
+		a.xxl { font-size: 30px; }
+
+		span {
+			font-size: 10px;
+			vertical-align: middle;
+			background: rgba(0,0,0,.2);
+			padding: 1px 4px 2px 4px;
+			@include border-radius(2px);
+			top: -1px;
+			position: relative;
+		}
+	}
+}

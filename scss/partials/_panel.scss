@@ -1,12 +1,6 @@
 .panel {
 	overflow: auto;
 	overflow-x: hidden; // Disable horizontal scrolling
-	position: fixed;
-	z-index: 4;
-	top: 0;
-	bottom: 0;
-	left: $layout_nav_width;
-	width: 0;
 	background: rgba(0,0,0,.8);
 	display: none;
 	@include transition(width 0.2s);
@@ -40,38 +34,32 @@
 		&:first-child {
 			margin-top: 0;
 		}
-	}
 
-	p {
-		margin-bottom: 1em;
-	}
-
-	.tags {
-		a {
-			margin-right: 6px;
-			line-height: 18px;
-			white-space: nowrap;
-
-			&.xxs { font-size: 10px; }
-			&.xs { font-size: 12px; }
-			&.s { font-size: 14px; }
-			&.l { font-size: 16px; }
-			&.xl { font-size: 18px; }
-			&.xxl { font-size: 20px; }
+		.action {
+			float: right;
+			font-size: 12px;
+			line-height: 16px;
+			color: $color_page_text;
+			background: rgba(255,255,255,.5);
+			padding: 2px 4px;
+			margin-top: 2px;
+			@include border-radius(2px 2px 0 0);
 
 			&:hover,
-			&:active {
+			&:focus {
 				background: $color_page_link;
-				color: $color_page_text;
-				@include border-radius(2px);
-				padding: 1px 4px;
-				margin: 0 2px 0 -4px;
-				text-decoration: none;
 			}
 		}
 	}
 
-	.cloud {
+	p {
+		margin-bottom: 1em;
+		text-align: justify;
+	}
+
+	p.loading {
 		text-align: center;
+		font-size: 16px;
+		margin-top: 50px;
 	}
 }
