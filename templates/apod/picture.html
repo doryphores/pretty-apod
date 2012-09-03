@@ -54,23 +54,29 @@
 
 	<div class="panel" data-module="Panel" id="details">
 		<div class="inner-panel">
-			<h2>
-				<i class="icon-question-sign"></i> Explanation
-				<a href="{{ picture.get_apod_url }}" target="_blank" class="action"> <i class="icon-eye-open"></i> View on APOD</a>
-			</h2>
-			<p>{{ picture.explanation|apod_html|safe }}</p>
+			<section class="copy">
+				<h2>
+					<i class="icon-question-sign"></i> Explanation
+					<a href="{{ picture.get_apod_url }}" target="_blank" class="action"> <i class="icon-eye-open"></i> View on APOD</a>
+				</h2>
+				<p>{{ picture.explanation|apod_html|safe }}</p>
+			</section>
 
-			<h2>&copy; Credits</h2>
-			<p>{{ picture.credits|safe }}</p>
+			<section>
+				<h2>&copy; Credits</h2>
+				<p>{{ picture.credits|safe }}</p>
+			</section>
 
-			<h2><i class="icon-tags"></i> Tags</h2>
-			<p class="tags">
-				{% for tag in  picture.tags.all %}
-				<a href="{{ tag.get_absolute_url }}"><i class="icon-tag"></i> {{ tag }}</a>
-				{% empty %}
-				<p>No tags set for this image</p>
-				{% endfor %}
-			</p>
+			<section>
+				<h2><i class="icon-tags"></i> Tags</h2>
+				<p class="tags">
+					{% for tag in  picture.tags.all %}
+					<a href="{{ tag.get_absolute_url }}"><i class="icon-tag"></i> {{ tag }}</a>
+					{% empty %}
+					<p>No tags set for this image</p>
+					{% endfor %}
+				</p>
+			</section>
 		</div>
 	</div>
 

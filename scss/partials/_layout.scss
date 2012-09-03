@@ -64,4 +64,9 @@ body {
 		left: 0;
 		@include box-shadow(none);
 	}
+
+	.panel {
+		left: 0;
+		top: 0;
+	}
 }

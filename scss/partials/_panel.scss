@@ -3,7 +3,7 @@
 	overflow-x: hidden; // Disable horizontal scrolling
 	background: rgba(0,0,0,.8);
 	display: none;
-	@include transition(width 0.2s);
+	@include transition(all .4s);
 	outline: none;
 
 	.inner-panel {
@@ -11,15 +11,13 @@
 		@include box-sizing(border-box);
 		width: $layout_panel_width;
 		margin-left: -$layout_panel_width;
-		@include transition(margin 0.2s);
+		@include transition(margin .4s);
 	}
 
 	.open-panel & {
 		width: $layout_panel_width;
-		@include transition-duration(0.4s);
 
 		.inner-panel {
-			@include transition-duration(0.4s);
 			margin-left: 0;
 		}
 	}
@@ -54,7 +52,12 @@
 
 	p {
 		margin-bottom: 1em;
-		text-align: justify;
+	}
+
+	section.copy {
+		p {
+			text-align: justify;
+		}
 	}
 
 	p.loading {
