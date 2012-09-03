@@ -84,7 +84,7 @@ class TagManager(models.Manager):
 		formatted_count = 0
 
 		for f in self.formatters:
-			tags = self.filter(label__iregex=f.pattern)
+			tags = self.filter(label__iregex=f.pattern).order_by('-label')
 
 			# Build groups of duplicate tags
 			groups = {}
