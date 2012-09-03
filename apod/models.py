@@ -70,7 +70,12 @@ class TagManager(models.Manager):
 			label = f.run(label)
 
 		try:
-			return self.get(label__iexact=label)
+			existing = self.get(label__iexact=label)
+			if existing.label > label:
+				existing.label = label
+				existing.save()
+			return existing
+
 		except Tag.DoesNotExist:
 			return self.create(label=label)
 
@@ -85,17 +90,19 @@ class TagManager(models.Manager):
 			groups = {}
 			for k in tags:
 				formatted_label = re.sub(re.compile(f.pattern, re.I), f.format, k.label)
-				if formatted_label.lower() in groups:
-					groups[formatted_label.lower()].append(k)
+				key = formatted_label.lower()
+				if key in groups:
+					groups[key][1].append(k)
 				else:
-					groups[formatted_label.lower()] = [k]
+					groups[key] = (formatted_label, [k])
 
 			# Iterate over groups
 			for label in groups:
+				formatted_label, labels = groups[label]
 				# Select one as primary
-				primary = groups[label].pop()
+				primary = labels.pop()
 				# Iterate over others
-				for k in groups[label]:
+				for k in labels:
 					# Switch to primary tag
 					for p in k.pictures.all():
 						obsolete_count = obsolete_count + 1
@@ -104,9 +111,9 @@ class TagManager(models.Manager):
 					# Delete obsolete tag
 					k.delete()
 				# Update primary label to formatted version
-				if primary.label != label:
+				if primary.label != formatted_label:
 					formatted_count = formatted_count + 1
-					primary.label = label
+					primary.label = formatted_label
 					primary.save()
 
 		return (obsolete_count, formatted_count)
