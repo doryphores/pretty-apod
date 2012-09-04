@@ -414,13 +414,19 @@ namespace 'APOD.modules', (exports) ->
 
 
 $ ->
+	# Initialise growler
 	growler = new Growler
 
+	# Listen for events
 	$(document).on
 		'image_loaded': -> growler.hide()
 		'image_loading': -> growler.info "Please wait will the picture is downloaded and processed"
-		# 'resize_full': ->
-		# 	$('[data-module=Panel]').data('Panel').hide()
+		'ui_ready': ->
+			$(document.documentElement).addClass 'ui-ready'
 
+	# Initialise modules
 	for el in $('[data-module]')
 		new APOD.modules[$(el).data('module')](el)
+
+
+	$(document).trigger 'ui_ready'

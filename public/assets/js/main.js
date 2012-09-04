@@ -576,7 +576,7 @@
   });
 
   $(function() {
-    var el, growler, _i, _len, _ref, _results;
+    var el, growler, _i, _len, _ref;
     growler = new Growler;
     $(document).on({
       'image_loaded': function() {
@@ -584,15 +584,17 @@
       },
       'image_loading': function() {
         return growler.info("Please wait will the picture is downloaded and processed");
+      },
+      'ui_ready': function() {
+        return $(document.documentElement).addClass('ui-ready');
       }
     });
     _ref = $('[data-module]');
-    _results = [];
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       el = _ref[_i];
-      _results.push(new APOD.modules[$(el).data('module')](el));
+      new APOD.modules[$(el).data('module')](el);
     }
-    return _results;
+    return $(document).trigger('ui_ready');
   });
 
 }).call(this);

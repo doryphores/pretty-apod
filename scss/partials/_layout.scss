@@ -1,10 +1,20 @@
 html {
 	overflow-y: hidden;
+	min-height: 800px;
 }
 
 body {
 	background: $color_page_bg image-url("page-noise.png");
 	color: $color_page_text;
+	min-height: 800px;
+
+	> * {
+		opacity: 0;
+
+		.ui-ready & {
+			opacity: 1;
+		}
+	}
 }
 
 .site-header {
@@ -14,7 +24,10 @@ body {
 	left: 0;
 	right: 0;
 	height: $layout_header_height;
-	@include transition(top .4s);
+
+	.ui-ready & {
+		@include transition(all .4s);
+	}
 }
 
 .site-nav {
@@ -24,7 +37,10 @@ body {
 	top: $layout_header_height;
 	bottom: 0;
 	width: $layout_nav_width;
-	@include transition(all .4s);
+
+	.ui-ready & {
+		@include transition(all .4s);
+	}
 }
 
 .site-page {
@@ -37,7 +53,10 @@ body {
 	overflow: auto;
 	min-width: 888px;
 	@include box-shadow(10px 10px 10px -10px rgba(0,0,0,.5) inset);
-	@include transition(all .4s);
+
+	.ui-ready & {
+		@include transition(all .4s);
+	}
 }
 
 .panel {
