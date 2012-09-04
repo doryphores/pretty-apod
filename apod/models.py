@@ -61,7 +61,7 @@ class TagManager(models.Manager):
 
 	@classmethod
 	def get_slug(cls, label):
-		return re.sub(r'[\W^_]+', '-', label.replace('*', 'star').lower()).strip('-')
+		return re.sub(r'[\W^_]+', '-', label.replace('*', '-star').lower()).strip('-')
 
 	def get_or_create_from_label(self, label):
 		"""
@@ -75,15 +75,17 @@ class TagManager(models.Manager):
 		for f in self.formatters:
 			label = f.run(label)
 
+		slug = self.get_slug(label)
+
 		try:
-			existing = self.get_by_slug(self.get_slug(label))
+			existing = self.get(slug=slug)
 			if existing.label > label:
 				existing.label = label
 				existing.save()
 			return existing
 
 		except Tag.DoesNotExist:
-			return self.create(label=label)
+			return self.create(label=label, slug=slug)
 
 	def format_labels(self):
 		obsolete_count = 0
@@ -94,28 +96,28 @@ class TagManager(models.Manager):
 
 			# Build groups of duplicate tags
 			groups = {}
-			for k in tags:
-				formatted_label = re.sub(re.compile(f.pattern, re.I), f.format, k.label)
-				key = formatted_label.lower()
-				if key in groups:
-					groups[key][1].append(k)
+			for tag in tags:
+				formatted_label = re.sub(re.compile(f.pattern, re.I), f.format, tag.label)
+				slug = self.get_slug(formatted_label)
+				if slug in groups:
+					groups[slug][1].append(tag)
 				else:
-					groups[key] = (formatted_label, [k])
+					groups[slug] = (formatted_label, [tag])
 
 			# Iterate over groups
-			for label in groups:
-				formatted_label, labels = groups[label]
+			for slug in groups:
+				formatted_label, tags = groups[slug]
 				# Select one as primary
-				primary = labels.pop()
+				primary = tags.pop()
 				# Iterate over others
-				for k in labels:
+				for tag in tags:
 					# Switch to primary tag
-					for p in k.pictures.all():
+					for picture in tag.pictures.all():
 						obsolete_count = obsolete_count + 1
-						p.tags.remove(k)
-						p.tags.add(primary)
+						picture.tags.remove(tag)
+						picture.tags.add(primary)
 					# Delete obsolete tag
-					k.delete()
+					tag.delete()
 				# Update primary label to formatted version
 				if primary.label != formatted_label:
 					formatted_count = formatted_count + 1
@@ -123,12 +125,6 @@ class TagManager(models.Manager):
 					primary.save()
 
 		return (obsolete_count, formatted_count)
-
-	def get_by_slug(self, slug):
-		q = self.extra(
-			where=["regexp_replace(lower(label), '[^[:alnum:]]+', '-', 'g') = %s"],
-			params=[slug])
-		return q.get()
 
 	def get_top_tags(self, threshold):
 		tags = self.annotate(num_pictures=Count('pictures')).filter(num_pictures__gt=threshold)
@@ -152,12 +148,9 @@ def refresh_formatters(sender, **kwargs):
 
 class Tag(models.Model):
 	label = models.CharField(max_length=400, unique=True)
+	slug = models.CharField(max_length=400, unique=True)
 
 	objects = TagManager()
-
-	@property
-	def slug(self):
-		return TagManager.get_slug(self.label)
 
 	@models.permalink
 	def get_absolute_url(self):

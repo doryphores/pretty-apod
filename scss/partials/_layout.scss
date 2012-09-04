@@ -1,12 +1,10 @@
 html {
 	overflow-y: hidden;
-	min-height: 800px;
 }
 
 body {
 	background: $color_page_bg image-url("page-noise.png");
 	color: $color_page_text;
-	min-height: 800px;
 
 	> * {
 		opacity: 0;
@@ -44,7 +42,7 @@ body {
 }
 
 .site-page {
-	position: absolute;
+	position: fixed;
 	top: $layout_header_height;
 	bottom: 0;
 	left: $layout_nav_width;

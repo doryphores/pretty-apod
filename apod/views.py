@@ -16,7 +16,7 @@ import calendar
 def picture(request, year=None, month=None, day=None, tag=None):
 	if tag:
 		try:
-			tag = Tag.objects.get_by_slug(tag)
+			tag = Tag.objects.get(slug=tag)
 		except Tag.DoesNotExist:
 			raise Http404
 
@@ -160,7 +160,7 @@ def archive(request, tag, month=None, year=None, page=1):
 	page = int(page)
 
 	try:
-		tag = Tag.objects.get_by_slug(tag)
+		tag = Tag.objects.get(slug=tag)
 	except Tag.DoesNotExist:
 		raise Http404
 
