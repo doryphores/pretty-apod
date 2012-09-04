@@ -121,6 +121,7 @@
 			}
 
 			&:hover,
+			&:focus,
 			&.active {
 				.preview {
 					width: 130px;
@@ -133,6 +134,17 @@
 					&:hover,
 					&:active {
 						background: rgba(255,255,255,.8);
+					}
+				}
+			}
+
+			&:active {
+				.preview {
+					width: 0;
+					@include transition-delay(0);
+					span {
+						@include transition-delay(0);
+						margin-left: -130px;
 					}
 				}
 			}
