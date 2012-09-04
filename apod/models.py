@@ -59,18 +59,24 @@ class TagManager(models.Manager):
 		"""
 		cache.delete(cls.FORMATTERS_CACHE_KEY)
 
+	@classmethod
+	def get_slug(cls, label):
+		return re.sub(r'[\W^_]+', '-', label.replace('*', 'star').lower()).strip('-')
+
 	def get_or_create_from_label(self, label):
 		"""
 		Runs label through tag formatters first
 		and returns existing tag or creates a new one
 		"""
+		# Strip and collapse spaces
 		label = label.strip()
+		label = re.sub(r'\s{2,}', ' ', label)
 
 		for f in self.formatters:
 			label = f.run(label)
 
 		try:
-			existing = self.get(label__iexact=label)
+			existing = self.get_by_slug(self.get_slug(label))
 			if existing.label > label:
 				existing.label = label
 				existing.save()
@@ -120,7 +126,7 @@ class TagManager(models.Manager):
 
 	def get_by_slug(self, slug):
 		q = self.extra(
-			where=["regexp_replace(lower(label), '\\\\W+', '-', 'g')=%s"],
+			where=["regexp_replace(lower(label), '[^[:alnum:]]+', '-', 'g') = %s"],
 			params=[slug])
 		return q.get()
 
@@ -151,7 +157,7 @@ class Tag(models.Model):
 
 	@property
 	def slug(self):
-		return re.sub(r'\W+', '-', self.label.lower()).strip('-')
+		return TagManager.get_slug(self.label)
 
 	@models.permalink
 	def get_absolute_url(self):
