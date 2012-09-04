@@ -1526,20 +1526,12 @@ body > * {
   margin-bottom: 5px;
   clear: both;
 }
-/* line 8, ../../../scss/partials/_nav.scss */
-.site-nav ul.menu {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  margin: 0;
-}
-/* line 17, ../../../scss/partials/_nav.scss */
+/* line 9, ../../../scss/partials/_nav.scss */
 .site-nav li {
   font-size: 14px;
   margin-top: 1px;
 }
-/* line 21, ../../../scss/partials/_nav.scss */
+/* line 13, ../../../scss/partials/_nav.scss */
 .site-nav li a {
   display: block;
   background: rgba(0, 0, 0, 0.2);
@@ -1554,20 +1546,20 @@ body > * {
   -o-transition: background 0.2s;
   transition: background 0.2s;
 }
-/* line 32, ../../../scss/partials/_nav.scss */
+/* line 24, ../../../scss/partials/_nav.scss */
 .site-nav li a i {
   line-height: 1;
 }
-/* line 37, ../../../scss/partials/_nav.scss */
+/* line 29, ../../../scss/partials/_nav.scss */
 .site-nav li a:hover, .site-nav li a:active {
   background: rgba(0, 0, 0, 0.4);
 }
-/* line 40, ../../../scss/partials/_nav.scss */
+/* line 32, ../../../scss/partials/_nav.scss */
 .site-nav li a:hover b b, .site-nav li a:active b b {
   left: -20px;
   background: rgba(0, 0, 0, 0.4);
 }
-/* line 47, ../../../scss/partials/_nav.scss */
+/* line 39, ../../../scss/partials/_nav.scss */
 .site-nav li b {
   overflow: hidden;
   display: block;
@@ -1605,7 +1597,7 @@ body > * {
   left: -20px;
   margin-top: -14px;
 }
-/* line 50, ../../../scss/partials/_nav.scss */
+/* line 42, ../../../scss/partials/_nav.scss */
 .site-nav li b b {
   background: rgba(0, 0, 0, 0.2);
   left: -40px;
@@ -1614,11 +1606,11 @@ body > * {
   -o-transition: all 0.2s;
   transition: all 0.2s;
 }
-/* line 58, ../../../scss/partials/_nav.scss */
+/* line 50, ../../../scss/partials/_nav.scss */
 .site-nav li.active a {
   background: rgba(0, 0, 0, 0.8);
 }
-/* line 64, ../../../scss/partials/_nav.scss */
+/* line 56, ../../../scss/partials/_nav.scss */
 .site-nav .date {
   clear: both;
   margin: 5px;
@@ -1635,7 +1627,7 @@ body > * {
   text-transform: uppercase;
   font-weight: bold;
 }
-/* line 74, ../../../scss/partials/_nav.scss */
+/* line 66, ../../../scss/partials/_nav.scss */
 .site-nav .date span:first-child {
   font-size: 54px;
   line-height: 1;
@@ -1643,34 +1635,34 @@ body > * {
   text-shadow: -1px -1px rgba(0, 0, 0, 0.4);
   display: block;
 }
-/* line 81, ../../../scss/partials/_nav.scss */
+/* line 73, ../../../scss/partials/_nav.scss */
 .site-nav .date span:first-child.month {
   font-size: 30px;
   line-height: 45px;
 }
-/* line 85, ../../../scss/partials/_nav.scss */
+/* line 77, ../../../scss/partials/_nav.scss */
 .site-nav .date span:first-child.month + .year {
   font-size: 24px;
   line-height: 28px;
 }
-/* line 91, ../../../scss/partials/_nav.scss */
+/* line 83, ../../../scss/partials/_nav.scss */
 .site-nav .date span:first-child.year {
   font-size: 30px;
   line-height: 73px;
 }
-/* line 97, ../../../scss/partials/_nav.scss */
+/* line 89, ../../../scss/partials/_nav.scss */
 .site-nav .date span {
   text-decoration: none;
   font-size: 13px;
 }
-/* line 103, ../../../scss/partials/_nav.scss */
+/* line 95, ../../../scss/partials/_nav.scss */
 .site-nav .nav {
   margin-bottom: 5px;
   width: 100%;
   float: left;
   position: relative;
 }
-/* line 110, ../../../scss/partials/_nav.scss */
+/* line 102, ../../../scss/partials/_nav.scss */
 .site-nav .nav a,
 .site-nav .nav span.disabled {
   float: left;
@@ -1680,13 +1672,13 @@ body > * {
   text-decoration: none;
   outline: none;
 }
-/* line 118, ../../../scss/partials/_nav.scss */
+/* line 110, ../../../scss/partials/_nav.scss */
 .site-nav .nav a > i,
 .site-nav .nav span.disabled > i {
   font-size: 40px;
   line-height: 60px;
 }
-/* line 126, ../../../scss/partials/_nav.scss */
+/* line 118, ../../../scss/partials/_nav.scss */
 .site-nav .nav a:hover .preview, .site-nav .nav a:focus .preview, .site-nav .nav a.active .preview,
 .site-nav .nav span.disabled:hover .preview,
 .site-nav .nav span.disabled:focus .preview,
@@ -1697,7 +1689,7 @@ body > * {
   -o-transition-delay: 0.8s;
   transition-delay: 0.8s;
 }
-/* line 129, ../../../scss/partials/_nav.scss */
+/* line 121, ../../../scss/partials/_nav.scss */
 .site-nav .nav a:hover .preview span, .site-nav .nav a:focus .preview span, .site-nav .nav a.active .preview span,
 .site-nav .nav span.disabled:hover .preview span,
 .site-nav .nav span.disabled:focus .preview span,
@@ -1708,7 +1700,7 @@ body > * {
   transition-delay: 0.8s;
   margin-left: 0;
 }
-/* line 135, ../../../scss/partials/_nav.scss */
+/* line 127, ../../../scss/partials/_nav.scss */
 .site-nav .nav a:hover .preview:hover, .site-nav .nav a:hover .preview:active, .site-nav .nav a:focus .preview:hover, .site-nav .nav a:focus .preview:active, .site-nav .nav a.active .preview:hover, .site-nav .nav a.active .preview:active,
 .site-nav .nav span.disabled:hover .preview:hover,
 .site-nav .nav span.disabled:hover .preview:active,
@@ -1718,7 +1710,7 @@ body > * {
 .site-nav .nav span.disabled.active .preview:active {
   background: rgba(255, 255, 255, 0.8);
 }
-/* line 142, ../../../scss/partials/_nav.scss */
+/* line 134, ../../../scss/partials/_nav.scss */
 .site-nav .nav a:active .preview,
 .site-nav .nav span.disabled:active .preview {
   width: 0;
@@ -1727,7 +1719,7 @@ body > * {
   -o-transition-delay: 0;
   transition-delay: 0;
 }
-/* line 145, ../../../scss/partials/_nav.scss */
+/* line 137, ../../../scss/partials/_nav.scss */
 .site-nav .nav a:active .preview span,
 .site-nav .nav span.disabled:active .preview span {
   -webkit-transition-delay: 0;
@@ -1736,12 +1728,12 @@ body > * {
   transition-delay: 0;
   margin-left: -130px;
 }
-/* line 153, ../../../scss/partials/_nav.scss */
+/* line 145, ../../../scss/partials/_nav.scss */
 .site-nav .nav .disabled {
   color: #6b7f86;
   opacity: 0.5;
 }
-/* line 158, ../../../scss/partials/_nav.scss */
+/* line 150, ../../../scss/partials/_nav.scss */
 .site-nav .nav .preview {
   background: rgba(255, 255, 255, 0.7);
   -webkit-box-shadow: 10px 0 10px -10px rgba(0, 0, 0, 0.8) inset;
@@ -1767,7 +1759,7 @@ body > * {
   line-height: 15px;
   color: black;
 }
-/* line 173, ../../../scss/partials/_nav.scss */
+/* line 165, ../../../scss/partials/_nav.scss */
 .site-nav .nav .preview span {
   display: block;
   padding: 5px;
@@ -1779,11 +1771,11 @@ body > * {
   -o-transition: margin 0.2s ease-out 0.2s;
   transition: margin 0.2s ease-out 0.2s;
 }
-/* line 180, ../../../scss/partials/_nav.scss */
+/* line 172, ../../../scss/partials/_nav.scss */
 .site-nav .nav .preview span i {
   font-size: 13px;
 }
-/* line 185, ../../../scss/partials/_nav.scss */
+/* line 177, ../../../scss/partials/_nav.scss */
 .site-nav .nav .preview .calendar {
   font-size: 19px;
   font-weight: bold;
@@ -1793,7 +1785,7 @@ body > * {
   text-align: center;
   text-transform: uppercase;
 }
-/* line 194, ../../../scss/partials/_nav.scss */
+/* line 186, ../../../scss/partials/_nav.scss */
 .site-nav .nav .preview .calendar i {
   float: left;
   font-size: 45px;
@@ -1801,12 +1793,12 @@ body > * {
   margin-left: 10px;
   margin-right: 0;
 }
-/* line 202, ../../../scss/partials/_nav.scss */
+/* line 194, ../../../scss/partials/_nav.scss */
 .site-nav .nav .preview .calendar.year {
   font-size: 22px;
   line-height: 38px;
 }
-/* line 208, ../../../scss/partials/_nav.scss */
+/* line 200, ../../../scss/partials/_nav.scss */
 .site-nav .nav .preview img {
   margin: 4px 0 0 0;
   display: block;

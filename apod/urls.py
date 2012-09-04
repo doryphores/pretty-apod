@@ -14,5 +14,8 @@ urlpatterns = patterns('apod.views',
 	url(r'^tags/(?P<tag>[\w\-]+)/(?P<year>\d{4})/$', 'archive', name='tag_year'),
 	url(r'^tags/(?P<tag>[\w\-]+)/(?P<year>\d{4})/(?P<month>\d{1,2})/(?P<day>\d{1,2})/$', 'picture', name='tag_picture'),
 
+	url(r'^stats/$', 'stats', name='stats'),
+
 	url(r'^ajax/picture/(?P<picture_id>\d+)/$', 'picture_json', name='picture_json'),
+	url(r'^ajax/size-over-time/$', 'size_over_time', name='size_over_time'),
 )

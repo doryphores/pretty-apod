@@ -1,0 +1,49 @@
+{% extends 'apod/page.html' %}
+
+{% block page_title %}Stats{% endblock page_title %}
+
+{% block page %}
+<div id="chart"></div>
+
+<script src="https://www.google.com/jsapi"></script>
+<script>
+	// Load the Visualization API and the piechart package.
+	google.load('visualization', '1', {'packages':['corechart']});
+
+	// Set a callback to run when the Google Visualization API is loaded.
+	google.setOnLoadCallback(drawChart);
+
+	function drawChart() {
+	var jsonData = $.ajax({
+		url: "{% url size_over_time %}",
+		dataType:"json",
+		async: false
+	}).responseText;
+
+	// Create our data table out of JSON data loaded from server.
+	var data = new google.visualization.DataTable(jsonData);
+
+	// Instantiate and draw our chart, passing in some options.
+	var chart = new google.visualization.LineChart(document.getElementById('chart'));
+		chart.draw(data, {
+			width: 888,
+			height: 240,
+			// curveType: "function",
+			colors: ['#6B7F86'],
+			legend: {
+				position: 'none'
+			},
+			vAxis: {
+				format: '#.##Mpx',
+				minValue: 0
+			},
+			animation: {
+				duration: 500
+			}
+		});
+	}
+
+	// $('#visualization iframe:first').contents().find('#chart g:first rect:first').css('opacity', '0');
+</script>
+
+{% endblock page %}

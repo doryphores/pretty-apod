@@ -13,6 +13,8 @@ import json
 import datetime
 import calendar
 
+import gviz_api
+
 def picture(request, year=None, month=None, day=None, tag=None):
 	if tag:
 		try:
@@ -203,3 +205,19 @@ def archive(request, tag, month=None, year=None, page=1):
 		'tag': tag,
 		'pictures': pictures,
 	})
+
+
+def stats(request):
+	return render(request, 'apod/stats.html')
+
+
+def size_over_time(request):
+	description = {"date": ("date", "Date"),
+					"size": ("number", "Image size")}
+
+	data_table = gviz_api.DataTable(description)
+	data_table.LoadData(Picture.objects.get_size_over_time())
+
+	response = data_table.ToJSon(columns_order=("date", "size"))
+
+	return HttpResponse(response, mimetype='application/json')

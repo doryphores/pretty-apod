@@ -3,6 +3,7 @@ from django.core.cache import cache
 from django.core.files.base import ContentFile
 from django.db.models.signals import post_delete, pre_save, post_save
 from django.db.models import Count, Min, Max
+from django.db import connection
 from django.dispatch import receiver
 
 from sorl.thumbnail import get_thumbnail, delete as delete_image
@@ -166,6 +167,15 @@ class Tag(models.Model):
 
 
 class PictureManager(models.Manager):
+	@classmethod
+	def dictfetchall(cls, cursor):
+		"Returns all rows from a cursor as a dict"
+		desc = cursor.description
+		return [
+			dict(zip([col[0] for col in desc], row))
+			for row in cursor.fetchall()
+		]
+
 	def get_by_apodurl(self, apodurl):
 		"""
 		Returns Picture matching the APOD url (apYYMMDD.html)
@@ -176,6 +186,20 @@ class PictureManager(models.Manager):
 			raise Picture.DoesNotExist
 
 		return self.get(publish_date=date)
+
+	def get_size_over_time(self):
+		cursor = connection.cursor()
+
+		cursor.execute("""
+			SELECT	DATE (date_part('year', publish_date) || '-' || date_part('month', publish_date) || '-1'),
+					ROUND(AVG(original_width::integer * original_height::integer) / 1000000, 2)::float AS size
+			FROM	apod_picture
+			WHERE	media_type = 'IM'
+			GROUP BY date_part('year', publish_date), date_part('month', publish_date)
+			ORDER BY date_part('year', publish_date), date_part('month', publish_date)
+		""")
+
+		return self.dictfetchall(cursor)
 
 
 def get_image_path(instance, filename):
