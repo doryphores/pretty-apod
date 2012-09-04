@@ -104,6 +104,7 @@ def get_apod_details(apod_date, force=False):
 
 	# Replace erroneous closing anchor tags
 	html = html.replace('<a/>', '</a>')
+	html = re.sub(r'(<meta .*?[^">])>', r'\1">', html)
 
 	# Parse it with Beautiful Soup
 	soup = BSoup(html)
