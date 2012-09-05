@@ -7,10 +7,10 @@ import datetime
 
 from django.core.files.storage import default_storage as storage
 from django.core.files.base import ContentFile
-from django.core.files import File
 from django.conf import settings
 
 CACHE_FOLDER = 'apod_cache'
+
 
 def get_archive_list(force=False, from_date=None):
 	"""
@@ -50,11 +50,13 @@ def get_archive_list(force=False, from_date=None):
 			'title': unicode(link.next),
 		}
 
+
 def get_apod_url(apod_date):
 	"""
 	Returns the URL to an individual APOD for the given date
 	"""
 	return u'%s/ap%s.html' % (settings.APOD_URL, apod_date.strftime('%y%m%d'))
+
 
 def get_apod_details(apod_date, force=False):
 	"""
@@ -120,7 +122,7 @@ def get_apod_details(apod_date, force=False):
 	}
 
 	# Parse keywords
-	meta_keywords = soup.find('meta', attrs={'name':'keywords'})
+	meta_keywords = soup.find('meta', attrs={'name': 'keywords'})
 	if meta_keywords:
 		details['keywords'] = meta_keywords['content'].split(',')
 	else:
@@ -167,6 +169,7 @@ def get_apod_details(apod_date, force=False):
 				details['vimeo_id'] = s.groups()[0]
 
 	return details
+
 
 def get_section(soup, heading):
 	b_tags = soup.findAll('b')

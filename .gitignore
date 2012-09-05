@@ -7,3 +7,4 @@ public/assets/admin
 .sass-cache
 .DS_Store
 backups
+local_settings.py

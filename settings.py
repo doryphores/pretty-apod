@@ -7,7 +7,7 @@ PROJECT_ROOT = os.path.dirname(os.path.realpath(__file__))
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-INTERNAL_IPS = ('127.0.0.1','192.168.0.4',)
+INTERNAL_IPS = ('127.0.0.1', '192.168.0.4',)
 
 ADMINS = (
 	# ('Your Name', 'your_email@example.com'),
@@ -15,16 +15,16 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-DATABASES = {
-	'default': {
-		'ENGINE'	: 'django.db.backends.postgresql_psycopg2',
-		'NAME'		: 'pretty-apod',
-		'USER'		: 'martin',
-		'PASSWORD'	: 'password',
-		'HOST'		: '',
-		'PORT'		: '',
-	}
-}
+# DATABASES = {
+# 	'default': {
+# 		'ENGINE'	: 'django.db.backends.postgresql_psycopg2',
+# 		'NAME'		: 'pretty-apod',
+# 		'USER'		: 'martin',
+# 		'PASSWORD'	: 'password',
+# 		'HOST'		: '',
+# 		'PORT'		: '',
+# 	}
+# }
 
 CACHES = {
 	'default': {
@@ -201,3 +201,24 @@ DEBUG_TOOLBAR_CONFIG = {
 APOD_URL = "http://apod.nasa.gov/apod"
 
 APOD_ARCHIVE_URL = APOD_URL + "/archivepix.html"
+
+
+try:
+	import local_settings
+except ImportError:
+	pass
+else:
+	# Import any symbols that begin with A-Z. Append to lists any symbols that
+	# begin with "EXTRA_".
+	import re
+	for attr in dir(local_settings):
+		match = re.search('^EXTRA_(\w+)', attr)
+		if match:
+			name = match.group(1)
+			value = getattr(local_settings, attr)
+			try:
+				globals()[name] += value
+			except KeyError:
+				globals()[name] = value
+		elif re.search('^[A-Z]', attr):
+			globals()[attr] = getattr(local_settings, attr)
