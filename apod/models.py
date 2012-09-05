@@ -163,7 +163,7 @@ class Tag(models.Model):
 		return u'%s' % self.label
 
 	class Meta:
-		ordering = ['label']
+		ordering = ['slug']
 
 
 class PictureManager(models.Manager):

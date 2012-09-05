@@ -10,5 +10,4 @@ python-memcached==1.47
 sorl-thumbnail==11.09
 wsgiref==0.1.2
 yolk==0.4.1
-
--e http://google-visualization-python.googlecode.com/files/gviz_api_py-1.8.0.tar.gz
+http://google-visualization-python.googlecode.com/files/gviz_api_py-1.8.0.tar.gz
