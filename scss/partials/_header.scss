@@ -16,6 +16,7 @@
 			z-index: 4;
 			color: $color_page_text;
 			background: lighten($color_page_bg, 20%) image-url("page-noise.png");
+			outline: none;
 
 			&:first-child {
 				padding: 0 0 0 10px;
@@ -58,6 +59,7 @@
 
 		b {
 			@include triangle-right($layout_header_height);
+			pointer-events: none;
 
 			b {
 				background: lighten($color_page_bg, 20%) image-url("page-noise.png");

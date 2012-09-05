@@ -1,8 +1,4 @@
-## Compass
+## Dependencies:
 
-Compass project is in `compass` folder. Stylesheets are compiled to the `public/static/css` folder.
-
-Dependencies:
-
- * Compass 0.11.5 (gem install compass)
- * compass-rgbapng (gem install compass-rgbapng)
+ * Compass 0.12.1
+ * Coffee Script 1.3.3

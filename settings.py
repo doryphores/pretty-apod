@@ -4,10 +4,7 @@ import os
 
 PROJECT_ROOT = os.path.dirname(os.path.realpath(__file__))
 
-DEBUG = True
-TEMPLATE_DEBUG = DEBUG
-
-INTERNAL_IPS = ('127.0.0.1', '192.168.0.4',)
+INTERNAL_IPS = ('127.0.0.1', '192.168.0.4', '192.168.2.53',)
 
 ADMINS = (
 	# ('Your Name', 'your_email@example.com'),
@@ -119,7 +116,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 MIDDLEWARE_CLASSES = (
-	#'debug_toolbar.middleware.DebugToolbarMiddleware',
 	'django.middleware.common.CommonMiddleware',
 	'django.contrib.sessions.middleware.SessionMiddleware',
 	'django.middleware.csrf.CsrfViewMiddleware',
@@ -145,7 +141,6 @@ INSTALLED_APPS = (
 	'south',
 	'apod',
 	'sorl.thumbnail',
-	'debug_toolbar',
 )
 
 LOGGING = {
@@ -192,11 +187,15 @@ LOGGING = {
 	}
 }
 
-THUMBNAIL_UPSCALE = False
+# Session config
 
-DEBUG_TOOLBAR_CONFIG = {
-	'INTERCEPT_REDIRECTS': False,
-}
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+SESSION_COOKIE_AGE = 3600
+
+THUMBNAIL_UPSCALE = False
 
 APOD_URL = "http://apod.nasa.gov/apod"
 

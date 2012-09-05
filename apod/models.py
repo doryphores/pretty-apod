@@ -17,8 +17,6 @@ import datetime
 
 from apod import apodapi
 
-# Models
-
 
 class TagFormatter(models.Model):
 	label = models.CharField(max_length=400)
@@ -138,8 +136,8 @@ class TagManager(models.Manager):
 			'max': min_max['num_pictures__max']
 		}
 
-# Clear formatter cache when formatters are updated
 
+# Clear formatter cache when formatters are updated
 
 @receiver(post_delete, sender=TagFormatter)
 @receiver(post_save, sender=TagFormatter)
@@ -202,13 +200,16 @@ class PictureManager(models.Manager):
 		return self.dictfetchall(cursor)
 
 
+# Dynamic path for image storage
 def get_image_path(instance, filename):
 	return os.path.join('pictures',
 						str(instance.publish_date.year),
 						str(instance.publish_date.month),
 						filename)
 
-TYPES = (
+
+# Media types
+MEDIA_TYPES = (
 	('IM', 'Image'),
 	('YT', 'YouTube'),
 	('VI', 'Vimeo'),
@@ -222,7 +223,7 @@ class Picture(models.Model):
 	explanation = models.TextField(max_length=4000, blank=True)
 	credits = models.TextField(max_length=4000, blank=True)
 
-	media_type = models.CharField(max_length=2, choices=TYPES, default='UN')
+	media_type = models.CharField(max_length=2, choices=MEDIA_TYPES, default='UN')
 
 	# Image data
 	original_image_url = models.URLField(blank=True)

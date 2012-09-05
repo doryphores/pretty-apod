@@ -1,0 +1,21 @@
+DEBUG = True
+TEMPLATE_DEBUG = DEBUG
+
+DATABASES = {
+	'default': {
+		'ENGINE'	: 'django.db.backends.postgresql_psycopg2',
+		'NAME'		: '',
+		'USER'		: '',
+		'PASSWORD'	: '',
+		'HOST'		: '',
+		'PORT'		: '',
+	}
+}
+
+EXTRA_MIDDLEWARE_CLASSES = ('debug_toolbar.middleware.DebugToolbarMiddleware',)
+
+EXTRA_INSTALLED_APPS = ('debug_toolbar',)
+
+DEBUG_TOOLBAR_CONFIG = {
+	'INTERCEPT_REDIRECTS': False,
+}
