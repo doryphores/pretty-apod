@@ -1,14 +1,8 @@
-import os, sys, site
+import os
 
-PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-sys.path.append(PROJECT_ROOT)
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.active")
 
-os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
-
-import django.core.handlers.wsgi
-
-application = django.core.handlers.wsgi.WSGIHandler()
-
-#if os.name == 'nt':
-#	import monitor
-#	monitor.start(interval=1.0)
+# This application object is used by the development server
+# as well as any WSGI server configured to use this file.
+from django.core.wsgi import get_wsgi_application
+application = get_wsgi_application()

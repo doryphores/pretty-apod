@@ -2,26 +2,16 @@ import os
 
 # Django settings for pretty_apod project.
 
-PROJECT_ROOT = os.path.dirname(os.path.realpath(__file__))
+PROJECT_ROOT = '/'.join(os.path.dirname(__file__).split('/')[0:-1])
+print PROJECT_ROOT
 
-INTERNAL_IPS = ('127.0.0.1', '192.168.0.4', '192.168.2.53',)
+INTERNAL_IPS = ('127.0.0.1',)
 
 ADMINS = (
 	# ('Your Name', 'your_email@example.com'),
 )
 
 MANAGERS = ADMINS
-
-# DATABASES = {
-# 	'default': {
-# 		'ENGINE'	: 'django.db.backends.postgresql_psycopg2',
-# 		'NAME'		: 'pretty-apod',
-# 		'USER'		: 'martin',
-# 		'PASSWORD'	: 'password',
-# 		'HOST'		: '',
-# 		'PORT'		: '',
-# 	}
-# }
 
 CACHES = {
 	'default': {
@@ -200,24 +190,3 @@ THUMBNAIL_UPSCALE = False
 APOD_URL = "http://apod.nasa.gov/apod"
 
 APOD_ARCHIVE_URL = APOD_URL + "/archivepix.html"
-
-
-try:
-	import local_settings
-except ImportError:
-	pass
-else:
-	# Import any symbols that begin with A-Z. Append to lists any symbols that
-	# begin with "EXTRA_".
-	import re
-	for attr in dir(local_settings):
-		match = re.search('^EXTRA_(\w+)', attr)
-		if match:
-			name = match.group(1)
-			value = getattr(local_settings, attr)
-			try:
-				globals()[name] += value
-			except KeyError:
-				globals()[name] = value
-		elif re.search('^[A-Z]', attr):
-			globals()[attr] = getattr(local_settings, attr)

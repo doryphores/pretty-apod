@@ -8,3 +8,5 @@ public/assets/admin
 .DS_Store
 backups
 local_settings.py
+active.py
+.codeintel
