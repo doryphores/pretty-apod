@@ -1,19 +1,16 @@
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
-from django.shortcuts import render, redirect, get_object_or_404
-from django.db.models import Count, Min, Max
-
-from django.views.generic import ListView
+from django.shortcuts import render, get_object_or_404
 
 from django.http import Http404, HttpResponse
 
 from apod.models import Picture, Tag
-from apod import apodapi
 
 import json
 import datetime
 import calendar
 
 import gviz_api
+
 
 def picture(request, year=None, month=None, day=None, tag=None):
 	if tag:
