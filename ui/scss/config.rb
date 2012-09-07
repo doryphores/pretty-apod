@@ -2,11 +2,11 @@
 
 # Set this to the root of your project when deployed:
 http_path = "/"
-css_dir = "../public/assets/css"
+css_dir = "../assets/css"
 sass_dir = "."
-images_dir = "../public/assets/images"
-javascripts_dir = "../public/assets/js"
-fonts_dir = "../public/assets/fonts"
+images_dir = "../assets/images"
+javascripts_dir = "../assets/js"
+fonts_dir = "../assets/fonts"
 
 # You can select your preferred output style here (can be overridden via the command line):
 # output_style = :expanded or :nested or :compact or :compressed

@@ -2,8 +2,8 @@
 *.sublime*
 .env
 logs
-public/assets/media
-public/assets/admin
+public/assets
+media
 .sass-cache
 .DS_Store
 backups
