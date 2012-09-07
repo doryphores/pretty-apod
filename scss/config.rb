@@ -14,12 +14,21 @@ fonts_dir = "../public/assets/fonts"
 # To enable relative paths to assets via compass helper functions. Uncomment:
 relative_assets = true
 
-# To disable debugging comments that display the original location of your selectors. Uncomment:
-# line_comments = false
+env = environment
 
+# Adds timestamps to all image file names (requires apache rewrite rule)
+asset_cache_buster do |path, real_path|
+	if env == :production and File.exists?(real_path)
+		pathname = Pathname.new(path)
+		modified_time = File.mtime(real_path.path).strftime("%s")
+		new_path = "%s/%s.%s%s" % [pathname.dirname, pathname.basename(pathname.extname), modified_time, pathname.extname]
 
-# If you prefer the indented syntax, you might want to regenerate this
-# project again passing --syntax sass, or you can uncomment this:
-# preferred_syntax = :sass
-# and then run:
-# sass-convert -R --from scss --to sass sass scss && rm -rf sass && mv scss sass
+		{:path => new_path, :query => nil}
+	end
+end
+
+preferred_syntax = :scss
+
+sass_options = {:debug_info => false}
+line_comments = false
+output_style = (environment == :production) ? :compressed : :expanded
