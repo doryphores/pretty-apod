@@ -1,3 +1,5 @@
+{% load url from future %}
+
 <!DOCTYPE html>
 <html class="js">
 <head>
@@ -9,7 +11,7 @@
 
 <header class="site-header" data-module="FullScreen">
 	<h1>
-		<a href="{% url home %}">Pretty APOD <b><b></b></b></a>
+		<a href="{% url 'home' %}">Pretty APOD <b><b></b></b></a>
 		{% block page_title %}{% endblock %}
 	</h1>
 
@@ -23,7 +25,7 @@
 	{% endblock extra_nav %}
 
 	<ul class="menu">
-		<li data-toggle="tags"><a href="{% url tags %}">
+		<li data-toggle="tags"><a href="{% url 'tags' %}">
 			<i class="icon-tags"></i>
 			Tags
 			<b><b></b></b>
@@ -39,7 +41,7 @@
 {% block main %}
 {% endblock main %}
 
-<div class="panel" data-module="Panel" id="tags" data-overlapping="true" data-load="{% url tags %}">
+<div class="panel" data-module="Panel" id="tags" data-overlapping="true" data-load="{% url 'tags' %}">
 	<div class="inner-panel">
 		<p class="loading"><i class="icon-time"></i> Loading tags&hellip;</p>
 	</div>

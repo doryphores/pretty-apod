@@ -1,5 +1,7 @@
 {% extends 'apod/page.html' %}
 
+{% load url from future %}
+
 {% block page_title %}Stats{% endblock page_title %}
 
 {% block page %}
@@ -15,7 +17,7 @@
 
 	function drawChart() {
 	var jsonData = $.ajax({
-		url: "{% url size_over_time %}",
+		url: "{% url 'size_over_time' %}",
 		dataType:"json",
 		async: false
 	}).responseText;

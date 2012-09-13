@@ -1,5 +1,7 @@
 {% extends request.is_ajax|yesno:"apod/ajax.html,apod/page.html" %}
 
+{% load url from future %}
+
 {% load apod_tags %}
 
 {% block page_title %}Tags{% endblock page_title %}
@@ -8,7 +10,7 @@
 {% if request.is_ajax %}
 <h2>
 	<i class="icon-tags"></i> Top tags
-	<a href="{% url tags %}" class="action"><i class="icon-cloud"></i> More tags</a>
+	<a href="{% url 'tags' %}" class="action"><i class="icon-cloud"></i> More tags</a>
 </h2>
 {% endif %}
 <p class="tags cloud">

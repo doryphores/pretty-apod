@@ -1,7 +1,9 @@
 {% extends "apod/page.html" %}
 
+{% load url from future %}
+
 {% block page_title %}
-	<a href="{% url year current_month.year %}"><i class="icon-calendar"></i> {{ current_month|date:'Y'}} <b><b></b></b></a>
+	<a href="{% url 'year' current_month.year %}"><i class="icon-calendar"></i> {{ current_month|date:'Y'}} <b><b></b></b></a>
 	<i class="icon-calendar"></i> {{ current_month|date:'F' }} ({{ picture_count }} picture{{ picture_count|pluralize }})
 {% endblock page_title %}
 
@@ -32,12 +34,12 @@
 {% block extra_nav %}
 	<p class="date">
 		<span class="month">{{ current_month|date:'b' }}</span>
-		<span class="year"><a href="{% url year current_month.year %}">{{ current_month.year }}</a></span>
+		<span class="year"><a href="{% url 'year' current_month.year %}">{{ current_month.year }}</a></span>
 	</p>
 
 	<div class="nav"><p>
 		{% if previous_month %}
-		<a class="prev" href="{% url month previous_month.year previous_month.month %}">
+		<a class="prev" href="{% url 'month' previous_month.year previous_month.month %}">
 			<i class="icon-chevron-left"></i>
 
 			<span class="preview"><span class="calendar">
@@ -49,7 +51,7 @@
 		{% endif %}
 
 		{% if next_month %}
-		<a class="next" href="{% url month next_month.year next_month.month %}">
+		<a class="next" href="{% url 'month' next_month.year next_month.month %}">
 			<i class="icon-chevron-right"></i>
 
 			<span class="preview"><span class="calendar">

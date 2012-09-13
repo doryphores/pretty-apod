@@ -1,5 +1,7 @@
 {% extends "apod/page.html" %}
 
+{% load url from future %}
+
 {% load apod_tags %}
 
 {% block page_title %}
@@ -16,7 +18,7 @@
 			{% if y.year == year %}
 			<strong>{{ y.year }}</strong>
 			{% else %}
-			<a href="{% url year y.year %}">{{ y.year }}</a>
+			<a href="{% url 'year' y.year %}">{{ y.year }}</a>
 			{% endif %}
 		</li>
 		{% endfor %}
@@ -39,7 +41,7 @@
 
 	<div class="nav"><p>
 		{% if previous_year %}
-		<a class="prev" href="{% url year previous_year.year %}">
+		<a class="prev" href="{% url 'year' previous_year.year %}">
 			<i class="icon-chevron-left"></i>
 
 			<span class="preview"><span class="calendar year">
@@ -51,7 +53,7 @@
 		{% endif %}
 
 		{% if next_year %}
-		<a class="next" href="{% url year next_year.year %}">
+		<a class="next" href="{% url 'year' next_year.year %}">
 			<i class="icon-chevron-right"></i>
 
 			<span class="preview"><span class="calendar year">
