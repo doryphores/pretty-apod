@@ -317,6 +317,7 @@
       var _this = this;
       this.element.attr('tabindex', -1);
       this.id = this.element.attr('id');
+      this.state = 'hidden';
       this.toggles = $('body').find("[data-toggle=" + this.id + "]");
       $('body').on('click.panel', "[data-toggle=" + this.id + "]", function(e) {
         e.preventDefault();
@@ -345,10 +346,13 @@
     Panel.prototype.show = function() {
       var cp, evt,
         _this = this;
+      if (this.state === 'visible') {
+        return this;
+      }
       evt = new $.Event('show');
       this.trigger(evt);
       if (evt.isDefaultPrevented()) {
-        return;
+        return this;
       }
       if (cp = Panel.getCurrentPanel()) {
         cp.one('hidden', function() {
@@ -370,6 +374,7 @@
         return;
       }
       this.element.show();
+      this.state = 'visible';
       tran = new Transition(this.element);
       tran.start(function() {
         $('body').addClass('open-panel');
@@ -398,11 +403,15 @@
     Panel.prototype.hide = function() {
       var evt, tran,
         _this = this;
+      if (this.state === 'hidden') {
+        return this;
+      }
       evt = new $.Event('hide');
       this.trigger(evt);
       if (evt.isDefaultPrevented()) {
         return;
       }
+      this.state = 'hidden';
       tran = new Transition(this.element);
       tran.start(function() {
         $('body').removeClass('open-panel');
@@ -586,7 +595,9 @@
         return growler.info("Please wait will the picture is downloaded and processed");
       },
       'ui_ready': function() {
-        return $(document.documentElement).addClass('ui-ready');
+        var page;
+        $(document.documentElement).addClass('ui-ready');
+        return page = $('.site-page').attr('tabindex', -1).focus();
       }
     });
     _ref = $('[data-module]');

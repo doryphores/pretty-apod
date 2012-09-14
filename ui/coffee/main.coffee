@@ -231,6 +231,7 @@ class Panel extends Module
 	init: ->
 		@element.attr 'tabindex', -1
 		@id = @element.attr 'id'
+		@state = 'hidden'
 
 		@toggles = $('body').find "[data-toggle=#{@id}]"
 
@@ -251,10 +252,12 @@ class Panel extends Module
 			@hide() if e.button is 0
 
 	show: ->
+		if @state is 'visible' then return @
+
 		evt = new $.Event 'show'
 		@trigger evt
 
-		if evt.isDefaultPrevented() then return
+		if evt.isDefaultPrevented() then return @
 
 		if cp = Panel.getCurrentPanel()
 			cp.one 'hidden', => @_show()
@@ -270,6 +273,8 @@ class Panel extends Module
 		if evt.isDefaultPrevented() then return
 
 		@element.show()
+
+		@state = 'visible'
 
 		tran = new Transition @element
 
@@ -289,10 +294,14 @@ class Panel extends Module
 		Panel.currentPanel = @id
 
 	hide: ->
+		if @state is 'hidden' then return @
+
 		evt = new $.Event 'hide'
 		@trigger evt
 
 		if evt.isDefaultPrevented() then return
+
+		@state = 'hidden'
 
 		tran = new Transition @element
 
@@ -423,6 +432,8 @@ $ ->
 		'image_loading': -> growler.info "Please wait will the picture is downloaded and processed"
 		'ui_ready': ->
 			$(document.documentElement).addClass 'ui-ready'
+			# Focus on page element
+			page = $('.site-page').attr('tabindex', -1).focus()
 
 	# Initialise modules
 	for el in $('[data-module]')
