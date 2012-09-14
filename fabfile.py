@@ -20,6 +20,11 @@ release_timestamp = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
 current_release_dir = os.path.join(release_dir, release_timestamp)
 
 
+def update_env():
+	with prefix('source %s/bin/activate' % env_dir):
+		run('pip install -r %s/install/requirements.txt' % current_release_dir)
+
+
 def update_code():
 	with cd(repo_dir):
 		run('git pull')
@@ -34,6 +39,8 @@ def prepare_release():
 	run('ln -s %s/media %s/media' % (shared_dir, current_release_dir))
 	run('ln -s %s/logs %s/logs' % (shared_dir, current_release_dir))
 	run('ln -s %s/active.py %s/settings/active.py' % (shared_dir, current_release_dir))
+
+	update_env()
 
 	with prefix('source %s/bin/activate' % env_dir):
 		# Collect static assets
@@ -50,10 +57,12 @@ def finalise():
 
 
 def backup():
-	run('fab _backup')
+	with prefix('source %s/bin/activate' % env_dir):
+		with cd(current_release_dir):
+			run('fab backup_db')
 
 
-def _backup():
+def backup_db():
 	django.settings_module('myproject.settings')
 	from django.conf import settings
 
