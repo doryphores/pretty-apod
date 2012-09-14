@@ -1,3 +1,4 @@
+import sys
 import os
 import datetime
 
@@ -63,11 +64,15 @@ def backup():
 
 
 def backup_db():
-	django.settings_module('myproject.settings')
+	"""
+	Should run on remote only
+	"""
+	sys.path.append(project_dir)
+	django.settings_module('settings.active')
 	from django.conf import settings
 
-	local('pgdump %s > %s/%s.sql' % (
-		settings.DATABASE_NAME,
+	local('pg_dump %s > %s/%s.sql' % (
+		settings.DATABASES['default']['NAME'],
 		backup_dir,
 		release_timestamp
 	))

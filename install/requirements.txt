@@ -13,3 +13,4 @@ six==1.2.0
 sorl-thumbnail==11.12
 ssh==1.7.14
 yolk==0.4.1
+http://google-visualization-python.googlecode.com/files/gviz_api_py-1.8.0.tar.gz
