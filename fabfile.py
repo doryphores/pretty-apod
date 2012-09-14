@@ -82,7 +82,7 @@ def backup_db():
 	"""
 	Backs up DB (run on remote only)
 	"""
-	sys.path.append(current_release_dir)
+	sys.path.append(current_dir)
 	django.settings_module('settings.active')
 	from django.conf import settings
 
