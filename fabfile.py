@@ -47,10 +47,6 @@ def prepare_release():
 	Prepares new release for deployment
 	"""
 
-	print(green('Removing obsolete releases'))
-	with cd(release_dir):
-		run('ls -t | tail -n +%d | xargs rm -rf' % releases_to_keep)
-
 	print(green('Preparing release'))
 	# Create new release folder and copy code
 	run('mkdir -p %s' % current_release_dir)
@@ -68,6 +64,10 @@ def prepare_release():
 		# Collect static assets
 		print(green('Collecting static assets'))
 		run('%s/manage.py collectstatic --noinput --verbosity=0' % current_release_dir)
+
+	print(green('Removing obsolete releases'))
+	with cd(release_dir):
+		run('ls -t | tail -n +%d | xargs rm -rf' % (releases_to_keep + 1))
 
 
 def finalise():
@@ -95,14 +95,14 @@ def backup():
 	Trigger remote DB backup
 	"""
 
-	print(green('Removing obsolete backups'))
-	with cd(backup_dir):
-		run('ls -t | tail -n +%d | xargs rm' % backups_to_keep)
-
 	print(green('Backing up database'))
 	with prefix('source %s/bin/activate' % env_dir):
 		with cd(current_release_dir):
 			run('fab backup_db')
+
+	print(green('Removing obsolete backups'))
+	with cd(backup_dir):
+		run('ls -t | tail -n +%d | xargs rm -f' % (backups_to_keep + 1))
 
 
 @task
