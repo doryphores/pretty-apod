@@ -20,6 +20,9 @@ current_dir = os.path.join(project_dir, 'current')
 release_timestamp = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
 current_release_dir = os.path.join(release_dir, release_timestamp)
 
+releases_to_keep = 3
+backups_to_keep = 3
+
 
 def update_env():
 	"""
@@ -43,6 +46,11 @@ def prepare_release():
 	"""
 	Prepares new release for deployment
 	"""
+
+	print(green('Removing obsolete releases'))
+	with cd(release_dir):
+		run('ls -t | tail -n +%d | xargs rm -rf' % releases_to_keep)
+
 	print(green('Preparing release'))
 	# Create new release folder and copy code
 	run('mkdir -p %s' % current_release_dir)
@@ -86,12 +94,18 @@ def backup():
 	"""
 	Trigger remote DB backup
 	"""
+
+	print(green('Removing obsolete backups'))
+	with cd(backup_dir):
+		run('ls -t | tail -n +%d | xargs rm' % backups_to_keep)
+
 	print(green('Backing up database'))
 	with prefix('source %s/bin/activate' % env_dir):
 		with cd(current_release_dir):
 			run('fab backup_db')
 
 
+@task
 def backup_db():
 	"""
 	Backs up DB (run on remote only)
