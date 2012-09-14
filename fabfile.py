@@ -22,16 +22,25 @@ current_release_dir = os.path.join(release_dir, release_timestamp)
 
 
 def update_env():
+	"""
+	Updates virtual environment requirements
+	"""
 	with prefix('source %s/bin/activate' % env_dir):
 		run('pip install -r %s/install/requirements.txt' % current_release_dir)
 
 
 def update_code():
+	"""
+	Updates code from repository
+	"""
 	with cd(repo_dir):
 		run('git pull')
 
 
 def prepare_release():
+	"""
+	Prepares new release for deployment
+	"""
 	# Create new release folder and copy code
 	run('mkdir -p %s' % current_release_dir)
 	run('cp -R %s/* %s' % (repo_dir, current_release_dir))
@@ -49,6 +58,9 @@ def prepare_release():
 
 
 def finalise():
+	"""
+	Symlinks new release and restarts app
+	"""
 	# Make release current
 	run('rm %s' % current_dir)
 	run('ln -s %s %s' % (current_release_dir, current_dir))
@@ -58,6 +70,9 @@ def finalise():
 
 
 def backup():
+	"""
+	Trigger remote DB backup
+	"""
 	with prefix('source %s/bin/activate' % env_dir):
 		with cd(current_release_dir):
 			run('fab backup_db')
@@ -65,9 +80,9 @@ def backup():
 
 def backup_db():
 	"""
-	Should run on remote only
+	Backs up DB (run on remote only)
 	"""
-	sys.path.append(project_dir)
+	sys.path.append(current_release_dir)
 	django.settings_module('settings.active')
 	from django.conf import settings
 
@@ -79,6 +94,9 @@ def backup_db():
 
 
 def deploy():
+	"""
+	Deploy to servers
+	"""
 	update_code()
 	prepare_release()
 	backup()
