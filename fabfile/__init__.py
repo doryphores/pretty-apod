@@ -41,8 +41,6 @@ def config():
 	env.repo_dir = os.path.join(env.project_dir, 'repo')
 	env.release_dir = os.path.join(env.project_dir, 'releases')
 	env.shared_dir = os.path.join(env.project_dir, 'shared')
-	env.shared_dir = os.path.join(env.project_dir, 'shared', 'media')
-	env.shared_dir = os.path.join(env.project_dir, 'shared', 'logs')
 	env.current_dir = os.path.join(env.project_dir, 'current')
 
 	env.release_timestamp = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
@@ -60,7 +58,8 @@ def setup():
 	run('mkdir -p %s' % env.backup_dir)
 	run('mkdir -p %s' % env.repo_dir)
 	run('mkdir -p %s' % env.release_dir)
-	run('mkdir -p %s' % env.shared_dir)
+	run('mkdir -p %s/media' % env.shared_dir)
+	run('mkdir -p %s/logs' % env.shared_dir)
 
 	active_settings = '%s/active.py' % env.shared_dir
 	if not files.exists(active_settings):
@@ -140,11 +139,11 @@ def finalise():
 
 	# Migrate DB
 	print(green('Running database migrations'))
-	_run_ve('%s/manage.py migrate --noinput' % env.current_release_dir)
+	_run_ve('%s/manage.py syncdb --migrate --noinput' % env.current_release_dir)
 
 	print(green('Symlinking current release'))
 	# Make release current
-	run('rm %s' % env.current_dir)
+	run('rm -f %s' % env.current_dir)
 	run('ln -s %s %s' % (env.current_release_dir, env.current_dir))
 
 	print(green('Restarting app'))
@@ -157,13 +156,14 @@ def backup():
 	Trigger remote DB backup
 	"""
 
-	print(green('Backing up database'))
-	with cd(env.current_release_dir):
-		_run_ve('fab backup_db')
+	if files.exists(env.current_dir):
+		print(green('Backing up database'))
+		with cd(env.current_release_dir):
+			_run_ve('fab prod backup_db')
 
-	print(green('Removing obsolete backups'))
-	with cd(env.backup_dir):
-		run('ls -t | tail -n +%d | xargs rm -f' % (env.backups_to_keep + 1))
+		print(green('Removing obsolete backups'))
+		with cd(env.backup_dir):
+			run('ls -t | tail -n +%d | xargs rm -f' % (env.backups_to_keep + 1))
 
 
 @task
