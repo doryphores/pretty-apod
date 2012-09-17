@@ -175,7 +175,8 @@ def backup_db():
 	django.settings_module('settings.active')
 	from django.conf import settings
 
-	local('pg_dump %s > %s/%s.sql' % (
+	local('pg_dump -U %s %s > %s/%s.sql' % (
+		settings.DATABASES['default']['USER'],
 		settings.DATABASES['default']['NAME'],
 		env.backup_dir,
 		env.release_timestamp
