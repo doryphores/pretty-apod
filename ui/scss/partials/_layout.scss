@@ -51,6 +51,7 @@ body {
 	overflow: auto;
 	min-width: 888px;
 	@include box-shadow(10px 10px 10px -10px rgba(0,0,0,.5) inset);
+	outline: none;
 
 	.ui-ready & {
 		@include transition(all .4s);
