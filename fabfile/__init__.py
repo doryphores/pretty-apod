@@ -148,7 +148,7 @@ def finalise():
 
 	print(green('Restarting app'))
 	# Force app to reload
-	run('touch %s/public/connector.wsgi' % env.current_dir)
+	run('touch %s/connector.wsgi' % env.current_dir)
 
 
 def backup():
