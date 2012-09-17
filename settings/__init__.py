@@ -47,7 +47,7 @@ STATIC_URL = '/assets/'
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = os.path.join(PROJECT_ROOT, "media")
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, "public", "media")
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -169,6 +169,8 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_AGE = 3600
 
 THUMBNAIL_UPSCALE = False
+
+# APOD config
 
 APOD_URL = "http://apod.nasa.gov/apod"
 

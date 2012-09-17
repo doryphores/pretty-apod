@@ -9,5 +9,11 @@ CACHES = {
 	}
 }
 
+LOGGING['loggers']['django.request'] = {
+	'handlers': ['mail_admins'],
+	'level': 'ERROR',
+	'propagate': False,
+}
+
 STATIC_URL = '/static/assets/'
 MEDIA_URL = '/static/media/'

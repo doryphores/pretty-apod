@@ -117,7 +117,7 @@ def prepare_release():
 
 	print(green('Symlinking shared assets'))
 	# Symlink shared assets
-	run('ln -s %s/media %s/media' % (env.shared_dir, env.current_release_dir))
+	run('ln -s %s/media %s/public/media' % (env.shared_dir, env.current_release_dir))
 	run('ln -s %s/logs %s/logs' % (env.shared_dir, env.current_release_dir))
 	run('ln -s %s/active.py %s/settings/active.py' % (env.shared_dir, env.current_release_dir))
 
