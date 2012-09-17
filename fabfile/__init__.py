@@ -84,7 +84,7 @@ def setup():
 	if not files.exists(env.env_dir):
 		print(green('Creating virtualenv'))
 		# run('%s install virtualenv' % env.pip)
-		run('virtualenv -p %s --no-site-packages %s' % (env.python, env.env_dir))
+		run('virtualenv -p %s --no-site-packages --system-site-packages %s' % (env.python, env.env_dir))
 		run('virtualenv --relocatable %s' % env.env_dir)
 
 

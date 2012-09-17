@@ -3,7 +3,6 @@ import os
 # Django settings for pretty_apod project.
 
 PROJECT_ROOT = '/'.join(os.path.dirname(__file__).split('/')[0:-1])
-print PROJECT_ROOT
 
 INTERNAL_IPS = ('127.0.0.1',)
 

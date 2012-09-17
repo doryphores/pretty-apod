@@ -1,11 +1,8 @@
 BeautifulSoup==3.2.1
 Django==1.4
 Fabric==1.4.3
-PIL==1.1.7
 South==0.7.6
 django-debug-toolbar==0.9.4
-psycopg2==2.4.5
-pycrypto==2.6
 python-dateutil==2.1
 python-memcached==1.48
 six==1.2.0
