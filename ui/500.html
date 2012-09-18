@@ -1,0 +1,10 @@
+{% extends 'layouts/page.html' %}
+
+{% block page_title %}{% block page_heading %}Page not found{% endblock %}{% endblock %}
+
+{% block page %}
+	<div class="error">
+		<i class="icon-warning-sign"></i>
+		<p>Oops, something went very wrong&hellip;</p>
+	</div>
+{% endblock %}

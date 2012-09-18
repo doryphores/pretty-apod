@@ -1,0 +1,21 @@
+.error {
+	position: relative;
+	margin: 100px auto 0 auto;
+	width: 480px;
+	font-size: 30px;
+	font-weight: bold;
+	line-height: 36px;
+	color: lighten($color_page_bg, 30%);
+
+	padding: 0 0 0 100px;
+
+	i {
+		width: 100px;
+		font-size: 80px;
+		line-height: 100px;
+		position: absolute;
+		left: 0;
+		top: 50%;
+		margin-top: -50px;
+	}
+}
