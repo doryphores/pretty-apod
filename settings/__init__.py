@@ -68,6 +68,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
+# IMPORTANT! In production, this is set in local active.py
 SECRET_KEY = '=gsimol1xt7w9q!8(##!nzb5!05s(6g(z^^!b6m&im7m0afge5'
 
 # List of callables that know how to import templates from various sources.
