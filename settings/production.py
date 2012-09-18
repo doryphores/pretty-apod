@@ -1,3 +1,5 @@
+import os
+
 from settings import *
 
 CACHES = {
@@ -17,3 +19,5 @@ LOGGING['loggers']['django.request'] = {
 
 STATIC_URL = '/static/assets/'
 MEDIA_URL = '/static/media/'
+
+TIMESTAMP = ".%d" % os.path.getmtime(os.path.join(PROJECT_ROOT, 'connector.wsgi'))

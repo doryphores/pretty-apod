@@ -170,6 +170,10 @@ SESSION_COOKIE_AGE = 3600
 
 THUMBNAIL_UPSCALE = False
 
+# Empty deploy timestamp
+
+TIMESTAMP = ''
+
 # APOD config
 
 APOD_URL = "http://apod.nasa.gov/apod"

@@ -125,7 +125,7 @@ def prepare_release():
 
 	print(green('Optimising CSS'))
 	with cd('%s/ui/scss/' % env.current_release_dir):
-		run('compass compile -e production')
+		run('compass compile --force -e production')
 
 	print(green('Collecting static assets'))
 	_run_ve('%s/manage.py collectstatic --noinput --verbosity=0' % env.current_release_dir)
