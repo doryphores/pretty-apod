@@ -123,9 +123,15 @@ def prepare_release():
 
 	update_env()
 
-	# Collect static assets
+	print(green('Optimising CSS'))
+	with cd('%s/ui/scss/' % env.current_release_dir):
+		run('compass compile -e production')
+
 	print(green('Collecting static assets'))
 	_run_ve('%s/manage.py collectstatic --noinput --verbosity=0' % env.current_release_dir)
+
+	print(green('Optimising JS'))
+	run('uglifyjs --overwrite %s/public/assets/js/main.js' % env.current_release_dir)
 
 	print(green('Removing obsolete releases'))
 	with cd(env.release_dir):
