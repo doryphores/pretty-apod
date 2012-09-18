@@ -9,6 +9,6 @@ APOD: http://apod.nasa.gov/
 
 /* SITE */
 Standards: HTML5, CSS3
-Components: Django, CoffeeScript, Compass, jQuery
+Components: Django, Postgresql, CoffeeScript, Compass, jQuery, Font Awesome, Ubuntu font from Google Web Fonts
 Software: Sublime Text 2, Git
 Source: https://github.com/doryphores/pretty-apod
