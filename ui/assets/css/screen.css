@@ -1081,13 +1081,15 @@ body > * {
   bottom: 0;
   left: 100px;
   right: 0;
-  padding: 20px;
-  overflow: auto;
+  overflow: hidden;
   min-width: 888px;
   -webkit-box-shadow: 10px 10px 10px -10px rgba(0, 0, 0, 0.5) inset;
   -moz-box-shadow: 10px 10px 10px -10px rgba(0, 0, 0, 0.5) inset;
   box-shadow: 10px 10px 10px -10px rgba(0, 0, 0, 0.5) inset;
   outline: none;
+}
+.site-page .inner-page {
+  padding: 20px;
 }
 .ui-ready .site-page {
   -webkit-transition: all 0.4s;
@@ -1503,8 +1505,7 @@ body > * {
 }
 
 .panel {
-  overflow: auto;
-  overflow-x: hidden;
+  overflow: hidden;
   background: rgba(0, 0, 0, 0.8);
   display: none;
   -webkit-transition: all 0.4s;
@@ -1568,6 +1569,69 @@ body > * {
   text-align: center;
   font-size: 16px;
   margin-top: 50px;
+}
+
+.scroll-bar {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 10px;
+}
+.scroll-bar.hide {
+  opacity: 0;
+  -webkit-transition: opacity 0.4s;
+  -moz-transition: opacity 0.4s;
+  -o-transition: opacity 0.4s;
+  transition: opacity 0.4s;
+}
+.scroll-bar .track {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+  -webkit-transition: opacity 0.2s;
+  -moz-transition: opacity 0.2s;
+  -o-transition: opacity 0.2s;
+  transition: opacity 0.2s;
+  opacity: 0;
+}
+.scroll-bar .track span {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  bottom: 2px;
+  left: 2px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.3);
+}
+.scroll-bar .track.active {
+  opacity: 1;
+}
+.scroll-bar:hover .track {
+  opacity: 1;
+}
+.scroll-bar .handle {
+  position: absolute;
+  width: 100%;
+  z-index: 2;
+}
+.scroll-bar .handle span {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  bottom: 2px;
+  left: 2px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.5);
 }
 
 .viewport {

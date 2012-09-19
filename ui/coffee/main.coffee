@@ -258,7 +258,6 @@ class Scroller extends Module
 		scroll = Math.min(Math.max(0, s), scrollMax)
 
 		if @element.scrollTop isnt scroll
-			console.log(scroll)
 			@element.scrollTop scroll
 			@redraw()
 

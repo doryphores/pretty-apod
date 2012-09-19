@@ -1,0 +1,57 @@
+.scroll-bar {
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 10px;
+
+	&.hide {
+		opacity: 0;
+		@include transition(opacity 0.4s);
+	}
+
+	.track {
+		position: absolute;
+		width: 100%;
+		top: 0;
+		bottom: 0;
+		z-index: 1;
+		@include transition(opacity .2s);
+		opacity: 0;
+
+		span {
+			position: absolute;
+			top: 2px;
+			right: 2px;
+			bottom: 2px;
+			left: 2px;
+			@include border-radius(5px);
+			background: rgba(255,255,255,.3);
+		}
+
+		&.active {
+			opacity: 1;
+		}
+	}
+
+	&:hover {
+		.track {
+			opacity: 1;
+		}
+	}
+
+	.handle {
+		position: absolute;
+		width: 100%;
+		z-index: 2;
+
+		span {
+			position: absolute;
+			top: 2px;
+			right: 2px;
+			bottom: 2px;
+			left: 2px;
+			@include border-radius(5px);
+			background: rgba(255,255,255,.5);
+		}
+	}
+}
