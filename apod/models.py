@@ -16,6 +16,7 @@ import Image
 import datetime
 
 from apod import apodapi
+from apod.utils.minimal_exif_writer import MinimalExifWriter
 
 
 class TagFormatter(models.Model):
@@ -367,11 +368,23 @@ class Picture(models.Model):
 
 				# Check size and resize if bigger than 1Mb
 				if resize and self.original_file_size > 1024 * 1024:
-					# Create a resized version
-					resized = get_thumbnail(self.image,
-											'2000x2000',
-											progressive=False,
-											quality=90)
+					try:
+						# Create a resized version
+						resized = get_thumbnail(self.image,
+												'2000x2000',
+												progressive=False,
+												quality=90)
+					except IOError:
+						# Strip EXIF data (causes problems with PIL)
+						f = MinimalExifWriter(self.image.file.name)
+						f.removeExif()
+						f.process()
+
+						# Try again
+						resized = get_thumbnail(self.image,
+												'2000x2000',
+												progressive=False,
+												quality=90)
 
 					# Delete original image
 					self.image.delete(save=False)
