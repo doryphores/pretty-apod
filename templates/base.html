@@ -42,13 +42,13 @@
 {% block main %}
 {% endblock main %}
 
-<div class="panel" data-module="Panel" id="tags" data-overlapping="true" data-load="{% url 'tags' %}">
+<div class="panel" data-module="Panel" id="tags" data-overlapping="true" data-load="{% url 'tags' %}" data-enhance="scroll">
 	<div class="inner-panel">
 		<p class="loading"><i class="icon-time"></i> Loading tags&hellip;</p>
 	</div>
 </div>
 
-<div class="panel" data-module="Panel" id="about" data-overlapping="true">
+<div class="panel" data-module="Panel" id="about" data-overlapping="true" data-enhance="scroll">
 	<div class="inner-panel">
 		<section class="copy">
 			<h2>What is this?</h2>
@@ -96,7 +96,9 @@
 	</div>
 </div>
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+<script src="{{ STATIC_URL }}js/jquery.mousewheel{{ TIMESTAMP }}.js"></script>
+<script src="{{ STATIC_URL }}js/jquery-ui-custom.min{{ TIMESTAMP }}.js"></script>
 <script src="{{ STATIC_URL }}js/main{{ TIMESTAMP }}.js"></script>
 
 </body>

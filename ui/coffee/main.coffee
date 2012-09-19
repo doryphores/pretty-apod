@@ -215,6 +215,79 @@ class Viewport extends Module
 			@element.removeClass 'maximise-height'
 
 
+class Scroller extends Module
+	@step: 20
+
+	init: ->
+		@buildScrollBar()
+		@disabled = true
+		@redraw()
+		$(window).resize => @redraw()
+		@element.on
+			'shown': => @redraw()
+			'hide': => @hide()
+
+	buildScrollBar: ->
+		@scrollbar = $('<div class="scroll-bar"><span class="handle"><span /></span><span class="track"><span /></span></div>').appendTo(@element)
+		@hide()
+		@track = @scrollbar.find '.track'
+		@handle = @scrollbar.find('.handle').draggable
+			containment: 'parent'
+
+		@handle.on
+			'dragstart': =>
+				@dragging = true
+				@track.addClass 'active'
+			'dragstop': =>
+				@dragging = false
+				@track.removeClass 'active'
+			'drag': =>
+				@scroll @element[0].scrollHeight * parseInt(@handle.css('top'), 10) / @element.height()
+
+	redraw: ->
+		scrollHeight = @element[0].scrollHeight
+		height = @element.height()
+		@scrollbar.height(height).css('top', @element.scrollTop())
+		scroll = height / scrollHeight * 100;
+		if scroll < 100 then @enable() else @disable()
+		@handle.height("#{scroll}%")
+		@handle.css('top', @element.scrollTop() * height / scrollHeight)
+
+	scroll: (s) ->
+		scrollMax = @element[0].scrollHeight - @element.height()
+		scroll = Math.min(Math.max(0, s), scrollMax)
+
+		if @element.scrollTop isnt scroll
+			console.log(scroll)
+			@element.scrollTop scroll
+			@redraw()
+
+	show: ->
+		@scrollbar.removeClass 'hide'
+
+	hide: ->
+		@scrollbar.addClass 'hide'
+
+	disable: ->
+		if @disabled then return @
+		@scrollbar.hide()
+		@disabled = true
+		@element.off '.scroller'
+
+	enable: ->
+		unless @disabled then return @
+		@scrollbar.show()
+		@disabled = false
+		timer = new Timer
+		@element.on
+			'mousewheel.scroller': (e, delta) =>
+				@show()
+				@scroll @element.scrollTop() - delta * Scroller.step
+			'mouseleave.scroller': => unless @dragging then timer.delay 1000, => @hide()
+			'mouseenter.scroller': -> timer.clear()
+
+
+
 class Panel extends Module
 	@panels: {}
 	@currentPanel: null
@@ -437,7 +510,13 @@ $ ->
 
 	# Initialise modules
 	for el in $('[data-module]')
-		new APOD.modules[$(el).data('module')](el)
+		$el = $(el)
+		if APOD.modules[$el.data('module')]?
+			$el.data($el.data('module'), new APOD.modules[$el.data('module')](el))
 
+	# Enhancements
+	for el in $('[data-enhance=scroll]')
+		$el = $(el)
+		$el.data('Scroller', new Scroller(el))
 
 	$(document).trigger 'ui_ready'

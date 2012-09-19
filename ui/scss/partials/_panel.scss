@@ -1,6 +1,6 @@
 .panel {
-	overflow: auto;
-	overflow-x: hidden; // Disable horizontal scrolling
+	overflow: hidden;
+	// overflow-x: hidden; // Disable horizontal scrolling
 	background: rgba(0,0,0,.8);
 	display: none;
 	@include transition(all .4s);
