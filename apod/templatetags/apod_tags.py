@@ -4,16 +4,22 @@ from django.conf import settings
 from ..models import Picture
 
 import calendar
-import math
 import re
 
 register = template.Library()
 
+
+@register.simple_tag
+def timestamp():
+	return settings.TIMESTAMP
+
+
 @register.filter
 def month_name(month_number):
-    return calendar.month_name[month_number]
+	return calendar.month_name[month_number]
 
 CLOUD_CLASSES = ['xxs', 'xs', 's', 'l', 'xl', 'xxl']
+
 
 @register.simple_tag
 def cloud_class(count, min_count, max_count):
@@ -22,8 +28,9 @@ def cloud_class(count, min_count, max_count):
 	max_count = float(max_count)
 
 	step = (max_count - min_count) / 5
-	
+
 	return CLOUD_CLASSES[int(round((count - min_count) / step))]
+
 
 def picture_url(match):
 	try:
@@ -32,6 +39,7 @@ def picture_url(match):
 		# Don't know what to do here
 		pass
 	return p.get_absolute_url()
+
 
 @register.filter
 def apod_html(html):
