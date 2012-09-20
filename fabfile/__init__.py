@@ -1,11 +1,13 @@
 import sys
 import os
 import datetime
+import random
 
 from fabric.api import *
 from fabric.context_managers import prefix
 from fabric.contrib import django, files
 from fabric.colors import *
+from fabric.utils import abort
 
 
 @task
@@ -14,9 +16,11 @@ def staging():
 	Setup staging environment vars
 	"""
 	env.hosts = ['staging.apod']
-	env.project_dir = '/home/martin/pretty-apod-2'
+	env.project_dir = '/home/martin/pretty-apod'
 	env.python = 'python'
 	env.pip = 'pip'
+
+	config()
 
 
 @task
@@ -50,6 +54,23 @@ def config():
 	env.backups_to_keep = 3
 
 
+@task
+def check_requirements():
+	"""
+	Checks requirements no remote host
+	"""
+	missing = []
+
+	for tool in ['compass', 'uglifyjs', 'virtualenv', 'git']:
+		with settings(hide('warnings', 'stdout'), warn_only=True):
+			result = run('which %s' % tool)
+			if result.failed:
+				missing.append(tool)
+
+	if missing:
+		abort(red('Please install missing packages: %s' % ', '.join(missing)))
+
+
 def setup():
 	"""
 	Setup directories, repository and virtual environment
@@ -69,7 +90,16 @@ def setup():
 			context={
 				'name': prompt(yellow('Database name:')),
 				'user': prompt(yellow('Database user:')),
-				'password': prompt(yellow('Database password:'))
+				'password': prompt(yellow('Database password:')),
+				'cdn_host': prompt(yellow('CDN host (include http, optional):')),
+				'email_host': prompt(yellow('Mail server host:')),
+				'email_port': prompt(yellow('Mail server port:')),
+				'email_use_tls': prompt(yellow('Mail server uses TLS (True or False):')),
+				'email_user': prompt(yellow('Mail server user name:')),
+				'email_password': prompt(yellow('Mail server password:')),
+				'email_from': prompt(yellow('From email address:')),
+				'email_server_email': prompt(yellow('Server email address:')),
+				'secret_key': "".join([random.choice("abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)") for i in range(50)])
 			},
 			destination=active_settings
 		)
@@ -84,8 +114,7 @@ def setup():
 	if not files.exists(env.env_dir):
 		print(green('Creating virtualenv'))
 		# run('%s install virtualenv' % env.pip)
-		run('virtualenv -p %s --no-site-packages --system-site-packages %s' % (env.python, env.env_dir))
-		run('virtualenv --relocatable %s' % env.env_dir)
+		run('virtualenv -p %s --distribute --system-site-packages %s' % (env.python, env.env_dir))
 
 
 def update_env():
@@ -133,10 +162,6 @@ def prepare_release():
 	print(green('Optimising JS'))
 	run('uglifyjs --overwrite %s/public/assets/js/main.js' % env.current_release_dir)
 
-	print(green('Removing obsolete releases'))
-	with cd(env.release_dir):
-		run('ls -t | tail -n +%d | xargs rm -rf' % (env.releases_to_keep + 1))
-
 
 def finalise():
 	"""
@@ -156,6 +181,12 @@ def finalise():
 	# Force app to reload
 	run('touch %s/connector.wsgi' % env.current_dir)
 
+	print(green('Removing obsolete releases and backups'))
+	with cd(env.release_dir):
+		run('ls -t | tail -n +%d | xargs rm -rf' % (env.releases_to_keep + 1))
+	with cd(env.backup_dir):
+		run('ls -t | tail -n +%d | xargs rm -f' % (env.backups_to_keep + 1))
+
 
 def backup():
 	"""
@@ -165,15 +196,11 @@ def backup():
 	if files.exists(env.current_dir):
 		print(green('Backing up database'))
 		with cd(env.current_release_dir):
-			_run_ve('fab prod backup_db')
-
-		print(green('Removing obsolete backups'))
-		with cd(env.backup_dir):
-			run('ls -t | tail -n +%d | xargs rm -f' % (env.backups_to_keep + 1))
+			_run_ve('fab prod backup_db:timstamp=%s' % env.release_timestamp)
 
 
 @task
-def backup_db():
+def backup_db(timestamp):
 	"""
 	Backs up DB (run on remote only)
 	"""
@@ -185,7 +212,7 @@ def backup_db():
 		settings.DATABASES['default']['USER'],
 		settings.DATABASES['default']['NAME'],
 		env.backup_dir,
-		env.release_timestamp
+		timestamp
 	))
 
 
@@ -194,6 +221,7 @@ def deploy():
 	"""
 	Deploy to server
 	"""
+	check_requirements()
 	setup()
 	update_code()
 	prepare_release()
