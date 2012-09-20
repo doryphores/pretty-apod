@@ -99,6 +99,7 @@ def setup():
 				'email_password': prompt(yellow('Mail server password:')),
 				'email_from': prompt(yellow('From email address:')),
 				'email_server_email': prompt(yellow('Server email address:')),
+				'memcache_location': prompt(yellow('Memcache location:')),
 				'secret_key': "".join([random.choice("abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)") for i in range(50)])
 			},
 			destination=active_settings
