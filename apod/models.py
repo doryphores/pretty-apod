@@ -17,6 +17,7 @@ import datetime
 
 from apod import apodapi
 from apod.utils.minimal_exif_writer import MinimalExifWriter
+from apod.utils.minimal_exif_reader import MinimalExifReader
 
 
 class TagFormatter(models.Model):
@@ -366,25 +367,22 @@ class Picture(models.Model):
 						# It's an animated GIF so leave as is
 						resize = False
 
+				# Process EXIF data (strip all except copyright if present)
+				exif_reader = MinimalExifReader(self.image.file.name)
+				copyright = exif_reader.copyright()
+				exif_writer = MinimalExifWriter(self.image.file.name)
+				exif_writer.removeExif()
+				if copyright:
+					exif_writer.newCopyright(copyright)
+				exif_writer.process()
+
 				# Check size and resize if bigger than 1Mb
 				if resize and self.original_file_size > 1024 * 1024:
-					try:
-						# Create a resized version
-						resized = get_thumbnail(self.image,
-												'2000x2000',
-												progressive=False,
-												quality=90)
-					except IOError:
-						# Strip EXIF data (causes problems with PIL)
-						f = MinimalExifWriter(self.image.file.name)
-						f.removeExif()
-						f.process()
-
-						# Try again
-						resized = get_thumbnail(self.image,
-												'2000x2000',
-												progressive=False,
-												quality=90)
+					# Create a resized version
+					resized = get_thumbnail(self.image,
+											'2000x2000',
+											progressive=False,
+											quality=90)
 
 					# Delete original image
 					self.image.delete(save=False)
