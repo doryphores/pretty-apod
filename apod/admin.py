@@ -5,7 +5,6 @@ from django.contrib.admin.views.decorators import staff_member_required
 
 from apod.models import Picture, Tag, TagFormatter
 
-from sorl.thumbnail import get_thumbnail
 
 class PictureAdmin(admin.ModelAdmin):
 	def _get_thumb(obj):
@@ -50,20 +49,22 @@ class PictureAdmin(admin.ModelAdmin):
 
 admin.site.register(Picture, PictureAdmin)
 
+
 @staff_member_required
 def format_label_view(request, model_admin):
 	result = Tag.objects.format_labels()
-	
+
 	model_admin.message_user(request, u'Successfully formatted keyword labels (%d obsolete keywords removed, %d keywords reformatted)' % result)
-	
+
 	return HttpResponseRedirect('../')
+
 
 class TagAdmin(admin.ModelAdmin):
 	search_fields = ['label']
 
 	def format_labels(self, request):
 		return format_label_view(request, self)
-	
+
 	def get_urls(self):
 		urls = super(TagAdmin, self).get_urls()
 		my_urls = patterns('', (r'^format/$', self.format_labels))

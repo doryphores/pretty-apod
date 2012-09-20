@@ -14,10 +14,10 @@ import re
 import json
 import Image
 import datetime
+import imghdr
 
 from apod import apodapi
-from apod.utils.minimal_exif_writer import MinimalExifWriter
-from apod.utils.minimal_exif_reader import MinimalExifReader
+from apod.utils.minimal_exif_writer import MinimalExifWriter, ExifFormatException
 
 
 class TagFormatter(models.Model):
@@ -350,6 +350,10 @@ class Picture(models.Model):
 				# Download and save original image
 				self.image.save(filename, image_file, save=False)
 
+				# Detect PNG images saved as JPG
+				if imghdr.what(self.image.file.name) == 'png' and extension == 'jpg':
+					self.image.save(filename.replace('.jpg', ',png'), image_file, save=False)
+
 				# Save original dimensions
 				self.original_width = self.image.width
 				self.original_height = self.image.height
@@ -367,14 +371,15 @@ class Picture(models.Model):
 						# It's an animated GIF so leave as is
 						resize = False
 
-				# Process EXIF data (strip all except copyright if present)
-				exif_reader = MinimalExifReader(self.image.file.name)
-				copyright = exif_reader.copyright()
-				exif_writer = MinimalExifWriter(self.image.file.name)
-				exif_writer.removeExif()
-				if copyright:
-					exif_writer.newCopyright(copyright)
-				exif_writer.process()
+				# Strip EXIF data (causes problems when not well formed)
+				try:
+					exif_writer = MinimalExifWriter(self.image.file.name)
+					exif_writer.removeExif()
+					exif_writer.process()
+				except ExifFormatException:
+					# There was a problem stripping the EXIF data
+					# Ignore it
+					pass
 
 				# Check size and resize if bigger than 1Mb
 				if resize and self.original_file_size > 1024 * 1024:
@@ -390,6 +395,7 @@ class Picture(models.Model):
 					# Make jpg filename if needed
 					if extension != 'jpg':
 						filename = re.sub('\.[^\.]+$', '.jpg', filename)
+
 					# Save the resized version
 					self.image.save(filename, ContentFile(resized.read()))
 

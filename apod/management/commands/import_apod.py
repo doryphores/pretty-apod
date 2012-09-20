@@ -20,7 +20,7 @@ class Command(BaseCommand):
 				picture = Picture(publish_date=apod_details["publish_date"], title=apod_details["title"])
 				picture.save()
 				counter = counter + 1
-		
+
 		if counter:
 			self.stdout.write('Archive imported successfully (%d APODs added)\n' % counter)
 
@@ -30,9 +30,9 @@ class Command(BaseCommand):
 			pictures_to_load = Picture.objects.filter(publish_date__year=int(args[0]), publish_date__month=int(args[1]))
 		else:
 			pictures_to_load = Picture.objects.all()
-			
+
 		pictures_to_load = pictures_to_load.filter(loaded=False)
-		
+
 		self.stdout.write('%s pictures to load\n' % pictures_to_load.count())
 
 		if pictures_to_load:
@@ -47,5 +47,5 @@ class Command(BaseCommand):
 				except:
 					raise
 					error_count = error_count + 1
-			
+
 			self.stdout.write('Successfully imported %d (%d failures)\n' % (success_count, error_count))
