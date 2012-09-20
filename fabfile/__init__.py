@@ -61,6 +61,8 @@ def check_requirements():
 	"""
 	missing = []
 
+	print(green('Checking requirements'))
+
 	for tool in ['compass', 'uglifyjs', 'virtualenv', 'git']:
 		with settings(hide('warnings', 'stdout'), warn_only=True):
 			result = run('which %s' % tool)
