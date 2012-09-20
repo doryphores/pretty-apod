@@ -197,7 +197,7 @@ def backup():
 	if files.exists(env.current_dir):
 		print(green('Backing up database'))
 		with cd(env.current_release_dir):
-			_run_ve('fab prod backup_db:timstamp=%s' % env.release_timestamp)
+			_run_ve('fab prod backup_db:timestamp=%s' % env.release_timestamp)
 
 
 @task
