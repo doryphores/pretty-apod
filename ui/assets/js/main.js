@@ -30,10 +30,12 @@
     }
 
     Timer.prototype.delay = function(ms, func) {
+      this.clear();
       return this.timer = setTimeout(func, ms);
     };
 
     Timer.prototype.repeat = function(ms, func) {
+      this.clear();
       return this.timer = setInterval(func, ms);
     };
 
@@ -300,70 +302,88 @@
 
     Scroller.step = 20;
 
-    Scroller.prototype.init = function() {
-      var _this = this;
-      this.buildScrollBar();
-      this.disabled = true;
-      this.redraw();
-      $(window).resize(function() {
-        return _this.redraw();
-      });
-      return this.element.on({
-        'shown': function() {
-          return _this.redraw();
-        },
-        'hide': function() {
-          return _this.hide();
+    Scroller.overlayBars = (function() {
+      var detector;
+      detector = $('<div />', {
+        css: {
+          width: 100,
+          height: 100,
+          position: 'absolute',
+          overflow: 'scroll',
+          top: -9999
         }
       });
+      detector.appendTo('body');
+      return detector[0].offsetWidth - detector[0].clientWidth === 0 && detector.remove();
+    })();
+
+    Scroller.prototype.init = function() {
+      var _this = this;
+      if (!Scroller.overlayBars) {
+        this.build();
+        this.disabled = true;
+        this.redraw();
+        return $(window).on('resize.scroller', function() {
+          return _this.redraw();
+        });
+      }
     };
 
-    Scroller.prototype.buildScrollBar = function() {
+    Scroller.prototype.build = function() {
       var _this = this;
+      this.element.css('overflow', 'hidden');
+      this.element.wrapInner('<div class="scroller" />');
+      this.scroller = this.element.find('.scroller');
       this.scrollbar = $('<div class="scroll-bar"><span class="handle"><span /></span><span class="track"><span /></span></div>').appendTo(this.element);
       this.hide();
       this.track = this.scrollbar.find('.track');
       this.handle = this.scrollbar.find('.handle').draggable({
-        containment: 'parent'
+        containment: 'parent',
+        axis: 'y'
       });
       return this.handle.on({
         'dragstart': function() {
           _this.dragging = true;
-          return _this.track.addClass('active');
+          return _this.scrollbar.addClass('dragging');
         },
         'dragstop': function() {
           _this.dragging = false;
-          return _this.track.removeClass('active');
+          return _this.scrollbar.removeClass('dragging');
         },
         'drag': function() {
-          return _this.scroll(_this.element[0].scrollHeight * parseInt(_this.handle.css('top'), 10) / _this.element.height());
+          return _this.scroll(_this.scroller[0].scrollHeight * parseInt(_this.handle.css('top'), 10) / _this.element.height());
         }
       });
     };
 
     Scroller.prototype.redraw = function() {
-      var height, scroll, scrollHeight;
-      scrollHeight = this.element[0].scrollHeight;
+      var height, scrollHeight, visible;
+      scrollHeight = this.scroller[0].scrollHeight;
       height = this.element.height();
-      this.scrollbar.height(height).css('top', this.element.scrollTop());
-      scroll = height / scrollHeight * 100;
-      if (scroll < 100) {
+      visible = height / scrollHeight * 100;
+      if (visible < 100) {
         this.enable();
       } else {
         this.disable();
       }
-      this.handle.height("" + scroll + "%");
-      return this.handle.css('top', this.element.scrollTop() * height / scrollHeight);
+      this.scrollbar.height(height);
+      this.handle.height("" + visible + "%");
+      return this.handle.css('top', this.scroller[0].scrollTop);
     };
 
     Scroller.prototype.scroll = function(s) {
-      var scroll, scrollMax;
-      scrollMax = this.element[0].scrollHeight - this.element.height();
-      scroll = Math.min(Math.max(0, s), scrollMax);
-      if (this.element.scrollTop !== scroll) {
-        this.element.scrollTop(scroll);
-        return this.redraw();
+      var height, scroll, scrollHeight;
+      scrollHeight = this.scroller[0].scrollHeight;
+      height = this.element.height();
+      scroll = Math.max(0, Math.min(s, scrollHeight - height));
+      this.handle.css('top', scroll * height / scrollHeight);
+      if (this.scroller[0].scrollTop !== scroll) {
+        return this.scroller[0].scrollTop = scroll;
       }
+    };
+
+    Scroller.prototype.reset = function() {
+      return this.scroll(0);
     };
 
     Scroller.prototype.show = function() {
@@ -376,10 +396,10 @@
 
     Scroller.prototype.disable = function() {
       if (this.disabled) {
-        return this;
+        return;
       }
-      this.scrollbar.hide();
       this.disabled = true;
+      this.scrollbar.hide();
       return this.element.off('.scroller');
     };
 
@@ -387,15 +407,15 @@
       var timer,
         _this = this;
       if (!this.disabled) {
-        return this;
+        return;
       }
-      this.scrollbar.show();
       this.disabled = false;
+      this.scrollbar.show();
       timer = new Timer;
       return this.element.on({
         'mousewheel.scroller': function(e, delta) {
           _this.show();
-          return _this.scroll(_this.element.scrollTop() - delta * Scroller.step);
+          return _this.scroll(_this.scroller[0].scrollTop - delta * Scroller.step);
         },
         'mouseleave.scroller': function() {
           if (!_this.dragging) {
@@ -405,7 +425,9 @@
           }
         },
         'mouseenter.scroller': function() {
-          return timer.clear();
+          return timer.delay(500, function() {
+            return _this.show();
+          });
         }
       });
     };
@@ -460,11 +482,12 @@
           return _this.toggles.addClass('active');
         }
       });
-      return $(document).on('click.panel', function(e) {
+      $(document).on('click.panel', function(e) {
         if (e.button === 0) {
           return _this.hide();
         }
       });
+      return this.scroller = new Scroller(this.element);
     };
 
     Panel.prototype.show = function() {
@@ -498,6 +521,7 @@
         return;
       }
       this.element.show();
+      this.scroller.reset();
       this.state = 'visible';
       tran = new Transition(this.element);
       tran.start(function() {
@@ -514,10 +538,12 @@
         if ($('body').hasClass('open-panel')) {
           if (_this.options.load) {
             _this.element.find('.inner-panel').load(_this.options.load, function() {
-              return _this.options.load = false;
+              _this.options.load = false;
+              return _this.scroller.redraw();
             });
           }
           _this.element.focus();
+          _this.scroller.redraw();
           return _this.trigger('shown');
         }
       });
@@ -536,6 +562,7 @@
         return;
       }
       this.state = 'hidden';
+      this.scroller.hide();
       tran = new Transition(this.element);
       tran.start(function() {
         $('body').removeClass('open-panel');
@@ -710,7 +737,7 @@
   });
 
   $(function() {
-    var $el, el, growler, _i, _j, _len, _len1, _ref, _ref1;
+    var $el, el, growler, _i, _len, _ref;
     growler = new Growler;
     $(document).on({
       'image_loaded': function() {
@@ -732,12 +759,6 @@
       if (APOD.modules[$el.data('module')] != null) {
         $el.data($el.data('module'), new APOD.modules[$el.data('module')](el));
       }
-    }
-    _ref1 = $('[data-enhance=scroll]');
-    for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-      el = _ref1[_j];
-      $el = $(el);
-      $el.data('Scroller', new Scroller(el));
     }
     return $(document).trigger('ui_ready');
   });

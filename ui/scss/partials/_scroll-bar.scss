@@ -3,6 +3,7 @@
 	right: 0;
 	top: 0;
 	width: 10px;
+	@include transition(width 0.2s);
 
 	&.hide {
 		opacity: 0;
@@ -27,13 +28,12 @@
 			@include border-radius(5px);
 			background: rgba(255,255,255,.3);
 		}
-
-		&.active {
-			opacity: 1;
-		}
 	}
 
-	&:hover {
+	&:hover,
+	&.dragging {
+		width: 14px;
+
 		.track {
 			opacity: 1;
 		}

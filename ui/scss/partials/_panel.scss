@@ -1,13 +1,18 @@
 .panel {
-	overflow: hidden;
-	// overflow-x: hidden; // Disable horizontal scrolling
+	overflow-y: auto;
+	overflow-x: hidden; // Disable horizontal scrolling
 	background: rgba(0,0,0,.8);
 	display: none;
 	@include transition(all .4s);
 	outline: none;
 
+	.scroller {
+		overflow: hidden;
+		height: 100%;
+	}
+
 	.inner-panel {
-		padding: 25px 30px 20px 20px;
+		padding: 25px 20px 20px 20px;
 		@include box-sizing(border-box);
 		width: $layout_panel_width;
 		margin-left: -$layout_panel_width;

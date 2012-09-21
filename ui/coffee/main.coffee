@@ -17,9 +17,11 @@ class Timer
 		@timer = null
 
 	delay: (ms, func) ->
+		@clear()
 		@timer = setTimeout func, ms
 
 	repeat: (ms, func) ->
+		@clear()
 		@timer = setInterval func, ms
 
 	clear: ->
@@ -218,48 +220,89 @@ class Viewport extends Module
 class Scroller extends Module
 	@step: 20
 
-	init: ->
-		@buildScrollBar()
-		@disabled = true
-		@redraw()
-		$(window).resize => @redraw()
-		@element.on
-			'shown': => @redraw()
-			'hide': => @hide()
+	@overlayBars: (->
+		detector = $ '<div />',
+			css:
+				width: 100
+				height: 100
+				position: 'absolute'
+				overflow: 'scroll'
+				top: -9999
+		detector.appendTo 'body'
 
-	buildScrollBar: ->
+		detector[0].offsetWidth - detector[0].clientWidth is 0 and detector.remove()
+	)()
+
+	init: ->
+		# Don't apply if browser has overlaid scroll bars (OSX lion style)
+		unless Scroller.overlayBars
+			@build()
+			@disabled = true
+			@redraw()
+			$(window).on 'resize.scroller', => @redraw()
+
+	build: ->
+		# Disable scrolling and wrap inner with new DIV
+		@element.css 'overflow', 'hidden'
+		@element.wrapInner('<div class="scroller" />')
+		@scroller = @element.find('.scroller')
+
+		# Inject scrollbar
 		@scrollbar = $('<div class="scroll-bar"><span class="handle"><span /></span><span class="track"><span /></span></div>').appendTo(@element)
 		@hide()
+
+		# Get reference to track
 		@track = @scrollbar.find '.track'
+
+		# Get reference to handle and make draggable (jQuery UI)
 		@handle = @scrollbar.find('.handle').draggable
 			containment: 'parent'
+			axis: 'y'
 
+		# Setup drag events
 		@handle.on
 			'dragstart': =>
 				@dragging = true
-				@track.addClass 'active'
+				@scrollbar.addClass 'dragging'
 			'dragstop': =>
 				@dragging = false
-				@track.removeClass 'active'
+				@scrollbar.removeClass 'dragging'
 			'drag': =>
-				@scroll @element[0].scrollHeight * parseInt(@handle.css('top'), 10) / @element.height()
+				@scroll @scroller[0].scrollHeight * parseInt(@handle.css('top'), 10) / @element.height()
 
-	redraw: ->
-		scrollHeight = @element[0].scrollHeight
+	redraw: () ->
+		scrollHeight = @scroller[0].scrollHeight
 		height = @element.height()
-		@scrollbar.height(height).css('top', @element.scrollTop())
-		scroll = height / scrollHeight * 100;
-		if scroll < 100 then @enable() else @disable()
-		@handle.height("#{scroll}%")
-		@handle.css('top', @element.scrollTop() * height / scrollHeight)
+
+		# Compute visible area as percentage
+		visible = height / scrollHeight * 100;
+
+		# Enable scrollbar if visible area is less than 100%
+		if visible < 100 then @enable() else @disable()
+
+		# Adjust bar and handle heights accordingly
+		@scrollbar.height(height)
+		@handle.height "#{visible}%"
+
+		# Adjust handle position
+		@handle.css 'top', @scroller[0].scrollTop
 
 	scroll: (s) ->
-		scrollMax = @element[0].scrollHeight - @element.height()
-		scroll = Math.min(Math.max(0, s), scrollMax)
+		scrollHeight = @scroller[0].scrollHeight
+		height = @element.height()
 
-		if @element.scrollTop isnt scroll
-			@element.scrollTop scroll
-			@redraw()
+		# Limit scroll value
+		scroll = Math.max(0, Math.min(s, scrollHeight - height))
+
+		# Adjust handle position
+		@handle.css 'top', scroll * height / scrollHeight
+
+		# Adjust scrollTop if different
+		if @scroller[0].scrollTop isnt scroll
+			@scroller[0].scrollTop = scroll
+
+	reset: ->
+		@scroll(0)
 
 	show: ->
 		@scrollbar.removeClass 'hide'
@@ -268,23 +311,32 @@ class Scroller extends Module
 		@scrollbar.addClass 'hide'
 
 	disable: ->
-		if @disabled then return @
-		@scrollbar.hide()
+		if @disabled then return
+
 		@disabled = true
+
+		# Hide scrollbar and switch off event handlers
+		@scrollbar.hide()
 		@element.off '.scroller'
 
 	enable: ->
-		unless @disabled then return @
-		@scrollbar.show()
+		unless @disabled then return
+
 		@disabled = false
+
+		# Show scrollbar
+		@scrollbar.show()
+
+		# Create a new timer
 		timer = new Timer
+
+		# Switch on event handlers
 		@element.on
 			'mousewheel.scroller': (e, delta) =>
 				@show()
-				@scroll @element.scrollTop() - delta * Scroller.step
+				@scroll @scroller[0].scrollTop - delta * Scroller.step
 			'mouseleave.scroller': => unless @dragging then timer.delay 1000, => @hide()
-			'mouseenter.scroller': -> timer.clear()
-
+			'mouseenter.scroller': => timer.delay 500, => @show()
 
 
 class Panel extends Module
@@ -323,6 +375,9 @@ class Panel extends Module
 		$(document).on 'click.panel', (e) =>
 			@hide() if e.button is 0
 
+		# Add scroll bar
+		@scroller = new Scroller(@element)
+
 	show: ->
 		if @state is 'visible' then return @
 
@@ -345,6 +400,8 @@ class Panel extends Module
 		if evt.isDefaultPrevented() then return
 
 		@element.show()
+		# Reset scroll
+		@scroller.reset()
 
 		@state = 'visible'
 
@@ -359,8 +416,11 @@ class Panel extends Module
 		tran.end =>
 			@stopResize() unless @options.overlapping
 			if $('body').hasClass 'open-panel'
-				if @options.load then @element.find('.inner-panel').load @options.load, => @options.load = false
+				if @options.load then @element.find('.inner-panel').load @options.load, =>
+					@options.load = false
+					@scroller.redraw()
 				@element.focus()
+				@scroller.redraw()
 				@trigger 'shown'
 
 		Panel.currentPanel = @id
@@ -374,6 +434,7 @@ class Panel extends Module
 		if evt.isDefaultPrevented() then return
 
 		@state = 'hidden'
+		@scroller.hide()
 
 		tran = new Transition @element
 
@@ -513,10 +574,5 @@ $ ->
 		$el = $(el)
 		if APOD.modules[$el.data('module')]?
 			$el.data($el.data('module'), new APOD.modules[$el.data('module')](el))
-
-	# Enhancements
-	for el in $('[data-enhance=scroll]')
-		$el = $(el)
-		$el.data('Scroller', new Scroller(el))
 
 	$(document).trigger 'ui_ready'
