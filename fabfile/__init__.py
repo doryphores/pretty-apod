@@ -61,6 +61,8 @@ def check_requirements():
 	"""
 	missing = []
 
+	print(green('Checking requirements'))
+
 	for tool in ['compass', 'uglifyjs', 'virtualenv', 'git']:
 		with settings(hide('warnings', 'stdout'), warn_only=True):
 			result = run('which %s' % tool)
@@ -99,6 +101,7 @@ def setup():
 				'email_password': prompt(yellow('Mail server password:')),
 				'email_from': prompt(yellow('From email address:')),
 				'email_server_email': prompt(yellow('Server email address:')),
+				'memcache_location': prompt(yellow('Memcache location:')),
 				'secret_key': "".join([random.choice("abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)") for i in range(50)])
 			},
 			destination=active_settings
@@ -113,7 +116,6 @@ def setup():
 
 	if not files.exists(env.env_dir):
 		print(green('Creating virtualenv'))
-		# run('%s install virtualenv' % env.pip)
 		run('virtualenv -p %s --distribute --system-site-packages %s' % (env.python, env.env_dir))
 
 
@@ -139,28 +141,31 @@ def prepare_release():
 	Prepares new release for deployment
 	"""
 
-	print(green('Preparing release'))
-	# Create new release folder and copy code
-	run('mkdir -p %s' % env.current_release_dir)
-	run('cp -R %s/* %s' % (env.repo_dir, env.current_release_dir))
+	try:
+		print(green('Creating new release and copying code'))
+		run('mkdir -p %s' % env.current_release_dir)
+		run('cp -R %s/* %s' % (env.repo_dir, env.current_release_dir))
 
-	print(green('Symlinking shared assets'))
-	# Symlink shared assets
-	run('ln -s %s/media %s/public/media' % (env.shared_dir, env.current_release_dir))
-	run('ln -s %s/logs %s/logs' % (env.shared_dir, env.current_release_dir))
-	run('ln -s %s/active.py %s/settings/active.py' % (env.shared_dir, env.current_release_dir))
+		print(green('Symlinking shared assets'))
+		run('ln -s %s/media %s/public/media' % (env.shared_dir, env.current_release_dir))
+		run('ln -s %s/logs %s/logs' % (env.shared_dir, env.current_release_dir))
+		run('ln -s %s/active.py %s/settings/active.py' % (env.shared_dir, env.current_release_dir))
 
-	update_env()
+		update_env()
 
-	print(green('Optimising CSS'))
-	with cd('%s/ui/scss/' % env.current_release_dir):
-		run('compass compile --force -e production')
+		print(green('Optimising CSS'))
+		with cd('%s/ui/scss/' % env.current_release_dir):
+			run('compass compile --force -e production')
 
-	print(green('Collecting static assets'))
-	_run_ve('%s/manage.py collectstatic --noinput --verbosity=0' % env.current_release_dir)
+		print(green('Collecting static assets'))
+		_run_ve('%s/manage.py collectstatic --noinput --verbosity=0' % env.current_release_dir)
 
-	print(green('Optimising JS'))
-	run('uglifyjs --overwrite %s/public/assets/js/main.js' % env.current_release_dir)
+		print(green('Optimising JS'))
+		run('uglifyjs --overwrite %s/public/assets/js/main.js' % env.current_release_dir)
+	except:
+		print(red('Something went wrong, rolling back release'))
+		run('rm -rf %s' % env.current_release_dir)
+		abort(red('Deploy failed'))
 
 
 def finalise():
@@ -168,17 +173,14 @@ def finalise():
 	Runs DB migrations, symlinks new release and restarts app
 	"""
 
-	# Migrate DB
 	print(green('Running database migrations'))
 	_run_ve('%s/manage.py syncdb --migrate --noinput' % env.current_release_dir)
 
 	print(green('Symlinking current release'))
-	# Make release current
 	run('rm -f %s' % env.current_dir)
 	run('ln -s %s %s' % (env.current_release_dir, env.current_dir))
 
 	print(green('Restarting app'))
-	# Force app to reload
 	run('touch %s/connector.wsgi' % env.current_dir)
 
 	print(green('Removing obsolete releases and backups'))
@@ -196,7 +198,7 @@ def backup():
 	if files.exists(env.current_dir):
 		print(green('Backing up database'))
 		with cd(env.current_release_dir):
-			_run_ve('fab prod backup_db:timstamp=%s' % env.release_timestamp)
+			_run_ve('fab prod backup_db:timestamp=%s' % env.release_timestamp)
 
 
 @task
@@ -204,11 +206,14 @@ def backup_db(timestamp):
 	"""
 	Backs up DB (run on remote only)
 	"""
+
+	# Add project to path and retrieve settings
 	sys.path.append(env.current_dir)
 	django.settings_module('settings.active')
 	from django.conf import settings
 
-	local('pg_dump -U %s %s > %s/%s.sql' % (
+	# Run pg_dump on DB
+	local('pg_dump -c -U %s %s > %s/%s.sql' % (
 		settings.DATABASES['default']['USER'],
 		settings.DATABASES['default']['NAME'],
 		env.backup_dir,

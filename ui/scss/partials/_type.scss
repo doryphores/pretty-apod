@@ -9,6 +9,7 @@ body {
 a {
 	color: $color_page_link;
 	text-decoration: none;
+	outline: none;
 
 	&:hover,
 	&:active {

@@ -14,9 +14,10 @@ import re
 import json
 import Image
 import datetime
+import imghdr
 
 from apod import apodapi
-from apod.utils.minimal_exif_writer import MinimalExifWriter
+from apod.utils.minimal_exif_writer import MinimalExifWriter, ExifFormatException
 
 
 class TagFormatter(models.Model):
@@ -349,6 +350,10 @@ class Picture(models.Model):
 				# Download and save original image
 				self.image.save(filename, image_file, save=False)
 
+				# Detect PNG images saved as JPG
+				if imghdr.what(self.image.file.name) == 'png' and extension == 'jpg':
+					self.image.save(filename.replace('.jpg', ',png'), image_file, save=False)
+
 				# Save original dimensions
 				self.original_width = self.image.width
 				self.original_height = self.image.height
@@ -366,25 +371,23 @@ class Picture(models.Model):
 						# It's an animated GIF so leave as is
 						resize = False
 
+				# Strip EXIF data (causes problems when not well formed)
+				try:
+					exif_writer = MinimalExifWriter(self.image.file.name)
+					exif_writer.removeExif()
+					exif_writer.process()
+				except ExifFormatException:
+					# There was a problem stripping the EXIF data
+					# Ignore it
+					pass
+
 				# Check size and resize if bigger than 1Mb
 				if resize and self.original_file_size > 1024 * 1024:
-					try:
-						# Create a resized version
-						resized = get_thumbnail(self.image,
-												'2000x2000',
-												progressive=False,
-												quality=90)
-					except IOError:
-						# Strip EXIF data (causes problems with PIL)
-						f = MinimalExifWriter(self.image.file.name)
-						f.removeExif()
-						f.process()
-
-						# Try again
-						resized = get_thumbnail(self.image,
-												'2000x2000',
-												progressive=False,
-												quality=90)
+					# Create a resized version
+					resized = get_thumbnail(self.image,
+											'2000x2000',
+											progressive=False,
+											quality=90)
 
 					# Delete original image
 					self.image.delete(save=False)
@@ -392,6 +395,7 @@ class Picture(models.Model):
 					# Make jpg filename if needed
 					if extension != 'jpg':
 						filename = re.sub('\.[^\.]+$', '.jpg', filename)
+
 					# Save the resized version
 					self.image.save(filename, ContentFile(resized.read()))
 

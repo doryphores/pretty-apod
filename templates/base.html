@@ -1,12 +1,13 @@
 {% load url from future %}
+{% load apod_tags %}
 
 <!DOCTYPE html>
 <html class="js">
 <head>
 	<meta charset="utf-8">
 	<title>{% block title %}Pretty APOD{% endblock %}</title>
-	<link href="{{ STATIC_URL }}css/screen{{ TIMESTAMP }}.css" rel="stylesheet" type="text/css">
-	<link href="{{ STATIC_URL }}favicon{{ TIMESTAMP }}.ico" rel="shortcut icon">
+	<link href="{{ STATIC_URL }}css/screen{% timestamp %}.css" rel="stylesheet" type="text/css">
+	<link href="{{ STATIC_URL }}favicon{% timestamp %}.ico" rel="shortcut icon">
 </head>
 <body>
 

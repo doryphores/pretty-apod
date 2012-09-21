@@ -16,3 +16,7 @@ urlpatterns = patterns('',
 if settings.DEBUG:
 	urlpatterns += staticfiles_urlpatterns()
 	urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+	# Dummy 500 for debugging
+	urlpatterns += patterns('apod.views', (r'^500/$', 'server_error'))
+
+handler500 = 'apod.views.server_error'

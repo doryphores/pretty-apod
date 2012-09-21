@@ -64,6 +64,7 @@ body {
 a {
   color: #6b7f86;
   text-decoration: none;
+  outline: none;
 }
 a:hover, a:active {
   color: #86846b;
@@ -1538,18 +1539,20 @@ body > * {
   padding-bottom: 2px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.5);
   margin: 1em 0 0.5em 0;
+  position: relative;
 }
 .panel h2:first-child {
   margin-top: 0;
 }
 .panel h2 .action {
-  float: right;
+  position: absolute;
+  bottom: 0;
+  right: 0;
   font-size: 12px;
   line-height: 16px;
   color: #dedede;
   background: rgba(255, 255, 255, 0.5);
   padding: 2px 4px;
-  margin-top: 2px;
   -webkit-border-radius: 2px 2px 0 0;
   -moz-border-radius: 2px 2px 0 0;
   -ms-border-radius: 2px 2px 0 0;

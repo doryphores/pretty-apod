@@ -1,15 +1,20 @@
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
-from django.shortcuts import render, get_object_or_404
-
+from django.shortcuts import render, render_to_response, get_object_or_404
 from django.http import Http404, HttpResponse
+from django.conf import settings
 
 from apod.models import Picture, Tag
 
 import json
 import datetime
 import calendar
-
 import gviz_api
+
+
+def server_error(request):
+	return render_to_response('500.html', {
+		'STATIC_URL': settings.STATIC_URL,
+	})
 
 
 def picture(request, year=None, month=None, day=None, tag=None):

@@ -11,6 +11,15 @@ DATABASES = {
 	}
 }
 
+CACHES = {
+	'default': {
+		'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+		'LOCATION': '%(memcache_location)s',
+		'KEY_PREFIX': 'PRETTY_APOD',
+		'VERSION'	: 1,
+	}
+}
+
 STATIC_URL = '%(cdn_host)s/assets/'
 MEDIA_URL = '%(cdn_host)s/media/'
 
