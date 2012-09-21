@@ -10,7 +10,7 @@
 
 <body>
 
-<header class="site-header">
+<header class="site-header" data-module="FullScreen">
 	<h1>
 		<a href="wide_image.html" class="branding">Pretty APOD <b><b></b></b></a>
 		<a href="#"><i class="icon-tag"></i> Sun <b><b></b></b></a>
@@ -18,9 +18,15 @@
 		<a href="#"><i class="icon-calendar"></i> August <b><b></b></b></a>
 		Blue Moon Eclipse
 	</h1>
+
+	<div class="tools">
+		<a href="#" data-toggle="fullscreen" class="full-screen"><i class="icon-resize-full"></i><i class="icon-resize-small"></i></a>
+	</div>
 </header>
 
 <nav class="site-nav">
+	{% block extra_nav %}
+	{% endblock %}
 	<ul>
 		<li data-toggle="tags"><a href="tag_cloud.html">
 			<i class="icon-tags"></i>
@@ -33,8 +39,6 @@
 			<b><b></b></b>
 		</a></li>
 	</ul>
-	{% block extra_nav %}
-	{% endblock %}
 </nav>
 
 {% block main %}

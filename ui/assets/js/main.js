@@ -538,7 +538,8 @@
       this.root = $(document.documentElement);
       return $('body').on('click.fullscreen', '[data-toggle=fullscreen]', function(e) {
         e.preventDefault();
-        return _this.toggle();
+        _this.toggle();
+        return e.currentTarget.blur();
       });
     };
 

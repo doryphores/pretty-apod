@@ -388,6 +388,7 @@ class FullScreen extends Module
 		$('body').on 'click.fullscreen', '[data-toggle=fullscreen]', (e) =>
 			e.preventDefault()
 			@toggle()
+			e.currentTarget.blur()
 
 	enable: ->
 		evt = new $.Event 'resize_full'

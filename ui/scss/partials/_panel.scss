@@ -28,19 +28,21 @@
 		padding-bottom: 2px;
 		border-bottom: 1px solid rgba(255,255,255,.5);
 		margin: 1em 0 0.5em 0;
+		position: relative;
 
 		&:first-child {
 			margin-top: 0;
 		}
 
 		.action {
-			float: right;
+			position: absolute;
+			bottom: 0;
+			right: 0;
 			font-size: 12px;
 			line-height: 16px;
 			color: $color_page_text;
 			background: rgba(255,255,255,.5);
 			padding: 2px 4px;
-			margin-top: 2px;
 			@include border-radius(2px 2px 0 0);
 
 			&:hover,
