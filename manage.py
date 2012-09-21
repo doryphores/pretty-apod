@@ -3,7 +3,7 @@ from django.core.management import execute_manager
 import sys
 import traceback
 
-SETTINGS_ACTIVE_CONTENTS = "\033[1;32mfrom settings.local import *\033[1;33m"
+SETTINGS_ACTIVE_CONTENTS = "\033[1;32mfrom settings.development import *\033[1;33m"
 
 try:
     from settings import active as settings

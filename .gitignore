@@ -1,12 +1,10 @@
 *.pyc
 *.sublime*
-.env
 logs
 public/assets
-media
+public/media
 .sass-cache
 .DS_Store
 backups
-local_settings.py
 active.py
 .codeintel
