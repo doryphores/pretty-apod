@@ -1296,6 +1296,7 @@ body > * {
   right: -40px;
   top: 50%;
   margin-top: -20px;
+  pointer-events: none;
 }
 .oldie .site-nav li b {
   display: none;
@@ -1318,6 +1319,9 @@ body > * {
   right: auto;
   left: -20px;
   margin-top: -14px;
+}
+.open-panel .site-nav li b {
+  display: none;
 }
 .site-nav li b b {
   background: rgba(0, 0, 0, 0.2);
@@ -1543,7 +1547,7 @@ body > * {
   line-height: 20px;
   padding-bottom: 2px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.5);
-  margin: 1em 0 0.5em 0;
+  margin: 0 0 0.5em 0;
   position: relative;
 }
 .panel h2:first-child {
@@ -1569,6 +1573,9 @@ body > * {
 }
 .panel p {
   margin-bottom: 1em;
+}
+.panel section + section {
+  margin-top: 30px;
 }
 .panel section.copy p {
   text-align: justify;
@@ -1695,7 +1702,7 @@ body > * {
 .js .viewport img.loaded {
   opacity: 1;
 }
-.js .viewport p {
+.js .viewport p.picture {
   display: none;
 }
 .viewport iframe {

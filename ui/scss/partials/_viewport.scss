@@ -61,10 +61,8 @@
 	// Should be hidden when js is enabled
 	// This element is replaced by image when ready on the server
 
-	p {
-		.js & {
-			display: none;
-		}
+	.js & p.picture {
+		display: none;
 	}
 
 	// Videos

@@ -135,7 +135,14 @@ def get_apod_details(apod_date, force=False):
 	# Get info from HTML if we can read B tags at all
 	# If we can't, the page is too screwed even for Beautiful Soup
 	if soup.find('b'):
-		details['title'] = re.sub('<.*?>', '', soup.find('b').renderContents()).strip()
+		# Strip tags from title
+		title_b = re.sub('<.*?>', '', soup.find('b').renderContents()).strip()
+		# Concatenate spaces
+		title_b = re.sub('\s+', ' ', title_b)
+		# Finally remove rogue 'Credit:' from title
+		pat = re.compile('\s+credit( and copyright)?:', re.I)
+		details['title'] = re.sub(pat, '', title_b).strip()
+
 		details['explanation'] = get_section(soup, 'explanation')
 		details['credits'] = get_section(soup, 'credit')
 
@@ -185,6 +192,6 @@ def get_section(soup, heading):
 						break
 				container.append(unicode(n))
 				n = n.nextSibling
-			return ''.join(container).strip()
+			return ''.join(container).strip(': ')
 
 	return ''

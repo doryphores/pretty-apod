@@ -38,6 +38,11 @@
 
 		b {
 			@include triangle-right($layout_header_height);
+			pointer-events: none;
+
+			.open-panel & {
+				display: none;
+			}
 
 			b {
 				background: rgba(0,0,0,.2);

@@ -42,11 +42,20 @@
 		{# Videos #}
 
 		{% if picture.media_type == "YT" %}
-			<iframe class="youtube" type="text/html" src="http://www.youtube.com/embed/{{ picture.video_id }}?rel=0&amp;showinfo=0&amp;modestbranding=1&amp;autohide=1&amp;wmode=opaque&amp;origin=apod.dev&amp;enablejsapi=1" frameborder="0"></iframe>
+		<iframe class="youtube" type="text/html" src="http://www.youtube.com/embed/{{ picture.video_id }}?rel=0&amp;showinfo=0&amp;modestbranding=1&amp;autohide=1&amp;wmode=opaque&amp;origin=apod.dev&amp;enablejsapi=1" frameborder="0"></iframe>
 		{% endif %}
 
 		{% if picture.media_type == "VI" %}
-			<iframe class="vimeo" src="http://player.vimeo.com/video/{{ picture.video_id }}?title=0&amp;byline=0&amp;portrait=0" frameborder="0"></iframe>
+		<iframe class="vimeo" src="http://player.vimeo.com/video/{{ picture.video_id }}?title=0&amp;byline=0&amp;portrait=0" frameborder="0"></iframe>
+		{% endif %}
+
+		{# Unknown #}
+
+		{% if picture.media_type == 'UN' %}
+		<p class="error">
+			<i class="icon-eye-close"></i>
+			Unknown media type. Please check <a href="{{ picture.get_apod_url }}" target="_blank">the original</a> on APOD.
+		</p>
 		{% endif %}
 	</div>
 
@@ -57,14 +66,22 @@
 			<section class="copy">
 				<h2>
 					<i class="icon-question-sign"></i> Explanation
-					<a href="{{ picture.get_apod_url }}" target="_blank" class="action"> <i class="icon-eye-open"></i> View on APOD</a>
+					<a href="{{ picture.get_apod_url }}" target="_blank" class="action"> <i class="icon-eye-open"></i> View original on APOD</a>
 				</h2>
+				{% if picture.explanation %}
 				<p>{{ picture.explanation|apod_html|safe }}</p>
+				{% else %}
+				<p>The explanation text could not be retrieved from the original APOD page. Please check <a href="{{ picture.get_apod_url }}" target="_blank">the original</a> for full details.</p>
+				{% endif %}
 			</section>
 
 			<section>
-				<h2>&copy; Credits</h2>
-				<p>{{ picture.credits|safe }}</p>
+				<h2>&copy; Credits and copyright</h2>
+				{% if picture.credits %}
+				<p>{{ picture.credits|apod_html|safe }}</p>
+				{% else %}
+				<p>Credits and copyright information could not be retrieved from the original APOD page. Please check <a href="{{ picture.get_apod_url }}" target="_blank">the original</a> for full details.</p>
+				{% endif %}
 			</section>
 
 			<section>
@@ -73,7 +90,7 @@
 					{% for tag in  picture.tags.all %}
 					<a href="{{ tag.get_absolute_url }}"><i class="icon-tag"></i> {{ tag }}</a>
 					{% empty %}
-					<p>No tags set for this image</p>
+					<p>No tags set for this picture.</p>
 					{% endfor %}
 				</p>
 			</section>
