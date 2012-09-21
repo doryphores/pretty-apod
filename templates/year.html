@@ -4,34 +4,19 @@
 
 {% load apod_tags %}
 
+{% block title %}{{ year }} - {{ block.super }}{% endblock %}
+
 {% block page_title %}
 	<i class="icon-calendar"></i> {{ year }} ({{ picture_count }} picture{{ picture_count|pluralize }})
 {% endblock page_title %}
 
 {% block page %}
-
-	{% comment %}<div class="pagination months">
-		<h3>Yearly archives:</h3>
-		<ul>
-		{% for y in year_range %}
-		<li>
-			{% if y.year == year %}
-			<strong>{{ y.year }}</strong>
-			{% else %}
-			<a href="{% url 'year' y.year %}">{{ y.year }}</a>
-			{% endif %}
-		</li>
-		{% endfor %}
-		</ul>
-	</div>{% endcomment %}
-
 	{% for month in calendars %}
-	<h2><span>{{ month.label }}</span></h2>
-	{% with month.calendar as calendar %}
-	{% include 'calendar.html' %}
-	{% endwith %}
+		<h2><span>{{ month.label }}</span></h2>
+		{% with month.calendar as calendar %}
+			{% include 'calendar.html' %}
+		{% endwith %}
 	{% endfor %}
-
 {% endblock page %}
 
 {% block extra_nav %}

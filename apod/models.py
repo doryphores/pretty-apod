@@ -267,6 +267,16 @@ class Picture(models.Model):
 		return (url, (), params)
 
 	@models.permalink
+	def get_canonical_url(self):
+		params = {
+			'year': str(self.publish_date.year),
+			'month': str(self.publish_date.month),
+			'day': str(self.publish_date.day),
+		}
+
+		return ('picture', (), params)
+
+	@models.permalink
 	def get_json_url(self):
 		return ('picture_json', (), {
 			'picture_id': self.pk

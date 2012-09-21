@@ -19,6 +19,7 @@ def server_error(request):
 
 def picture(request, year=None, month=None, day=None, tag=None):
 	if tag:
+		# Part of a tag collection so retrieve the tag
 		try:
 			tag = Tag.objects.get(slug=tag)
 		except Tag.DoesNotExist:
@@ -28,12 +29,14 @@ def picture(request, year=None, month=None, day=None, tag=None):
 		try:
 			date = datetime.date(int(year), int(month), int(day))
 		except ValueError:
+			# Invalid date, raise 404
 			raise Http404
 		picture = get_object_or_404(Picture, publish_date=date)
 	else:
 		# Home page, so get the latest
 		picture = Picture.objects.latest()
 
+	# Add tag to picture for collection context
 	if tag:
 		picture.current_tag = tag
 
@@ -46,6 +49,7 @@ def picture(request, year=None, month=None, day=None, tag=None):
 def picture_json(request, picture_id):
 	picture = get_object_or_404(Picture, pk=picture_id)
 
+	# Download image from APOD
 	picture.get_image()
 
 	data = {
@@ -63,27 +67,27 @@ def month(request, year, month):
 	month = int(month)
 
 	pictures = Picture.objects.filter(publish_date__month=month, publish_date__year=year)
-	picture_count = pictures.count()
+
+	# Build dict from queryset (to build calendar)
+	pics = dict([(p.publish_date.day, p) for p in pictures])
+	picture_count = len(pics)
 
 	# If month has no pics, raise 404
 	if picture_count == 0:
 		raise Http404
 
-	pics = dict([(p.publish_date.day, p) for p in pictures])
-
+	# Build calendar of pics
 	cal = calendar.monthcalendar(year, month)
-
 	picture_calendar = [[dict(day=d, picture=pics.get(d, None)) for d in w] for w in cal]
 
-	next_month = datetime.date(year, month, 1) + datetime.timedelta(days=32)
-
-	if not Picture.objects.filter(publish_date__year=next_month.year, publish_date__month=next_month.month).exists():
-		next_month = False
-
+	# Get previous and next months for navigation
 	previous_month = datetime.date(year, month, 1) - datetime.timedelta(days=1)
-
 	if not Picture.objects.filter(publish_date__year=previous_month.year, publish_date__month=previous_month.month).exists():
 		previous_month = False
+
+	next_month = datetime.date(year, month, 1) + datetime.timedelta(days=32)
+	if not Picture.objects.filter(publish_date__year=next_month.year, publish_date__month=next_month.month).exists():
+		next_month = False
 
 	# tags = Tag.objects.filter(pictures__publish_date__month=month, pictures__publish_date__year=year).annotate(num_pictures=Count('pictures')).order_by('label')
 
@@ -105,15 +109,15 @@ def year(request, year):
 
 	pictures = Picture.objects.filter(publish_date__year=year).reverse()
 
-	picture_count = pictures.count()
+	# Build dict indexed by date (to make next step easier)
+	pics = dict([(str(p.publish_date), p) for p in pictures])
+	picture_count = len(pics)
 
 	# If year has no pics, raise 404
 	if picture_count == 0:
 		raise Http404
 
-	# Build dict indexed by date
-	pics = dict([(str(p.publish_date), p) for p in pictures])
-
+	# Build calendars for the year
 	calendars = [
 		{
 			'label': calendar.month_name[m.month],
@@ -128,15 +132,14 @@ def year(request, year):
 		for m in pictures.reverse().dates('publish_date', 'month')
 	]
 
-	next_year = datetime.date(year, 1, 1) + datetime.timedelta(days=370)
-
-	if not Picture.objects.filter(publish_date__year=next_year.year).exists():
-		next_year = False
-
+	# Get previous and next years for navigation
 	previous_year = datetime.date(year, 1, 1) - datetime.timedelta(days=1)
-
 	if not Picture.objects.filter(publish_date__year=previous_year.year).exists():
 		previous_year = False
+
+	next_year = datetime.date(year, 1, 1) + datetime.timedelta(days=370)
+	if not Picture.objects.filter(publish_date__year=next_year.year).exists():
+		next_year = False
 
 	view_data = {
 		'year': year,
@@ -163,16 +166,14 @@ def tags(request):
 def archive(request, tag, month=None, year=None, page=1):
 	page = int(page)
 
-	try:
-		tag = Tag.objects.get(slug=tag)
-	except Tag.DoesNotExist:
-		raise Http404
+	tag = get_object_or_404(Tag, slug=tag)
 
 	all_pictures = Picture.objects.filter(tags=tag)
 
 	archive_date = None
 	archive_type = 'tag'
 
+	# Filter by date if provided
 	if year:
 		year = int(year)
 		archive_date = datetime.date(year, 1, 1)
@@ -186,16 +187,19 @@ def archive(request, tag, month=None, year=None, page=1):
 			archive_type = 'month'
 			all_pictures = all_pictures.filter(publish_date__month=month)
 
-	if all_pictures.count() == 0:
-		raise Http404
-
+	# Setup pagination
 	paginator = Paginator(all_pictures, 35)
+
+	# Raise 404 if tag collection is empty
+	if paginator.count == 0:
+		raise Http404
 
 	try:
 		pictures = paginator.page(page)
 	except (EmptyPage, InvalidPage):
 		pictures = paginator.page(1)
 
+	# Set tag context on all pictures
 	for p in pictures.object_list:
 		p.current_tag = tag
 

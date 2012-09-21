@@ -2,6 +2,8 @@
 
 {% load url from future %}
 
+{% block title %}{{ current_month|date:'F Y' }} - {{ block.super }}{% endblock %}
+
 {% block page_title %}
 	<a href="{% url 'year' current_month.year %}"><i class="icon-calendar"></i> {{ current_month|date:'Y'}} <b><b></b></b></a>
 	<i class="icon-calendar"></i> {{ current_month|date:'F' }} ({{ picture_count }} picture{{ picture_count|pluralize }})

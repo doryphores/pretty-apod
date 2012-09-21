@@ -14,6 +14,11 @@ def timestamp():
 	return settings.TIMESTAMP
 
 
+@register.simple_tag(takes_context=True)
+def abs_url(context, url):
+	return context['request'].build_absolute_uri(url)
+
+
 @register.filter
 def month_name(month_number):
 	return calendar.month_name[month_number]

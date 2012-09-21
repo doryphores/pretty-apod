@@ -4,55 +4,68 @@
 
 {% load apod_tags %}
 
+{% block title %}
+	{% if archive_date %}
+		{% if archive_type == 'year' %}
+		{{ archive_date|date:'Y' }} -
+		{% else %}
+		{{ archive_date|date:'F Y' }} -
+		{% endif %}
+	{% endif %}
+	{{ tag }} - {{ block.super }}
+{% endblock %}
+
 {% block page_title %}
 	{% if archive_date %}
-	<a href="{{ tag.get_absolute_url }}"><i class="icon-tag"></i> {{ tag }} <b><b></b></b></a>
+		<a href="{{ tag.get_absolute_url }}"><i class="icon-tag"></i> {{ tag }} <b><b></b></b></a>
 		{% if archive_type == 'year' %}
-		<i class="icon-calendar"></i> {{ archive_date|date:'Y' }}
+			<i class="icon-calendar"></i> {{ archive_date|date:'Y' }}
 		{% else %}
-		<a href="{% url 'tag_year' tag.slug archive_date.year %}"><i class="icon-calendar"></i> {{ archive_date|date:'Y' }} <b><b></b></b></a>
-		{{ archive_date|date:'F' }}
+			<a href="{% url 'tag_year' tag.slug archive_date.year %}"><i class="icon-calendar"></i> {{ archive_date|date:'Y' }} <b><b></b></b></a>
+			{{ archive_date|date:'F' }}
 		{% endif %}
 	{% else %}
-	<i class="icon-tag"></i> {{ tag }}
+		<i class="icon-tag"></i> {{ tag }}
 	{% endif %}
 	({{ paginator.count }} picture{{ paginator.count|pluralize }})
 {% endblock page_title %}
 
 {% block page %}
-{% if paginator.num_pages > 1 %}
-<p class="pagination">
-	{% if pictures.has_previous %}
-	<a href="{% url 'tag_page' tag.slug pictures.previous_page_number %}"><i class="icon-chevron-left"></i></a>
-	{% else %}
-	<span><i class="icon-chevron-left"></i></span>
-	{% endif %}
-	{% for p in paginator.page_range %}
-	{% if p == page %}
-	<strong>{{ p }}</strong>
-	{% else %}
-	<a href="{% url 'tag_page' tag.slug p %}">{{ p }}</a>
-	{% endif %}
-	{% endfor %}
-	{% if pictures.has_next %}
-	<a href="{% url 'tag_page' tag.slug pictures.next_page_number %}"><i class="icon-chevron-right"></i></a>
-	{% else %}
-	<span><i class="icon-chevron-right"></i></span>
-	{% endif %}
-</p>
-{% endif %}
-
-<ul class="archive">
-	{% for picture in pictures.object_list %}
-	<li class="item">
-		{% if picture.thumb %}
-			<img src="{{ picture.thumb }}" width="120" height="90">
+	{% if paginator.num_pages > 1 %}
+	<p class="pagination">
+		{% if pictures.has_previous %}
+			<a href="{% url 'tag_page' tag.slug pictures.previous_page_number %}"><i class="icon-chevron-left"></i></a>
+		{% else %}
+			<span><i class="icon-chevron-left"></i></span>
 		{% endif %}
-		<a href="{{ picture.get_absolute_url }}" class="item">
-			<span>{{ picture.title }}</span>
-		</a>
-		<span class="date"><i class="icon-{{ picture.is_video|yesno:"facetime-video,camera" }}"></i> {{ picture.publish_date|date:"d b Y" }}</span>
-	</li>
-	{% endfor %}
-</ul>
+
+		{% for p in paginator.page_range %}
+			{% if p == page %}
+				<strong>{{ p }}</strong>
+			{% else %}
+				<a href="{% url 'tag_page' tag.slug p %}">{{ p }}</a>
+			{% endif %}
+		{% endfor %}
+
+		{% if pictures.has_next %}
+			<a href="{% url 'tag_page' tag.slug pictures.next_page_number %}"><i class="icon-chevron-right"></i></a>
+		{% else %}
+			<span><i class="icon-chevron-right"></i></span>
+		{% endif %}
+	</p>
+	{% endif %}
+
+	<ul class="archive">
+		{% for picture in pictures.object_list %}
+		<li class="item">
+			{% if picture.thumb %}
+				<img src="{{ picture.thumb }}" width="120" height="90">
+			{% endif %}
+			<a href="{{ picture.get_absolute_url }}" class="item">
+				<span>{{ picture.title }}</span>
+			</a>
+			<span class="date"><i class="icon-{{ picture.is_video|yesno:"facetime-video,camera" }}"></i> {{ picture.publish_date|date:"d b Y" }}</span>
+		</li>
+		{% endfor %}
+	</ul>
 {% endblock page %}

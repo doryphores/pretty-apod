@@ -2,6 +2,13 @@
 
 {% load apod_tags %}
 
+{% block meta %}
+{% if picture.current_tag %}
+<link rel="canonical" href="{% abs_url picture.get_canonical_url %}">
+{% endif %}
+{% endblock meta %}
+
+{% block title %}{{ picture }} - {{ block.super }}{% endblock %}
 
 {# Page title #}
 
