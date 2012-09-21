@@ -43,6 +43,7 @@ body {
 
 .site-page {
 	position: fixed;
+	overflow: auto;
 	top: $layout_header_height;
 	bottom: 0;
 	left: $layout_nav_width;

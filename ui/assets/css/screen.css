@@ -1078,6 +1078,7 @@ body > * {
 
 .site-page {
   position: fixed;
+  overflow: auto;
   top: 40px;
   bottom: 0;
   left: 100px;
@@ -1647,7 +1648,6 @@ body > * {
 
 .viewport {
   min-width: 0;
-  overflow: auto;
   padding: 20px;
   text-align: center;
 }
