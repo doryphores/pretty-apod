@@ -361,7 +361,6 @@
       scrollMax = this.element[0].scrollHeight - this.element.height();
       scroll = Math.min(Math.max(0, s), scrollMax);
       if (this.element.scrollTop !== scroll) {
-        console.log(scroll);
         this.element.scrollTop(scroll);
         return this.redraw();
       }
