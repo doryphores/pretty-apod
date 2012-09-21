@@ -1235,6 +1235,7 @@ body > * {
   background: rgba(255, 255, 255, 0.2);
   color: #dedede;
   outline: none;
+  margin-left: 1px;
 }
 .site-header .tools a:hover, .site-header .tools a:focus {
   background: rgba(255, 255, 255, 0.4);
