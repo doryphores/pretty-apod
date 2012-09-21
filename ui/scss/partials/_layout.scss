@@ -47,11 +47,13 @@ body {
 	bottom: 0;
 	left: $layout_nav_width;
 	right: 0;
-	padding: 20px;
-	overflow: auto;
 	min-width: 888px;
 	@include box-shadow(10px 10px 10px -10px rgba(0,0,0,.5) inset);
 	outline: none;
+
+	.inner-page {
+		padding: 20px;
+	}
 
 	.ui-ready & {
 		@include transition(all .4s);
