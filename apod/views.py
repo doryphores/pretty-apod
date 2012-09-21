@@ -37,7 +37,7 @@ def picture(request, year=None, month=None, day=None, tag=None):
 	if tag:
 		picture.current_tag = tag
 
-	return render(request, 'apod/picture.html', {
+	return render(request, 'picture.html', {
 		'picture': picture,
 		'tag': tag
 	})
@@ -97,7 +97,7 @@ def month(request, year, month):
 		'calendar': picture_calendar,
 	}
 
-	return render(request, 'apod/month.html', view_data)
+	return render(request, 'month.html', view_data)
 
 
 def year(request, year):
@@ -147,13 +147,13 @@ def year(request, year):
 		'year_range': Picture.objects.dates('publish_date', 'year'),
 	}
 
-	return render(request, 'apod/year.html', view_data)
+	return render(request, 'year.html', view_data)
 
 
 def tags(request):
 	top_tags = Tag.objects.get_top_tags(30 if request.is_ajax() else 20)
 
-	return render(request, 'apod/tags.html', {
+	return render(request, 'tags.html', {
 		'tags': top_tags['tags'],
 		'min_count': top_tags['min'],
 		'max_count': top_tags['max'],
@@ -199,7 +199,7 @@ def archive(request, tag, month=None, year=None, page=1):
 	for p in pictures.object_list:
 		p.current_tag = tag
 
-	return render(request, 'apod/archive.html', {
+	return render(request, 'archive.html', {
 		'archive_date': archive_date,
 		'archive_type': archive_type,
 		'page': page,
@@ -210,7 +210,7 @@ def archive(request, tag, month=None, year=None, page=1):
 
 
 def stats(request):
-	return render(request, 'apod/stats.html')
+	return render(request, 'stats.html')
 
 
 def size_over_time(request):

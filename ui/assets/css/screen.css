@@ -85,11 +85,11 @@ em {
   text-transform: uppercase;
   margin: 80px auto 10px auto;
   height: 20px;
-  background: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 70, color-stop(0%, rgba(0, 0, 0, 0.3)), color-stop(70%, rgba(0, 0, 0, 0))) no-repeat center -10px;
-  background: -webkit-radial-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0) 70%) no-repeat center -10px;
-  background: -moz-radial-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0) 70%) no-repeat center -10px;
-  background: -o-radial-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0) 70%) no-repeat center -10px;
-  background: radial-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0) 70%) no-repeat center -10px;
+  background: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 400, color-stop(0%, rgba(0, 0, 0, 0.3)), color-stop(100%, rgba(0, 0, 0, 0))) no-repeat center -10px;
+  background: -webkit-radial-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0) 400px) no-repeat center -10px;
+  background: -moz-radial-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0) 400px) no-repeat center -10px;
+  background: -o-radial-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0) 400px) no-repeat center -10px;
+  background: radial-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0) 400px) no-repeat center -10px;
 }
 .site-page h2:first-child {
   margin-top: 30px;

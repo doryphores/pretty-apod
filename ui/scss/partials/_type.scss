@@ -34,7 +34,7 @@ em {
 		text-transform: uppercase;
 		margin: 80px auto 10px auto;
 		height: 20px;
-		@include background(radial-gradient(rgba(0,0,0,.3), rgba(0,0,0,0) 70%) no-repeat center -10px);
+		@include background(radial-gradient(rgba(0,0,0,.3), rgba(0,0,0,0) 400px) no-repeat center -10px);
 
 		&:first-child {
 			margin-top: 30px;

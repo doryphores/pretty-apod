@@ -1,4 +1,4 @@
-{% extends "apod/page.html" %}
+{% extends "page.html" %}
 
 {% load url from future %}
 
@@ -28,7 +28,7 @@
 	{% for month in calendars %}
 	<h2><span>{{ month.label }}</span></h2>
 	{% with month.calendar as calendar %}
-	{% include 'apod/calendar.html' %}
+	{% include 'calendar.html' %}
 	{% endwith %}
 	{% endfor %}
 
