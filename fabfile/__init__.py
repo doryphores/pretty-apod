@@ -76,7 +76,7 @@ def check_requirements():
 
 	print(green('Checking node requirements'))
 
-	for package in ['stitch', 'uglify-js']:
+	for package in ['stitch', 'uglify-js', 'coffee-script']:
 		with settings(hide('warnings', 'stdout'), warn_only=True):
 			result = run('npm ls | grep "%s"' % package)
 			if result.failed:
