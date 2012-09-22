@@ -15,7 +15,7 @@ task 'build', 'Build app', (options) ->
 		]
 
 	app.compile (err, source) ->
-		fs.mkdir output_dir, 755, (err) ->
+		fs.mkdir output_dir, 0o775, (err) ->
 			if err and err.code isnt 'EEXIST' then throw err
 
 			fs.writeFile output_dir + '/app.js', source, (err) ->
