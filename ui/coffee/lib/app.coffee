@@ -7,7 +7,7 @@ module.exports = App =
 		# Listen for events
 		$(document).on
 			'image_loaded': -> growler.hide()
-			'image_loading': -> growler.info "Please wait will the picture is downloaded and processed"
+			'image_loading': -> growler.info "Please wait while the picture is downloaded and processed"
 			'ui_ready': ->
 				$(document.documentElement).addClass 'ui-ready'
 				# Focus on page element
@@ -16,7 +16,7 @@ module.exports = App =
 		# Initialise modules
 		for el in $('[data-module]')
 			$el = $(el)
-			mod = require('modules/' + $el.data('module').toLowerCase())
+			mod = require('modules/' + $el.data('module'))
 			$el.data($el.data('module'), new mod(el))
 
 		$(document).trigger 'ui_ready'
