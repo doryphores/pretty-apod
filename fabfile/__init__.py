@@ -63,7 +63,7 @@ def check_requirements():
 
 	print(green('Checking requirements'))
 
-	for tool in ['compass', 'uglifyjs', 'virtualenv', 'git']:
+	for tool in ['compass', 'cake', 'virtualenv', 'git']:
 		with settings(hide('warnings', 'stdout'), warn_only=True):
 			result = run('which %s' % tool)
 			if result.failed:
@@ -71,6 +71,19 @@ def check_requirements():
 
 	if missing:
 		abort(red('Please install missing packages: %s' % ', '.join(missing)))
+
+	missing = []
+
+	print(green('Checking node requirements'))
+
+	for package in ['stitch', 'uglify-js']:
+		with settings(hide('warnings', 'stdout'), warn_only=True):
+			result = run('npm ls | grep "%s"' % package)
+			if result.failed:
+				missing.append(package)
+
+	if missing:
+		abort(red('Please install missing node packages: %s' % ', '.join(missing)))
 
 
 def setup():
@@ -153,15 +166,16 @@ def prepare_release():
 
 		update_env()
 
-		print(green('Optimising CSS'))
+		print(green('Compiling CSS'))
 		with cd('%s/ui/scss/' % env.current_release_dir):
 			run('compass compile --force -e production')
 
+		print(green('Compiling JS'))
+		with cd('%s/ui/coffee/' % env.current_release_dir):
+			run('cake -m build')
+
 		print(green('Collecting static assets'))
 		_run_ve('%s/manage.py collectstatic --noinput --verbosity=0' % env.current_release_dir)
-
-		print(green('Optimising JS'))
-		run('uglifyjs --overwrite %s/public/assets/js/main.js' % env.current_release_dir)
 	except:
 		print(red('Something went wrong, rolling back release'))
 		run('rm -rf %s' % env.current_release_dir)

@@ -154,9 +154,11 @@
 </div>
 
 {% jquery "1.8.1" %}
-<script src="/assets/js/jquery.mousewheel.js"></script>
-<script src="/assets/js/jquery-ui-custom.min.js"></script>
-<script src="/assets/js/main.js"></script>
+<script src="/assets/js/app.js"></script>
+<script>
+App = require('app');
+App.init();
+</script>
 
 </body>
 

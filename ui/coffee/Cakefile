@@ -1,0 +1,28 @@
+fs = require 'fs'
+stitch  = require 'stitch'
+{parser, uglify} = require 'uglify-js'
+
+option '-m', '--minify', 'Minify output'
+
+output_dir = __dirname + '/../assets/js'
+
+task 'build', 'Build app', (options) ->
+	app = stitch.createPackage
+		paths: [__dirname + '/lib']
+		dependencies:[
+			__dirname + '/vendor/jquery.mousewheel.js',
+			__dirname + '/vendor/jquery-ui-1.8.23.custom.js'
+		]
+
+	app.compile (err, source) ->
+		fs.writeFile output_dir + '/app.js', source, (err) ->
+			if err then throw err
+
+			if options.minify
+				ast = parser.parse source
+				minified = uglify.gen_code uglify.ast_squeeze uglify.ast_mangle ast, extra: yes
+
+				fs.writeFileSync output_dir + '/app.js', minified, "utf-8"
+				console.log 'Compiled and minified app.js'
+			else
+				console.log 'Compiled app.js'

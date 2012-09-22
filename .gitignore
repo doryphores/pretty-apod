@@ -1,6 +1,8 @@
 *.pyc
 *.sublime*
 logs
+ui/assets/css
+ui/assets/js
 public/assets
 public/media
 .sass-cache

@@ -1,0 +1,1 @@
+﻿select count(*), length(image) > 0 as has_image from apod_picture where media_type = 'IM' group by length(image) > 0
