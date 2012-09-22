@@ -15,14 +15,17 @@ task 'build', 'Build app', (options) ->
 		]
 
 	app.compile (err, source) ->
-		fs.writeFile output_dir + '/app.js', source, (err) ->
-			if err then throw err
+		fs.mkdir output_dir, 755, (err) ->
+			if err and err.code isnt 'EEXIST' then throw err
 
-			if options.minify
-				ast = parser.parse source
-				minified = uglify.gen_code uglify.ast_squeeze uglify.ast_mangle ast, extra: yes
+			fs.writeFile output_dir + '/app.js', source, (err) ->
+				if err then throw err
 
-				fs.writeFileSync output_dir + '/app.js', minified, "utf-8"
-				console.log 'Compiled and minified app.js'
-			else
-				console.log 'Compiled app.js'
+				if options.minify
+					ast = parser.parse source
+					minified = uglify.gen_code uglify.ast_squeeze uglify.ast_mangle ast, extra: yes
+
+					fs.writeFileSync output_dir + '/app.js', minified, "utf-8"
+					console.log 'Compiled and minified app.js'
+				else
+					console.log 'Compiled app.js'
