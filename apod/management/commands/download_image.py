@@ -13,8 +13,7 @@ class Command(BaseCommand):
 			return
 
 		if picture:
-			self.stdout.write('Downloading %s...\n' % picture)
-
-			picture.get_image()
-
-			self.stdout.write('Successfully downloaded image\n')
+			try:
+				picture.get_image()
+			except Exception:
+				self.stdout.write('Error occurred while downloading image for %s (%s)\n' % (picture, picture.publish_date))
