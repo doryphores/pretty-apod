@@ -25,14 +25,14 @@ module.exports = class Module
 		@element.trigger args...
 		return @
 
-	trigger: (args...) ->
-		@element.trigger args...
-
 	on: (args...) ->
 		@element.on args...
+		return @
 
 	off: (args...) ->
 		@element.off args...
+		return @
 
 	one: (args...) ->
 		@element.one args...
+		return @
