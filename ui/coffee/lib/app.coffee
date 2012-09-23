@@ -16,7 +16,9 @@ module.exports = App =
 		# Initialise modules
 		for el in $('[data-module]')
 			$el = $(el)
-			mod = require('modules/' + $el.data('module'))
-			$el.data($el.data('module'), new mod(el))
+			for module_name in $el.data('module').split(' ')
+				console.log module_name
+				mod = require('modules/' + module_name)
+				$el.data($el.data('module'), new mod(el))
 
 		$(document).trigger 'ui_ready'

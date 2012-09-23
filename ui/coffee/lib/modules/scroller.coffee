@@ -25,6 +25,11 @@ module.exports = class Scroller extends Module
 			@redraw()
 			$(window).on 'resize.scroller', => @redraw()
 
+			@element.on
+				'show': => @reset()
+				'shown loaded': => @redraw()
+				'hide': => @hide()
+
 	build: ->
 		# Disable scrolling and wrap inner with new DIV
 		@element.css 'overflow', 'hidden'
@@ -86,7 +91,12 @@ module.exports = class Scroller extends Module
 			@scroller[0].scrollTop = scroll
 
 	reset: ->
-		@scroll(0)
+		if @element.is ':hidden'
+			@element.show()
+			@scroll(0)
+			@element.hide()
+		else
+			@scroll(0)
 
 	show: ->
 		@scrollbar.removeClass 'hide'

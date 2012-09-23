@@ -1,7 +1,6 @@
 Timer = require 'utils/timer'
 Transition = require 'utils/transition'
 Module = require 'modules/module'
-Scroller = require 'modules/scroller'
 
 module.exports = class Panel extends Module
 	@panels: {}
@@ -39,9 +38,6 @@ module.exports = class Panel extends Module
 		$(document).on 'click.panel', (e) =>
 			@hide() if e.button is 0
 
-		# Add scroll bar
-		@scroller = new Scroller(@element)
-
 	show: ->
 		if @state is 'visible' then return @
 
@@ -59,13 +55,7 @@ module.exports = class Panel extends Module
 		return @
 
 	_show: ->
-		evt = new $.Event 'show'
-		@trigger evt
-		if evt.isDefaultPrevented() then return
-
 		@element.show()
-		# Reset scroll
-		@scroller.reset()
 
 		@state = 'visible'
 
@@ -82,9 +72,8 @@ module.exports = class Panel extends Module
 			if $('body').hasClass 'open-panel'
 				if @options.load then @element.find('.inner-panel').load @options.load, =>
 					@options.load = false
-					@scroller.redraw()
+					@trigger 'loaded'
 				@element.focus()
-				@scroller.redraw()
 				@trigger 'shown'
 
 		Panel.currentPanel = @id
@@ -95,10 +84,9 @@ module.exports = class Panel extends Module
 		evt = new $.Event 'hide'
 		@trigger evt
 
-		if evt.isDefaultPrevented() then return
+		if evt.isDefaultPrevented() then return @
 
 		@state = 'hidden'
-		@scroller.hide()
 
 		tran = new Transition @element
 
