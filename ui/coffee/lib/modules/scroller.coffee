@@ -34,7 +34,9 @@ module.exports = class Scroller extends Module
 		# Disable scrolling and wrap inner with new DIV
 		@element.css 'overflow', 'hidden'
 		@element.wrapInner('<div class="scroller" />')
-		@scroller = @element.find('.scroller')
+		@scroller = @element.find('.scroller').css
+			overflow: 'hidden'
+			height: '100%'
 
 		# Inject scrollbar
 		@scrollbar = $('<div class="scroll-bar"><span class="handle"><span /></span><span class="track"><span /></span></div>').appendTo(@element)
@@ -59,7 +61,7 @@ module.exports = class Scroller extends Module
 			'drag': =>
 				@scroll @scroller[0].scrollHeight * parseInt(@handle.css('top'), 10) / @element.height()
 
-	redraw: () ->
+	redraw: ->
 		scrollHeight = @scroller[0].scrollHeight
 		height = @element.height()
 

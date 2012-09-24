@@ -392,7 +392,11 @@ class Picture(models.Model):
 					pass
 
 				# Check size and resize if bigger than 1Mb
-				if resize and self.original_file_size > 1024 * 1024:
+				if resize and self.original_file_size > 2 ** 20:
+					# Attempt to prevent PIL errors on large files (See #25)
+					import ImageFile
+					ImageFile.MAXBLOCK = self.original_width * self.original_height
+
 					# Create a resized version
 					resized = get_thumbnail(self.image,
 											'2000x2000',
@@ -412,6 +416,9 @@ class Picture(models.Model):
 			except urllib2.HTTPError as error:
 				if error.code == 404:
 					# Reset image URL if not found
+					# We should also trigger a reload from APOD
+					# in case the URL was amended on the original document
+					# See #7
 					self.original_image_url = ''
 
 			self.save()
