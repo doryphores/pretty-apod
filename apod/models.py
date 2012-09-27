@@ -246,7 +246,7 @@ class Picture(models.Model):
 
 	loaded = models.BooleanField(default=False, verbose_name='Loaded from APOD')
 
-	tags = models.ManyToManyField(Tag, related_name='pictures')
+	tags = models.ManyToManyField(Tag, related_name='pictures', blank=True)
 
 	objects = PictureManager()
 
