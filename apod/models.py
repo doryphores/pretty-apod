@@ -321,6 +321,9 @@ class Picture(models.Model):
 		self.explanation = details['explanation']
 		self.credits = details['credits']
 
+		# Default to unknown
+		self.media_type = 'UN'
+
 		if details['image_url']:
 			self.original_image_url = details['image_url']
 			self.media_type = 'IM'
