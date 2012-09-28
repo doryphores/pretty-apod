@@ -1,4 +1,4 @@
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 
 from apod.models import Picture
 from apod import apodapi
@@ -15,7 +15,7 @@ class Command(BaseCommand):
 
 		counter = 0
 
-		for apod_details in apodapi.get_archive_list():
+		for apod_details in apodapi.get_archive_list(True):
 			if apod_details["publish_date"] not in existing_apods:
 				picture = Picture(publish_date=apod_details["publish_date"], title=apod_details["title"])
 				picture.save()
