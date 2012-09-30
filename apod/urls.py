@@ -1,4 +1,5 @@
 from django.conf.urls.defaults import patterns, url
+from apod.feeds import LatestPicturesFeed, TagPicturesFeed
 
 urlpatterns = patterns('apod.views',
 	url(r'^$', 'picture', name='home'),
@@ -9,6 +10,7 @@ urlpatterns = patterns('apod.views',
 
 	url(r'^tags/$', 'tags', name='tags'),
 	url(r'^tags/(?P<tag>[\w\-]+)/$', 'archive', name='tag'),
+	url(r'^tags/(?P<tag>[\w\-]+)/feed/$', TagPicturesFeed(), name='tag_feed'),
 	url(r'^tags/(?P<tag>[\w\-]+)/page(?P<page>\d+)/$', 'archive', name='tag_page'),
 	url(r'^tags/(?P<tag>[\w\-]+)/(?P<year>\d{4})/(?P<month>\d{1,2})/$', 'archive', name='tag_month'),
 	url(r'^tags/(?P<tag>[\w\-]+)/(?P<year>\d{4})/$', 'archive', name='tag_year'),
@@ -18,4 +20,6 @@ urlpatterns = patterns('apod.views',
 
 	url(r'^ajax/picture/(?P<picture_id>\d+)/$', 'picture_json', name='picture_json'),
 	url(r'^ajax/size-over-time/$', 'size_over_time', name='size_over_time'),
+
+	url(r'^feed/$', LatestPicturesFeed(), name='feed'),
 )

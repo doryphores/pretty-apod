@@ -10,6 +10,7 @@
 	{% endblock meta %}
 	<link href="{{ STATIC_URL }}css/screen{% timestamp %}.css" rel="stylesheet" type="text/css">
 	<link href="{{ STATIC_URL }}favicon{% timestamp %}.ico" rel="shortcut icon">
+	<link rel="alternate" type="application/atom+xml" title="Pretty APOD Latest Pictures" href="{% url 'feed' %}">
 </head>
 <body>
 

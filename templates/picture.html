@@ -84,7 +84,9 @@
 					<a href="{{ picture.get_apod_url }}" target="_blank" class="action"> <i class="icon-eye-open"></i> View original on APOD</a>
 				</h2>
 				{% if picture.explanation %}
-				<p>{{ picture.explanation|apod_html|safe }}</p>
+				{% apodhtml %}
+				<p>{{ picture.explanation|safe }}</p>
+				{% endapodhtml %}
 				{% else %}
 				<p>The explanation text could not be retrieved from the original APOD page. Please check <a href="{{ picture.get_apod_url }}" target="_blank">the original</a> for full details.</p>
 				{% endif %}
@@ -93,7 +95,9 @@
 			<section>
 				<h2>&copy; Credits and copyright</h2>
 				{% if picture.credits %}
-				<p>{{ picture.credits|apod_html|safe }}</p>
+				{% apodhtml %}
+				<p>{{ picture.credits|safe }}</p>
+				{% endapodhtml %}
 				{% else %}
 				<p>Credits and copyright information could not be retrieved from the original APOD page. Please check <a href="{{ picture.get_apod_url }}" target="_blank">the original</a> for full details.</p>
 				{% endif %}

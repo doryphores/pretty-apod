@@ -4,6 +4,12 @@
 
 {% load apod_tags %}
 
+{% if archive_type == 'tag' %}
+{% block meta %}
+<link rel="alternate" type="application/atom+xml" title="Pretty APOD Latest Pictures Tagged as {{ tag }}" href="{% url 'tag_feed' tag.slug %}">
+{% endblock meta %}
+{% endif %}
+
 {% block title %}
 	{% if archive_date %}
 		{% if archive_type == 'year' %}

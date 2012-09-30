@@ -459,7 +459,9 @@ class Picture(models.Model):
 
 			return thumb_url
 
-		return
+		# TODO: add default placeholder thumb for unknown media types
+
+		return None
 
 	def has_image(self):
 		return len(self.original_image_url) > 0
