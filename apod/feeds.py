@@ -14,7 +14,6 @@ class LatestPicturesFeed(Feed):
 	title = 'Pretty APOD recent images'
 	link = '/'
 	description_template = 'feed_summary.html'
-	ttl = 60 * 24
 
 	def items(self):
 		return Picture.objects.all()[0:ITEMS_LIMIT]

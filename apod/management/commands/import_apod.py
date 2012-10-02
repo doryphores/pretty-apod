@@ -42,6 +42,7 @@ class Command(BaseCommand):
 			for picture in pictures_to_load:
 				try:
 					picture.load_from_apod()
+					picture.get_image()
 					success_count = success_count + 1
 					self.stdout.write('%s imported\n' % picture.publish_date)
 				except:
