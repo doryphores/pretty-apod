@@ -4,7 +4,7 @@ from django.http import Http404, HttpResponse
 from django.conf import settings
 
 from apod.models import Picture, Tag
-from apod.utils import format_http_date
+from apod.utils import get_last_modified
 
 import json
 import datetime
@@ -46,7 +46,7 @@ def picture(request, year=None, month=None, day=None, tag=None):
 	})
 
 	# Add last modified header so If-Modified-Since conditional get works
-	response['Last-Modified'] = format_http_date(picture.updated_date)
+	response['Last-Modified'] = get_last_modified(picture.updated_date)
 
 	return response
 
