@@ -4,6 +4,7 @@ from django.http import Http404, HttpResponse
 from django.conf import settings
 
 from apod.models import Picture, Tag
+from apod.utils import format_http_date
 
 import json
 import datetime
@@ -27,11 +28,10 @@ def picture(request, year=None, month=None, day=None, tag=None):
 
 	if year and month and day:
 		try:
-			date = datetime.date(int(year), int(month), int(day))
-		except ValueError:
+			picture = Picture.objects.get_by_date_parts(int(year), int(month), int(day))
+		except Picture.DoesNoExist:
 			# Invalid date, raise 404
 			raise Http404
-		picture = get_object_or_404(Picture, publish_date=date)
 	else:
 		# Home page, so get the latest
 		picture = Picture.objects.latest()
@@ -40,10 +40,15 @@ def picture(request, year=None, month=None, day=None, tag=None):
 	if tag:
 		picture.current_tag = tag
 
-	return render(request, 'picture.html', {
+	response = render(request, 'picture.html', {
 		'picture': picture,
 		'tag': tag
 	})
+
+	# Add last modified header so If-Modified-Since conditional get works
+	response['Last-Modified'] = format_http_date(picture.updated_date)
+
+	return response
 
 
 def picture_json(request, picture_id):

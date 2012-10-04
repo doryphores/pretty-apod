@@ -187,6 +187,14 @@ class PictureManager(models.Manager):
 
 		return self.get(publish_date=date)
 
+	def get_by_date_parts(self, year, month, day):
+		try:
+			date = datetime.date(year, month, day)
+		except ValueError:
+			raise Picture.DoesNoExist
+
+		return self.get(publish_date=date)
+
 	def get_size_over_time(self):
 		cursor = connection.cursor()
 
@@ -221,6 +229,9 @@ MEDIA_TYPES = (
 
 class Picture(models.Model):
 	publish_date = models.DateField(unique=True)
+	created_date = models.DateTimeField(auto_now_add=True)
+	updated_date = models.DateTimeField(auto_now=True)
+
 	title = models.CharField(max_length=255)
 	explanation = models.TextField(max_length=4000, blank=True)
 	credits = models.TextField(max_length=4000, blank=True)
