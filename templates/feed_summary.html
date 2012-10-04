@@ -1,7 +1,7 @@
 {% load apod_tags %}
 
 {% if obj.thumb %}
-<img src="{% abs_url obj.thumb %}" width="120" height="90" align="left" vspace="10" hspace="10">
+<a href="{% abs_url obj.get_absolute_url %}"><img src="{% abs_url obj.thumb %}" width="120" height="90" align="left" vspace="10" hspace="10"></a>
 {% endif %}
 {% apodhtml 'absolute' %}
 <p>{{ obj.explanation|safe }}</p>
