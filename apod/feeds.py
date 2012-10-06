@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404
 from django.conf import settings
 
 from apod.models import Picture, Tag
-from apod.utils import format_http_date
+from apod.utils import get_last_modified
 
 ITEMS_LIMIT = 20
 
@@ -27,7 +27,7 @@ class LatestPicturesFeed(Feed):
 		# Set icon URL for use in feed_extra_kwargs
 		self.icon = 'http://%s%sfavicon.ico' % (get_current_site(request), settings.STATIC_URL)
 		response = super(LatestPicturesFeed, self).__call__(request, *args, **kwargs)
-		response['Last-Modified'] = format_http_date(self.items()[0].created_date)
+		response['Last-Modified'] = get_last_modified(self.items()[0].created_date)
 		return response
 
 	def feed_extra_kwargs(self, obj):

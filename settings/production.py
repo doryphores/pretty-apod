@@ -1,4 +1,4 @@
-import os
+from time import mktime
 
 from settings import *
 
@@ -20,4 +20,4 @@ LOGGING['loggers']['django.request'] = {
 STATIC_URL = '/static/assets/'
 MEDIA_URL = '/static/media/'
 
-TIMESTAMP = ".%d" % os.path.getmtime(os.path.join(PROJECT_ROOT, 'connector.wsgi'))
+TIMESTAMP = '.%d' % mktime(LAST_MODIFIED.timetuple())

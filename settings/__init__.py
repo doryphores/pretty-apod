@@ -1,4 +1,6 @@
 import os
+from datetime import datetime
+from django.utils.timezone import utc
 
 # Django settings for pretty_apod project.
 
@@ -177,6 +179,7 @@ THUMBNAIL_UPSCALE = False
 
 # Empty deploy timestamp
 
+LAST_MODIFIED = datetime.utcfromtimestamp(os.path.getmtime(os.path.join(PROJECT_ROOT, 'connector.wsgi'))).replace(tzinfo=utc)
 TIMESTAMP = ''
 
 # APOD config
