@@ -20,4 +20,4 @@ LOGGING['loggers']['django.request'] = {
 STATIC_URL = '/static/assets/'
 MEDIA_URL = '/static/media/'
 
-TIMESTAMP = mktime(LAST_MODIFIED.timetuple())
+TIMESTAMP = '.%d' % mktime(LAST_MODIFIED.timetuple())

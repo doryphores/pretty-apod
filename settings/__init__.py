@@ -179,7 +179,7 @@ THUMBNAIL_UPSCALE = False
 
 # Empty deploy timestamp
 
-LAST_MODIFIED = datetime.fromtimestamp(os.path.getmtime(os.path.join(PROJECT_ROOT, 'connector.wsgi'))).replace(tzinfo=utc)
+LAST_MODIFIED = datetime.utcfromtimestamp(os.path.getmtime(os.path.join(PROJECT_ROOT, 'connector.wsgi'))).replace(tzinfo=utc)
 TIMESTAMP = ''
 
 # APOD config
