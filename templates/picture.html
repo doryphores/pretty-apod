@@ -18,8 +18,7 @@
 	{% endif %}
 	<a href="{{ picture.get_year_url }}"><i class="icon-calendar"></i> {{ picture.publish_date.year }} <b><b></b></b></a>
 	<a href="{{ picture.get_month_url }}"><i class="icon-calendar"></i> {{ picture.publish_date|date:'F' }} <b><b></b></b></a>
-
-	{{ picture.updated_date|time:"h:i:s" }} - {{ picture.title }}
+	{{ picture.title }}
 {% endblock %}
 
 {# Extra header block #}

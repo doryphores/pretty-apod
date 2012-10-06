@@ -187,6 +187,18 @@ class PictureManager(models.Manager):
 
 		return self.get(publish_date=date)
 
+	def get_last_modified(self, year=None, month=None, day=None):
+		if year and month and day:
+			qs = self.filter(publish_date__year=int(year), publish_date__month=int(month), publish_date__day=int(day))
+		elif year and month:
+			qs = self.filter(publish_date__year=int(year), publish_date__month=int(month))
+		elif year:
+			qs = self.filter(publish_date__year=int(year))
+		else:
+			return self.latest().updated_date
+
+		return qs.aggregate(Max('updated_date'))['updated_date__max']
+
 	def get_by_date_parts(self, year, month, day):
 		try:
 			date = datetime.date(year, month, day)

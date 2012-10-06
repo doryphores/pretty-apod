@@ -2,9 +2,9 @@ from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.shortcuts import render, render_to_response, get_object_or_404
 from django.http import Http404, HttpResponse
 from django.conf import settings
+from django.views.decorators.http import last_modified
 
 from apod.models import Picture, Tag
-from apod.utils import get_last_modified
 
 import json
 import datetime
@@ -18,6 +18,11 @@ def server_error(request):
 	})
 
 
+def get_lm(request, year=None, month=None, day=None, tag=None):
+	return max(Picture.objects.get_last_modified(year, month, day), settings.LAST_MODIFIED)
+
+
+@last_modified(get_lm)
 def picture(request, year=None, month=None, day=None, tag=None):
 	if tag:
 		# Part of a tag collection so retrieve the tag
@@ -46,7 +51,7 @@ def picture(request, year=None, month=None, day=None, tag=None):
 	})
 
 	# Add last modified header so If-Modified-Since conditional get works
-	response['Last-Modified'] = get_last_modified(picture.updated_date)
+	# response['Last-Modified'] = get_last_modified(picture.updated_date)
 
 	return response
 
@@ -67,6 +72,7 @@ def picture_json(request, picture_id):
 	return HttpResponse(json.dumps(data), mimetype='application/json')
 
 
+@last_modified(get_lm)
 def month(request, year, month):
 	year = int(year)
 	month = int(month)
@@ -109,6 +115,7 @@ def month(request, year, month):
 	return render(request, 'month.html', view_data)
 
 
+@last_modified(get_lm)
 def year(request, year):
 	year = int(year)
 

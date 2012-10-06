@@ -18,7 +18,6 @@
 	<h1>
 		<a href="{% url 'home' %}">Pretty APOD <b><b></b></b></a>
 		{% block page_title %}{% endblock %}
-		- {{ LAST_MODIFIED|time:"h:i:s" }}
 	</h1>
 
 	{% block extra_header %}
