@@ -21,7 +21,7 @@ class PictureAdmin(admin.ModelAdmin):
 	list_per_page = 30
 	date_hierarchy = 'publish_date'
 	list_filter = ['publish_date', 'loaded', 'media_type']
-	search_fields = ['title']
+	search_fields = ['title', 'credits', 'explanation']
 
 	actions = ['reload_from_apod', 'download_image']
 
