@@ -9,6 +9,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
 	url(r'^', include('apod.urls')),
 	url(r'^admin/', include(admin.site.urls)),
+	url(r'^grappelli/', include('grappelli.urls')),
 )
 
 # Serve static and media files in DEBUG mode
