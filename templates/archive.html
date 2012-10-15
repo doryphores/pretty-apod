@@ -63,7 +63,7 @@
 
 	<ul class="archive">
 		{% for picture in pictures.object_list %}
-		<li class="item">
+		<li class="item" data-module="imageloader">
 			{% if picture.thumb %}
 				<img src="{{ picture.thumb }}" width="120" height="90">
 			{% endif %}

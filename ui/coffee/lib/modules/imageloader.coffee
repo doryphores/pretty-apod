@@ -33,7 +33,7 @@ module.exports = class ImageLoader extends Module
 
 		# Create an image object to fire on load
 		@imageLoader = new Image
-		@imageLoader.onload = => @stop()
+		@imageLoader.onload = @imageLoader.onerror = => @stop()
 		@imageLoader.src = @img.prop('src')
 
 		@timer = new Timer
@@ -45,4 +45,4 @@ module.exports = class ImageLoader extends Module
 		@timer.clear()
 		@spinner.stop()
 		@element.addClass 'loaded'
-		@imageLoader.onload = null;
+		@imageLoader.onload = @imageLoader.onerror = null;
