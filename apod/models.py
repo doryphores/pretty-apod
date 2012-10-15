@@ -2,7 +2,7 @@ from django.db import models
 from django.core.cache import cache
 from django.core.files.base import ContentFile
 from django.db.models.signals import post_delete, pre_save, post_save
-from django.db.models import Count, Min, Max
+from django.db.models import Count, Min, Max, Q
 from django.db import connection
 from django.dispatch import receiver
 
@@ -188,13 +188,55 @@ class PictureManager(models.Manager):
 		return self.get(publish_date=date)
 
 	def get_last_modified(self, year=None, month=None, day=None):
+		year = int(year or 0)
+		month = int(month or 0)
+		day = int(day or 0)
+
 		if year and month and day:
-			qs = self.filter(publish_date__year=int(year), publish_date__month=int(month), publish_date__day=int(day))
+			# Specific day. Make date object or return None if invalid
+			try:
+				d = datetime.date(year, month, day)
+			except ValueError:
+				return None
+
+			# We want last updated date of day as well as adjacent dates (for next / previous links)
+			# TODO: add tag filter
+
+			cursor = connection.cursor()
+
+			cursor.execute("""
+				SELECT  GREATEST(d, p, n) lm
+				FROM (
+					SELECT  publish_date pu,
+						updated_date d,
+						LAG(updated_date) OVER(ORDER BY publish_date DESC) p,
+						LEAD(updated_date) OVER(ORDER BY publish_date DESC) n
+					FROM    apod_picture
+				) AS pd
+				WHERE   pu = DATE '%s'
+			""" % d)
+
+			row = cursor.fetchone()
+
+			if row:
+				return row[0]
+
+			return None
 		elif year and month:
-			qs = self.filter(publish_date__year=int(year), publish_date__month=int(month))
+			# Specific month. Get last updated date from month and next month day for next link
+
+			y, m = divmod(month + 1, 12)
+			if m == 0:
+				m = 12
+				y = y - 1
+			next_month = datetime.date(year + y, m, 1)
+
+			qs = self.filter(Q(publish_date__year=year, publish_date__month=month) | Q(publish_date=next_month))
 		elif year:
-			qs = self.filter(publish_date__year=int(year))
+			# Specific year. Get last updated date from year and next year day for next link
+			qs = self.filter(Q(publish_date__year=year) | Q(publish_date=datetime.date(year + 1, 1, 1)))
 		else:
+			# No args so get latest picture updated date (home page)
 			return self.latest().updated_date
 
 		return qs.aggregate(Max('updated_date'))['updated_date__max']
