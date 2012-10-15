@@ -16,7 +16,7 @@
 		{% for d in week %}{% with d.picture as picture %}
 			{% if d.day %}
 				{% if picture %}
-				<td><div class="item">
+				<td><div class="item" data-module="imageloader">
 					<span class="day">{{ d.day }}</span>
 					{% if picture.thumb %}
 					<img src="{{ picture.thumb }}" width="120" height="90">

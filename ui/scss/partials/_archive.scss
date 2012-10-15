@@ -7,6 +7,33 @@
 		height: 90px;
 	}
 
+	.js & .item {
+		span.day {
+			opacity: 0.2;
+			@include transition(opacity 0.2s);
+		}
+
+		img {
+			opacity: 0;
+			@include transition(opacity 0.2s);
+		}
+
+		&.loaded {
+			span.day {
+				opacity: 1;
+			}
+
+			img {
+				opacity: 1;
+			}
+		}
+	}
+
+	.spinner {
+		top: 20px !important;
+		left: 20px !important;
+	}
+
 	img {
 		z-index: 1;
 		position: absolute;

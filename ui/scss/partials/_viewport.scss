@@ -46,16 +46,20 @@
 		-ms-interpolation-mode: bicubic;
 		border: 1px solid rgba(255,255,255,.5);
 		@include box-shadow(0 0 3px rgba(0,0,0,.8));
+	}
 
-		// Hide initially if js is on (for nice fade effect)
-		.js & {
+	// Hide initially if js is on (for nice fade effect)
+	.js & {
+		img {
 			opacity: 0;
 			@include transition(opacity 1s);
-			&.loaded {
-				opacity: 1;
-			}
+		}
+
+		&.loaded img {
+			opacity: 1;
 		}
 	}
+
 
 	// Loader message
 	// Should be hidden when js is enabled

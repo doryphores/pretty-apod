@@ -38,7 +38,6 @@ module.exports = class Viewport extends Module
 		@window.resize => @redraw()
 
 		timer = new Timer()
-		timer.delay 500, => @image.addClass 'loaded'
 
 		@trigger 'image_loaded'
 

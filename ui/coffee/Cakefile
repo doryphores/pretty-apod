@@ -10,11 +10,14 @@ task 'build', 'Build app', (options) ->
 	app = stitch.createPackage
 		paths: [__dirname + '/lib']
 		dependencies:[
-			__dirname + '/vendor/jquery.mousewheel.js',
+			__dirname + '/vendor/jquery.mousewheel.js'
 			__dirname + '/vendor/jquery-ui-1.8.23.custom.js'
+			__dirname + '/vendor/spin.js'
 		]
 
 	app.compile (err, source) ->
+		if err then throw err
+
 		fs.mkdir output_dir, 0o775, (err) ->
 			if err and err.code isnt 'EEXIST' then throw err
 
