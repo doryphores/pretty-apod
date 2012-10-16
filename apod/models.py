@@ -15,9 +15,9 @@ import json
 import Image
 import datetime
 import imghdr
+import exiftool
 
 from apod import apodapi
-from apod.utils.minimal_exif_writer import MinimalExifWriter, ExifFormatException
 
 
 class TagFormatter(models.Model):
@@ -450,14 +450,8 @@ class Picture(models.Model):
 						resize = False
 
 				# Strip EXIF data (causes problems when not well formed)
-				try:
-					exif_writer = MinimalExifWriter(self.image.file.name)
-					exif_writer.removeExif()
-					exif_writer.process()
-				except ExifFormatException:
-					# There was a problem stripping the EXIF data
-					# Ignore it
-					pass
+				with exiftool.ExifTool() as et:
+					et.execute('-all=', self.image.file.name)
 
 				# Check size and resize if bigger than 1Mb
 				if resize and self.original_file_size > 2 ** 20:
