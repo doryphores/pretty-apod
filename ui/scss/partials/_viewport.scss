@@ -37,6 +37,12 @@
 		}
 	}
 
+	// Spinner position
+	.spinner {
+		left: 50% !important;
+		top: 200px !important;
+	}
+
 	// Image
 
 	img {
@@ -59,7 +65,6 @@
 			opacity: 1;
 		}
 	}
-
 
 	// Loader message
 	// Should be hidden when js is enabled

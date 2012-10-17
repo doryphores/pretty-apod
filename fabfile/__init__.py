@@ -63,7 +63,7 @@ def check_requirements():
 
 	print(green('Checking requirements'))
 
-	for tool in ['compass', 'cake', 'virtualenv', 'git']:
+	for tool in ['compass', 'cake', 'virtualenv', 'git', 'exiftool']:
 		with settings(hide('warnings', 'stdout'), warn_only=True):
 			result = run('which %s' % tool)
 			if result.failed:

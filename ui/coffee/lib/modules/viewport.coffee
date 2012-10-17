@@ -19,7 +19,7 @@ module.exports = class Viewport extends Module
 
 		if imageTag is 'img'
 			# Image is ready
-			@window.load => @initImage()
+			@initImage()
 		else
 			# Call server to process image
 			@trigger 'image_loading'
@@ -36,8 +36,6 @@ module.exports = class Viewport extends Module
 		@redraw()
 
 		@window.resize => @redraw()
-
-		timer = new Timer()
 
 		@trigger 'image_loaded'
 
