@@ -183,6 +183,10 @@ THUMBNAIL_UPSCALE = False
 LAST_MODIFIED = datetime.utcfromtimestamp(os.path.getmtime(os.path.join(PROJECT_ROOT, 'connector.wsgi'))).replace(tzinfo=utc)
 TIMESTAMP = ''
 
+# Grappelli admin settings
+
+GRAPPELLI_ADMIN_TITLE = 'Pretty APOD admin'
+
 # APOD config
 
 APOD_URL = "http://apod.nasa.gov/apod"

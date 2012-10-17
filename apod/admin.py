@@ -1,7 +1,9 @@
-from django.contrib import admin
 from django.conf.urls.defaults import patterns
 from django.http import HttpResponseRedirect
+from django.db import models
+from django.contrib import admin
 from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.admin.widgets import FilteredSelectMultiple
 
 from apod.models import Picture, Tag, TagFormatter
 
@@ -22,6 +24,10 @@ class PictureAdmin(admin.ModelAdmin):
 	date_hierarchy = 'publish_date'
 	list_filter = ['publish_date', 'loaded', 'media_type']
 	search_fields = ['title', 'credits', 'explanation']
+
+	formfield_overrides = {
+		models.ManyToManyField: {'widget': FilteredSelectMultiple("tags", is_stacked=False)}
+	}
 
 	actions = ['reload_from_apod', 'download_image']
 
