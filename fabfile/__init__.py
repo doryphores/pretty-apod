@@ -15,6 +15,7 @@ def staging():
 	"""
 	Setup staging environment vars
 	"""
+	env.refspec = 'develop'
 	env.hosts = ['staging.apod']
 	env.project_dir = '/home/martin/pretty-apod'
 	env.python = 'python'
@@ -28,6 +29,7 @@ def prod():
 	"""
 	Setup production environment vars
 	"""
+	env.refspec = select_tag()
 	env.hosts = ['doryphores@doryphores.webfactional.com']
 	env.project_dir = '/home/doryphores/webapps/prettyapod'
 	env.python = 'python2.7'
@@ -259,3 +261,20 @@ def rollback():
 def _run_ve(command):
 	with prefix('source %s/bin/activate' % env.env_dir):
 		run(command)
+
+
+def select_tag():
+	# Push and fetch tags
+	local('git push --tags')
+	local('git fetch --tags')
+
+	# Get last 5 tags and prompt for which to use
+	tags = local('git tag | sort -V | tail -5', capture=True)
+	print(yellow('Available tags: %s' % ', '.join(tags.split())))
+	latest = tags.split().pop()
+	refspec = prompt(blue('Choose tag to build from: '), default=latest)
+
+	# Check tag is valid
+	local('git tag | grep "%s"' % refspec)
+
+	return refspec
