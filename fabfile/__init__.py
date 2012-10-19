@@ -149,7 +149,7 @@ def update_code():
 	refspec = select_tag()
 	print(green('Updating code from repository'))
 	with cd(env.repo_dir):
-		run('git fetch && git checkout %s' % refspec)
+		run('git fetch --tags && git checkout %s' % refspec)
 
 
 def prepare_release():
@@ -266,8 +266,7 @@ def _run_ve(command):
 
 def select_tag():
 	# Push and fetch tags
-	local('git push --tags')
-	local('git fetch --tags')
+	local('git fetch --tags && git push --tags')
 
 	# Get last 5 tags and prompt for which to use
 	tags = local('git tag | sort -V | tail -5', capture=True)
