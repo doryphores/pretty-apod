@@ -137,7 +137,7 @@ def update_env():
 	Updates virtual environment requirements
 	"""
 	print(green('Updating virtual environment requirements'))
-	_run_ve('pip install -q -r %s/install/requirements.txt' % env.current_release_dir)
+	_run_ve('pip install -q -r %s/requirements/prod.txt' % env.current_release_dir)
 
 
 def update_code():
