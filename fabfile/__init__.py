@@ -149,8 +149,7 @@ def update_code():
 	refspec = select_tag()
 	print(green('Updating code from repository'))
 	with cd(env.repo_dir):
-		run('git fetch')
-		run('git checkout origin %s' % refspec)
+		run('git fetch && git checkout %s' % refspec)
 
 
 def prepare_release():
@@ -277,6 +276,6 @@ def select_tag():
 	refspec = prompt(blue('Choose tag to build from: '), default=latest)
 
 	# Check tag is valid
-	local('git tag | grep "%s"' % env.default_refspec or refspec)
+	local('git tag | grep "%s"' % refspec)
 
 	return refspec
