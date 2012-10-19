@@ -15,7 +15,7 @@ def staging():
 	"""
 	Setup staging environment vars
 	"""
-	env.refspec = 'develop'
+	env.default_refspec = 'develop'
 	env.hosts = ['staging.apod']
 	env.project_dir = '/home/martin/pretty-apod'
 	env.python = 'python'
@@ -29,7 +29,7 @@ def prod():
 	"""
 	Setup production environment vars
 	"""
-	env.refspec = select_tag()
+	env.default_refspec = False
 	env.hosts = ['doryphores@doryphores.webfactional.com']
 	env.project_dir = '/home/doryphores/webapps/prettyapod'
 	env.python = 'python2.7'
@@ -146,9 +146,11 @@ def update_code():
 	"""
 	Updates code from repository
 	"""
+	refspec = select_tag()
 	print(green('Updating code from repository'))
 	with cd(env.repo_dir):
-		run('git pull')
+		run('git fetch')
+		run('git checkout origin %s' % refspec)
 
 
 def prepare_release():
@@ -275,6 +277,6 @@ def select_tag():
 	refspec = prompt(blue('Choose tag to build from: '), default=latest)
 
 	# Check tag is valid
-	local('git tag | grep "%s"' % refspec)
+	local('git tag | grep "%s"' % env.default_refspec or refspec)
 
 	return refspec
