@@ -2,8 +2,6 @@ import os
 from datetime import datetime
 from django.utils.timezone import utc
 
-# Django settings for pretty_apod project.
-
 PROJECT_ROOT = '/'.join(os.path.dirname(__file__).split('/')[0:-1])
 
 INTERNAL_IPS = ('127.0.0.1',)
