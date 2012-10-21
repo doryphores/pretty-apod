@@ -45,8 +45,8 @@ class Command(BaseCommand):
 					picture.get_image()
 					success_count = success_count + 1
 					self.stdout.write('%s imported\n' % picture.publish_date)
-				except:
-					raise
+				except Exception as error:
+					raise error
 					error_count = error_count + 1
 
 			self.stdout.write('Successfully imported %d (%d failures)\n' % (success_count, error_count))
