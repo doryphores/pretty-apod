@@ -1,5 +1,8 @@
-from django.conf.urls.defaults import patterns, url
+from django.conf.urls.defaults import patterns, url, include
 from apod.feeds import LatestPicturesFeed, TagPicturesFeed
+from apod.api import PictureResource
+
+picture_resource = PictureResource()
 
 urlpatterns = patterns('apod.views',
 	url(r'^$', 'picture', name='home'),
@@ -22,4 +25,6 @@ urlpatterns = patterns('apod.views',
 	url(r'^ajax/size-over-time/$', 'size_over_time', name='size_over_time'),
 
 	url(r'^feed/$', LatestPicturesFeed(), name='feed'),
+
+	(r'^api/', include(picture_resource.urls)),
 )

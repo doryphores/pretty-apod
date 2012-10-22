@@ -120,6 +120,7 @@ INSTALLED_APPS = (
 	'south',
 	'apod',
 	'sorl.thumbnail',
+	'tastypie',
 )
 
 LOGGING = {
