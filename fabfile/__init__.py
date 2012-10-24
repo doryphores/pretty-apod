@@ -269,7 +269,7 @@ def select_tag():
 	local('git fetch --tags && git push --tags')
 
 	# Get last 5 tags and prompt for which to use
-	tags = local('git tag | sort -V | tail -5', capture=True)
+	tags = local('git tag | sort -k1.2 -n | tail -5', capture=True)
 	print(yellow('Available tags: %s' % ', '.join(tags.split())))
 	latest = tags.split().pop()
 	refspec = prompt(blue('Choose tag to build from: '), default=latest)
