@@ -2,8 +2,6 @@ import os
 from datetime import datetime
 from django.utils.timezone import utc
 
-# Django settings for pretty_apod project.
-
 PROJECT_ROOT = '/'.join(os.path.dirname(__file__).split('/')[0:-1])
 
 INTERNAL_IPS = ('127.0.0.1',)
@@ -192,3 +190,7 @@ GRAPPELLI_ADMIN_TITLE = 'Pretty APOD admin'
 APOD_URL = "http://apod.nasa.gov/apod"
 
 APOD_ARCHIVE_URL = APOD_URL + "/archivepix.html"
+
+# Path to exiftool (set to None when in PATH)
+
+EXIFTOOL_EXECUTABLE = None
