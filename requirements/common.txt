@@ -1,5 +1,5 @@
 PIL==1.1.7
-psycopg2==2.4.4
+psycopg2>=2.4.4
 BeautifulSoup==3.2.1
 Django==1.4.2
 Fabric==1.4.3
