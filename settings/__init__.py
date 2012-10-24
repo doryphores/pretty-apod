@@ -190,3 +190,7 @@ GRAPPELLI_ADMIN_TITLE = 'Pretty APOD admin'
 APOD_URL = "http://apod.nasa.gov/apod"
 
 APOD_ARCHIVE_URL = APOD_URL + "/archivepix.html"
+
+# Path to exiftool (set to None when in PATH)
+
+EXIFTOOL_EXECUTABLE = None

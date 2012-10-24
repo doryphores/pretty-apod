@@ -5,6 +5,7 @@ from django.db.models.signals import post_delete, pre_save, post_save
 from django.db.models import Count, Min, Max, Q
 from django.db import connection
 from django.dispatch import receiver
+from django.conf import settings
 
 from sorl.thumbnail import get_thumbnail, delete as delete_image
 
@@ -450,7 +451,7 @@ class Picture(models.Model):
 						resize = False
 
 				# Strip EXIF data (causes problems when not well formed)
-				with exiftool.ExifTool() as et:
+				with exiftool.ExifTool(settings.EXIFTOOL_EXECUTABLE) as et:
 					et.execute('-all=', self.image.file.name)
 
 				# Check size and resize if bigger than 1Mb
