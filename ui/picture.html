@@ -1,0 +1,58 @@
+{% extends "inc/layout.html" %}
+
+{% block title %}Picture{% endblock %}
+
+{% block page %}
+
+<div class="page picture" data-view="picture" data-listen="previous next">
+	<div class="inner">
+		<img src="/media/meteorviolet_salomonsen_1200.jpg" alt="" width="1200" height="800">
+	</div>
+</div>
+
+<div class="page picture next" data-view="picture" data-listen="previous next">
+	<div class="inner">
+		<img src="/media/meteorviolet_salomonsen_1200.jpg" alt="" width="1200" height="800">
+	</div>
+</div>
+
+{% endblock page %}
+
+{% block panel %}
+
+<li data-view="picturepanel" id="info-panel" data-listen="previous next">
+	<h2><a href="#"><i class="icon-list"></i> Information</a></h2>
+	<div class="panel">
+		<div class="inner-panel">
+			<section class="copy">
+				<h3> <i class="icon-info"></i>
+					Explanation
+					<a href="http://apod.nasa.gov/apod/ap121005.html" target="_blank" class="action"> <i class="icon-eye-open"></i>
+						View original on APOD
+					</a>
+				</h3>
+
+				<p class="explanation">
+					What's happening behind that mountain? A convergence of variable sky spectacles. One night in mid-September near <a href="http://en.wikipedia.org/wiki/Tromsø">Tromsø</a>, <a href="http://en.wikipedia.org/wiki/Norway">Norway</a>, high red aurora could be seen shimmering through lower green aurora in a way that created a striking and somewhat unusual violet glow. Suddenly, though, the sky flashed with the <a href="/2008/11/25/">brightest fireball</a> the astrophotographer had ever seen, as a small pebble from outer space violently crashed into the <a href="http://www.ucar.edu/learn/1_1_1.htm">Earth's atmosphere</a>. The glow illuminated the distant mountain peak known as <a href="http://fi.wikipedia.org/wiki/Otertinden">Otertinden</a> of the <a href="http://en.wikipedia.org/wiki/Lyngen_Alps">Lyngen Alps</a>. The bright <a href="http://www.amsmeteors.org/meteor-showers/meteor-faq/">meteor</a>, which coincidently disappeared behind the same mountain, was also reflected in the foreground Signalelva River. Although you might consider yourself lucky to see either an aurora or a bright meteor, pictures of them together <a href="/2009/12/19/">have</a> <a href="/2010/9/20/">been</a> <a href="/2008/1/7/">recorded</a> <a href="/2007/10/9/">several</a> <a href="/2003/8/9/">times</a> <a href="/2012/2/9/">previously</a>.
+				</p>
+			</section>
+
+			<section>
+				<h3>© Credits and copyright</h3>
+
+				<p class="credits"><a href="http://www.arcticlightphoto.no/about/">Ole C. Salomonsen</a> (<a href="http://www.arcticlightphoto.no/">Arctic Light Photo</a>)</p>
+			</section>
+
+			<section>
+				<h3><i class="icon-tag"></i> Tags</h3>
+				<p class="tags">
+					<a href="/tags/aurora/"><i class="icon-tag"></i> Aurora</a>
+					<a href="/tags/fireball/"><i class="icon-tag"></i> fireball</a>
+					<a href="/tags/norway/"><i class="icon-tag"></i> Norway</a>
+				</p>
+			</section>
+		</div>
+	</div>
+</li>
+
+{% endblock panel %}

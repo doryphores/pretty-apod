@@ -1,0 +1,44 @@
+.picture {
+	font-size: 0;
+	line-height: 0;
+	text-align: center;
+	display: table;
+	height: 100%;
+	width: 100%;
+
+	&.page.animated {
+		display: table;
+	}
+
+	.inner {
+		display: table-cell;
+		vertical-align: middle;
+		height: 100%;
+	}
+
+	// This class switches the viewport to maximise the image's height
+	&.maximise-height {
+		display: block;
+
+		.inner {
+			display: inline;
+		}
+
+		img {
+			width: auto;
+			height: 100%;
+		}
+	}
+
+	// Image
+
+	img {
+		display: inline;
+		width: 100%;
+		height: auto;
+		-ms-interpolation-mode: bicubic;
+		border: 1px solid white;
+		@include box-sizing(border-box);
+		@include box-shadow(0 0 10px rgba(0,0,0,.5));
+	}
+}

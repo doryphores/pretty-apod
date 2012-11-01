@@ -1,108 +1,26 @@
 .site-header {
-	background: darken($color_page_bg, 5%) image-url("page-noise.png");
-	@include box-shadow(0 1px 0 darken($color_page_bg, 8%));
+	height: 30px;
+	text-align: center;
+	font-size: 0;
+	line-height: 0;
+	background: #111;
+	@include box-shadow(0 0 3px rgba(0,0,0,.5));
 
-	h1 {
-		font-size: 18px;
-		line-height: $layout_header_height;
-		display: inline;
-		overflow: hidden;
-
-		a {
-			font-size: 14px;
-			float: left;
-			padding: 0 5px 0 30px;
-			position: relative;
-			z-index: 4;
-			color: $color_page_text;
-			background: lighten($color_page_bg, 20%) image-url("page-noise.png");
-			outline: none;
-
-			&:first-child {
-				padding: 0 0 0 10px;
-				width: $layout_nav_width - 10px;
-			}
-
-			&:last-of-type {
-				margin-right: 30px;
-			}
-
-			&:hover,
-			&:focus {
-				background: lighten($color_page_bg, 25%) image-url("page-noise.png") !important;
-				b b {
-					background: lighten($color_page_bg, 25%) image-url("page-noise.png") !important;
-				}
-			}
-
-			+a, +a b b {
-				background: lighten($color_page_bg, 15%) image-url("page-noise.png");
-				z-index: 3;
-			}
-
-			+a+a, +a+a b b {
-				background: lighten($color_page_bg, 10%) image-url("page-noise.png");
-				z-index: 2;
-			}
-
-			+a+a+a, +a+a+a b b {
-				background: lighten($color_page_bg, 5%) image-url("page-noise.png");
-				z-index: 1;
-			}
-		}
-
-		i {
-			font-size: 14px;
-			line-height: 14px;
-			margin-right: 5px;
-		}
-
-		b {
-			@include triangle-right($layout_header_height);
-			pointer-events: none;
-
-			b {
-				background: lighten($color_page_bg, 20%) image-url("page-noise.png");
-				@include box-shadow(0 0 0 1px rgba(0,0,0,.5));
-			}
-		}
+	.inner {
+		display: inline-block;
 	}
 
-	.tools {
-		position: fixed;
-		top: 0;
-		right: 0;
+	h1,
+	span {
+		display: inline-block;
+		padding: 0 10px;
+		margin-left: 1px;
+		background: black;
+		font-size: 12px;
+		line-height: 30px;
 
-		a {
-			float: left;
-			width: $layout_header_height;
-			height: $layout_header_height;
-			font-size: 26px;
-			line-height: $layout_header_height;
-			text-align: center;
-			background: rgba(255,255,255,.2);
-			color: $color_page_text;
-			outline: none;
-			margin-left: 1px;
-
-			&:hover,
-			&:focus {
-				background: rgba(255,255,255,.4);
-				color: $color_page_bg;
-			}
-
-			i + i {
-				display: none;
-			}
-
-			.full-screen &.full-screen {
-				i {
-					display: none;
-					+ i {
-						display: block;
-					}
-				}
-			}
+		&.branding {
+			margin-left: 0;
 		}
 	}
 }

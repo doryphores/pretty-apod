@@ -1,212 +1,28 @@
 .site-nav {
-	background: $color_nav_bg image-url("noise.png") repeat;
-
-	ul {
-		margin-bottom: 5px;
-		clear: both;
-	}
-
 	li {
-		font-size: 14px;
-		margin-top: 1px;
+		position: fixed;
+		top: 0;
+		bottom: 0;
+		width: $layout_nav_width;
+
+		&:first-child {
+			left: 0;
+		}
+
+		&:last-child {
+			right: 0;
+		}
 
 		a {
-			display: block;
-			background: rgba(0,0,0,.2);
-			text-decoration: none;
-			outline: none;
-			line-height: $layout_header_height;
-			padding: 0 10px;
-			vertical-align: middle;
-			position: relative;
-			@include transition(background .2s);
-
-			i {
-				line-height: 1;
-			}
-
-			&:hover,
-			&:active {
-				background: rgba(0,0,0,.4);
-
-				b b {
-					left: - ($layout_header_height / 2);
-					background: rgba(0,0,0,.4);
-				}
-			}
-		}
-
-		b {
-			@include triangle-right($layout_header_height);
-			pointer-events: none;
-
-			.open-panel & {
-				display: none;
-			}
-
-			b {
-				background: rgba(0,0,0,.2);
-				left: - $layout_header_height;
-				@include transition(all .2s);
-			}
-		}
-
-		&.active {
-			a {
-				background: rgba(0,0,0,.8);
-			}
-		}
-	}
-
-	.date {
-		clear: both;
-		margin: 5px;
-		padding: 5px 5px 10px 5px;
-		@include border-radius(5px);
-		@include box-shadow(0 0 3px rgba(0,0,0,.4) inset, 0 1px 0 rgba(255,255,255,.1));
-		text-align: center;
-		text-transform: uppercase;
-		font-weight: bold;
-
-		span:first-child {
-			font-size: 54px;
-			line-height: 1;
-			color: white;
-			text-shadow: -1px -1px rgba(0,0,0,.4);
-			display: block;
-
-			&.month {
-				font-size: 30px;
-				line-height: 45px;
-
-				& + .year {
-					font-size: 24px;
-					line-height: 28px;
-				}
-			}
-
-			&.year {
-				font-size: 30px;
-				line-height: 73px;
-			}
-		}
-
-		span {
-			text-decoration: none;
-			font-size: 13px;
-		}
-	}
-
-	.nav {
-		margin-bottom: 5px;
-		width: 100%;
-		float: left;
-		position: relative;
-
-		a,
-		span.disabled {
-			float: left;
-			width: 50%;
-			height: 60px;
-			text-align: center;
-			text-decoration: none;
-			outline: none;
-
-			> i {
-				font-size: 40px;
-				line-height: 60px;
-			}
-
-			&:hover,
-			&:focus,
-			&.active {
-				.preview {
-					width: 130px;
-					@include transition-delay(.8s);
-					span {
-						@include transition-delay(.8s);
-						margin-left: 0;
-					}
-
-					&:hover,
-					&:active {
-						background: rgba(255,255,255,.8);
-					}
-				}
-			}
-
-			&:active {
-				.preview {
-					width: 0;
-					@include transition-delay(0);
-					span {
-						@include transition-delay(0);
-						margin-left: -130px;
-					}
-				}
-			}
-		}
-
-		.disabled {
-			color: $color_page_link;
-			opacity: 0.5;
-		}
-
-		.preview {
-			background: rgba(255,255,255,.7);
-			@include box-shadow(10px 0 10px -10px rgba(0,0,0,.8) inset);
-			@include border-radius(0 4px 4px 0);
 			position: absolute;
-			top: 0;
-			left: 100%;
-			width: 0;
-			overflow: hidden;
-			@include transition(width .2s ease-out .2s);
-			text-align: left;
-			font-size: 11px;
-			line-height: 15px;
-			color: black;
-
-			span {
-				display: block;
-				padding: 5px;
-				width: 120px;
-				margin-left: -130px;
-				@include transition(margin .2s ease-out .2s);
-
-				i {
-					font-size: 13px;
-				}
-			}
-
-			.calendar {
-				font-size: 19px;
-				font-weight: bold;
-				height: 46px;
-				line-height: 20px;
-				padding-top: 9px;
-				text-align: center;
-				text-transform: uppercase;
-
-				i {
-					float: left;
-					font-size: 45px;
-					line-height: 42px;
-					margin-left: 10px;
-					margin-right: 0;
-				}
-
-				&.year {
-					font-size: 22px;
-					line-height: 38px;
-				}
-			}
-
-			img {
-				margin: 4px 0 0 0;
-				display: block;
-				@include box-shadow(0 0 2px rgba(0,0,0,.8));
-			}
+			top: 50%;
+			left: 0;
+			width: 100%;
+			text-align: center;
+			color: $color_page_text;
+			line-height: 40px;
+			font-size: 30px;
+			margin-top: -20px;
 		}
 	}
 }

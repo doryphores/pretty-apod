@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en-gb">
+
+<head>
+	<meta charset="utf-8">
+	<title>{% block title %}{% endblock title %}</title>
+	<link rel="stylesheet" href="/assets/css/screen.css">
+</head>
+
+<body>
+
+<header class="site-header">
+	<div class="inner">
+		<span class="branding">Pretty APOD</span>
+		<span class="date">5 October 2012</span>
+		<h1>Aurora and Fireball Over Norway</h1>
+	</div>
+</header>
+
+<div class="site-body">
+	{% block page %}
+	{% endblock page %}
+</div>
+
+<nav class="site-nav">
+	<ul>
+		<li><a href="#"><i class="icon-left"></i></a></li>
+		<li><a href="#"><i class="icon-right"></i></a></li>
+	</ul>
+</nav>
+
+<footer class="site-footer">
+	<ul>
+		{% block panel %}
+		{% endblock panel %}
+		<li data-view="panel" id="explore-panel">
+			<h2><a href="#"><i class="icon-explore"></i> Explore</a></h2>
+			<div class="panel">
+				<div class="inner-panel"></div>
+			</div>
+		</li>
+		<li data-view="panel" id="about-panel">
+			<h2><a href="#"><i class="icon-explore"></i> About</a></h2>
+			<div class="panel">
+				<div class="inner-panel"></div>
+			</div>
+		</li>
+	</ul>
+</footer>
+
+{% include 'inc/scripts.html' %}
+
+</body>
+
+</html>

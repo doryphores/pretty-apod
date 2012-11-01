@@ -1,7 +1,7 @@
 Timer = require 'utils/timer'
 
 module.exports = class Transition
-	@timeout: 500
+	@timeout: 2000
 
 	@support: (->
 		transitionEnd = (->
@@ -27,7 +27,6 @@ module.exports = class Transition
 		@timer = new Timer()
 
 	start: (func) ->
-		@reflow()
 		@element.addClass "animated"
 		@reflow()
 
@@ -40,11 +39,9 @@ module.exports = class Transition
 
 		if Transition.support
 			@element.off Transition.support.end
-			@element.on Transition.support.end, (e) =>
-				unless e.target is e.currentTarget
-					@element.off Transition.support.end
-					@timer.clear()
-					@deferred.resolve();
+			@element.one Transition.support.end, (e) =>
+				@timer.clear()
+				@deferred.resolve();
 
 			@timer.delay @timeout, =>
 				@element.off Transition.support.end

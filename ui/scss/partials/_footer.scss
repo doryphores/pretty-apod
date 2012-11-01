@@ -1,0 +1,123 @@
+.site-footer {
+	position: fixed;
+	z-index: 2;
+	width: 100%;
+	bottom: 0;
+	left: 0;
+
+	> ul {
+		text-align: center;
+		white-space: nowrap;
+		font-size: 0;
+		line-height: 0;
+		background: #111;
+		@include box-shadow(0 0 3px rgba(0,0,0,.5));
+	}
+
+	li {
+		text-align: left;
+		display: inline-block;
+		margin-left: 1px;
+
+		&:first-child {
+			margin: 0;
+		}
+
+		h2 {
+			height: 30px;
+			position: relative;
+			top: 0;
+			z-index: 2;
+			display: inline-block;
+
+			a {
+				display: inline-block;
+				outline: none;
+				padding: 0 10px;
+				background: #000;
+				color: $color_page_text;
+				font-size: 14px;
+				line-height: 30px;
+
+				i {
+					margin-right: 4px;
+				}
+
+				&:hover,
+				&:focus {
+					background: $color_page_text;
+					color: #000;
+				}
+			}
+		}
+	}
+
+	.panel {
+		display: none;
+		outline: none;
+		position: absolute;
+		z-index: 1;
+		left: 0;
+		right: 0;
+		@include box-sizing(border-box);
+		background: #111;
+		@include box-shadow(0 0 3px rgba(0,0,0,.5));
+		font-size: 12px;
+		line-height: 18px;
+		white-space: normal;
+
+		.inner-panel {
+			overflow: hidden;
+			width: 800px;
+			max-width: 80%;
+			min-height: 200px;
+			margin: 0 auto;
+			padding: 20px 0 40px 0;
+
+			section {
+				float: left;
+				width: 50%;
+				@include box-sizing(border-box);
+				padding: 0 10px 20px 10px;
+
+				h3 {
+					font-size: 16px;
+					border-bottom: 1px solid $color_page_text;
+					padding-bottom: 4px;
+					margin-bottom: 10px;
+				}
+
+				&.copy {
+					p {
+						text-align: justify;
+
+						a {
+							text-decoration: underline;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	li.active {
+		h2 {
+			a {
+				background: rgba(0,0,0,.8);
+				color: $color_page_text;
+			}
+		}
+
+		.panel {
+			bottom: 0;
+			background: rgba(0,0,0,.8);
+		}
+	}
+
+	li.animated {
+		h2,
+		.panel {
+			@include transition(all .4s cubic-bezier(0.215, 0.610, 0.355, 1.000));
+		}
+	}
+}

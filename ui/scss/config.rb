@@ -5,14 +5,12 @@ http_path = "/"
 css_dir = "../assets/css"
 sass_dir = "."
 images_dir = "../assets/images"
+http_images_path = "/assets/images"
 javascripts_dir = "../assets/js"
 fonts_dir = "../assets/fonts"
 
-# You can select your preferred output style here (can be overridden via the command line):
-# output_style = :expanded or :nested or :compact or :compressed
-
 # To enable relative paths to assets via compass helper functions. Uncomment:
-relative_assets = true
+relative_assets = false
 
 env = environment
 

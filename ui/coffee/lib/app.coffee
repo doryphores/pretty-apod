@@ -1,23 +1,45 @@
+Action = require 'utils/action'
+Debug = require 'utils/debug'
+Milk = require 'vendor/milk'
+Transition = require 'utils/transition'
+
+Debug.ON = true
+
 module.exports = App =
 	init: ->
-		Growler = require 'modules/growler'
-		# Initialise growler
-		growler = new Growler
+		# Initialise views
+		$('[data-view]').each ->
+			$el = $ this
+			for view_name in $el.data('view').split(' ')
+				view = require('views/' + view_name)
+				$el.data($el.data('view'), new view(this))
 
-		# Listen for events
-		$(document).on
-			'image_loaded': -> growler.hide()
-			'image_loading': -> growler.info "Please wait while the picture is downloaded and processed"
-			'ui_ready': ->
-				$(document.documentElement).addClass 'ui-ready'
-				# Focus on page element
-				page = $('.site-page').attr('tabindex', -1).focus()
+		page1 = $ '.page:first'
+		page2 = $ '.page:last'
+		page2.hide()
 
-		# Initialise modules
-		for el in $('[data-module]')
-			$el = $(el)
-			for module_name in $el.data('module').split(' ')
-				mod = require('modules/' + module_name)
-				$el.data($el.data('module'), new mod(el))
+		$('nav a:last').click (e) ->
+			e.preventDefault()
 
-		$(document).trigger 'ui_ready'
+			page2.show()
+
+			tran = new Transition(page1)
+			tran.start ->
+				page1.addClass 'previous'
+				page2.removeClass 'next'
+
+			tran.end ->
+				page1.hide()
+
+		$('nav a:first').click (e) ->
+			e.preventDefault()
+
+			page1.show()
+
+			tran = new Transition(page1)
+			tran.start ->
+				page1.removeClass 'previous'
+				page2.addClass 'next'
+
+			tran.end ->
+				page2.hide()

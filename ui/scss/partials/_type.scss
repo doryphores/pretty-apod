@@ -2,49 +2,10 @@
 
 body {
 	font-family: Ubuntu;
-	font-size: 12px;
-	line-height: 18px;
+	color: $color_page_text;
 }
 
 a {
 	color: $color_page_link;
 	text-decoration: none;
-	outline: none;
-
-	&:hover,
-	&:active {
-		color: $color_page_link_active;
-
-		p & {
-			text-decoration: underline;
-		}
-	}
-}
-
-em {
-	font-style: italic;
-}
-
-.site-page {
-	h2 {
-		text-align: center;
-		font-size: 16px;
-		line-height: 1;
-		font-weight: bold;
-		text-transform: uppercase;
-		margin: 80px auto 10px auto;
-		height: 20px;
-		@include background(radial-gradient(rgba(0,0,0,.3), rgba(0,0,0,0) 400px) no-repeat center -10px);
-
-		&:first-child {
-			margin-top: 30px;
-		}
-
-		span {
-			display: inline-block;
-			line-height: 30px;
-			top: -30px;
-			position: relative;
-		}
-	}
 }

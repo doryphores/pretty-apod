@@ -1,16 +1,15 @@
-@import "partials/_base";
+@import 'compass/css3';
+@import 'compass/reset';
 
-@import "compass/reset";
-@import "partials/type";
-@import "partials/font-awesome";
-@import "partials/layout";
-@import "partials/header";
-@import "partials/nav";
-@import "partials/panel";
-@import "partials/scroll-bar";
-@import "partials/viewport";
-@import "partials/archive";
-@import "partials/tags";
-@import "partials/pagination";
-@import "partials/growler";
-@import "partials/error";
+@import 'partials/base';
+
+@import 'partials/type';
+
+@import 'partials/icons';
+
+@import 'partials/layout';
+@import 'partials/header';
+@import 'partials/picture';
+@import 'partials/nav';
+@import 'partials/footer';
+
